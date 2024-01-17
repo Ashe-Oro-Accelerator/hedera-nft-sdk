@@ -7,16 +7,6 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts'],
-      rules: {
-        'import/no-unused-modules': [
-          'error',
-          {
-            src: ['**/*.ts'],
-            missingExports: false,
-            unusedExports: true,
-          },
-        ],
-      },
     },
   ],
   ignorePatterns: ['node_modules/', 'dist/'],
