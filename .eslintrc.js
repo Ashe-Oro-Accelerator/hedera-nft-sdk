@@ -6,15 +6,20 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   overrides: [
     {
-      env: {
-        node: true,
-      },
-      files: ['.eslintrc.{js,cjs}'],
-      parserOptions: {
-        sourceType: 'script',
+      files: ['*.ts'],
+      rules: {
+        'import/no-unused-modules': [
+          'error',
+          {
+            src: ['**/*.ts'],
+            missingExports: false,
+            unusedExports: true,
+          },
+        ],
       },
     },
   ],
+  ignorePatterns: ['node_modules/', 'dist/'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',

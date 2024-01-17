@@ -13,7 +13,7 @@
   "scripts": {
     "analyze": "size-limit --why",
     "build": "dts build",
-    "lint": "eslint src/**/*.{js,ts,tsx}",
+    "lint": "eslint src/**/*",
     "prepare": "dts build",
     "size": "size-limit",
     "start": "dts watch",
