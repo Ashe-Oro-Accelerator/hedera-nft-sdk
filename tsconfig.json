@@ -1,8 +1,10 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
-  "include": ["src", "types"],
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist", "test"],
   "compilerOptions": {
-    "module": "esnext",
-    "allowImportingTsExtensions": false
+    "rootDir": "./src",
+    "outDir": "dist",
+    "module": "esnext"
   }
 }
