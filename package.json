@@ -19,11 +19,6 @@
     "start": "dts watch",
     "test": "dts test"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "dts test && dts lint"
-    }
-  },
   "prettier": {
     "printWidth": 100,
     "semi": true,
