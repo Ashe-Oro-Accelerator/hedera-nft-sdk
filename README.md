@@ -48,9 +48,16 @@ Ensure the build completes successfully before proceeding to the next step.
 Finally, publish the package to NPM using:
 
 ```bash
+npm publish
+```
+
+Initially, when publishing a new package, you should use the `--access public` flag if you want it to be visible publicly on NPM.
+
+```bash
 npm publish --access public
 ```
 
-The `--access public` flag makes the package publicly visible on NPM. For more information, visit [About Public Packages](https://docs.npmjs.com/about-public-packages).
+This flag is required only for the first publication of a new package. For subsequent updates, simply using npm publish is sufficient.
+For more information about scopes, please visit [About Public Packages](https://docs.npmjs.com/about-public-packages).
 
 After that your files should be pushed to NPM immediately.
