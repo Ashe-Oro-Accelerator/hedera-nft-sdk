@@ -1,8 +1,7 @@
 {
-  "name": "hedera-nft-sdk",
-  "version": "0.0.1",
-  "license": "MIT",
-  "author": "Stanislaw Mazowiecki",
+  "name": "hedera-nft-sdk-test",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/mylib.esm.js",
   "typings": "dist/index.d.ts",
