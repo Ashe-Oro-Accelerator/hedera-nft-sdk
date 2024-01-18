@@ -1,4 +1,4 @@
-# Publishing to NPM instructions for hedera-nft-sdk
+# Publishing to NPM instructions
 
 This document provides step-by-step instructions for publishing new versions of the hedera-nft-sdk to NPM. Please follow these steps carefully to ensure a smooth publication process.
 
@@ -31,7 +31,7 @@ If it returns an error, it likely means you are not logged in. If successful, it
 
 ### 3. Update Application Version
 
-Before publishing, update the application version in package.json. Follow the [Semantic Versioning guidelines](https://docs.npmjs.com/about-semantic-versioning) to update the version number correctly.
+Before publishing, update the application version in your `package.json` file. Follow the [semantic versioning guidelines](https://docs.npmjs.com/about-semantic-versioning) to update the version number correctly.
 
 ### 4. Build the Application
 
@@ -52,3 +52,5 @@ npm publish --access public
 ```
 
 The `--access public` flag makes the package publicly visible on NPM. For more information, visit [About Public Packages](https://docs.npmjs.com/about-public-packages).
+
+After that your files should be pushed to NPM immediately.
