@@ -17,7 +17,7 @@ First, you need to be logged into your NPM account. In your terminal type:
 npm login
 ```
 
-After running this command, a login prompt will appear. Follow the instructions, and a link to the login page will be provided. Press "Enter" to open it and complete the login process. If you don't have NPM account using `@arianelbas.com` domain you need to create it first.
+After running this command, a login prompt will appear. Follow the instructions, and a link to the login page will be provided. Press "Enter" to open it and complete the login process. If you don't have NPM account using `@arianelabs.com` domain you need to create it first.
 
 ### 2. Verify Login Status
 
