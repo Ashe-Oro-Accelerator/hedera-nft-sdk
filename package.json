@@ -28,7 +28,7 @@
     "testEnvironment": "node"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=20"
   },
   "size-limit": [
     {
@@ -50,9 +50,12 @@
     "dts-cli": "^2.0.4",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
+    "prettier": "^3.2.4",
     "size-limit": "^11.0.2",
     "tslib": "^2.6.2",
-    "typescript": "^5.3.3",
-    "prettier": "^3.2.4"
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@hashgraph/sdk": "^2.40.0"
   }
 }
