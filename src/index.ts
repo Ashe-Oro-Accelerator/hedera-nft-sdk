@@ -8,15 +8,21 @@ const myAccountId = '0.0.7652262';
 const nftSDK = new HederaNFTSDK(myAccountId, myPrivateKey);
 
 (async () => {
-  const tokenId = await nftSDK.createCollection('test', 'test2', {
-    admin: PrivateKey.generate(),
-    supply: PrivateKey.generate(),
-    KYC: PrivateKey.generate(),
-    freeze: PrivateKey.generate(),
-    wipe: PrivateKey.generate(),
-    feeSchedule: PrivateKey.generate(),
-    pause: PrivateKey.generate(),
-  });
+  const tokenId = await nftSDK.createCollection(
+    'test',
+    'test2',
+    myAccountId,
+    {
+      admin: PrivateKey.generate(),
+      supply: PrivateKey.generate(),
+      KYC: PrivateKey.generate(),
+      freeze: PrivateKey.generate(),
+      wipe: PrivateKey.generate(),
+      feeSchedule: PrivateKey.generate(),
+      pause: PrivateKey.generate(),
+    },
+    1
+  );
 
   console.log(tokenId);
 })();

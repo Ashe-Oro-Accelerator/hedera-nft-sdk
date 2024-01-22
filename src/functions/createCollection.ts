@@ -1,5 +1,11 @@
 import { CreateCollectionType } from '../types/createCollection';
-import { AccountId, PrivateKey, TokenCreateTransaction, TokenType } from '@hashgraph/sdk';
+import {
+  AccountId,
+  PrivateKey,
+  TokenCreateTransaction,
+  TokenSupplyType,
+  TokenType,
+} from '@hashgraph/sdk';
 import errors from '../dictionary/errors.json';
 
 export const createCollectionFunction = async ({
@@ -25,6 +31,7 @@ export const createCollectionFunction = async ({
     .setTokenSymbol(collectionSymbol)
     .setTokenType(TokenType.NonFungibleUnique)
     .setSupplyKey(keys.supply)
+    .setSupplyType(TokenSupplyType.Finite)
     .setTreasuryAccountId(treasuryAccountId);
 
   if (keys.admin) {

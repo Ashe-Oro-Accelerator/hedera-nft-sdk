@@ -14,14 +14,21 @@ export class HederaNFTSDK {
     this.client = logIn({ myAccountId: accountId, myPrivateKey: privateKey });
   }
 
-  createCollection(collectionName: string, collectionSymbol: string, keys: CreateCollectionKeys) {
+  createCollection(
+    collectionName: string,
+    collectionSymbol: string,
+    treasuryAccount: string,
+    keys: CreateCollectionKeys,
+    maxSupply?: number
+  ) {
     return createCollectionFunction({
       client: this.client,
       collectionName: collectionName,
       collectionSymbol: collectionSymbol,
       keys: keys,
       myPrivateKey: this.privateKey,
-      treasuryAccount: this.accountId,
+      treasuryAccount: treasuryAccount,
+      maxSupply: maxSupply || undefined,
     });
   }
 }
