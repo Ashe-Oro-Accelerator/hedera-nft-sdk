@@ -63,7 +63,7 @@ describe('createCollectionFunction', () => {
       admin: PrivateKey.fromString(myPrivateKey),
       supply: PrivateKey.fromString(myPrivateKey),
     };
-    const treasuryAccount = '1.0.1234';
+    const treasuryAccount = '0.0.4321';
 
     const tokenId = await createCollectionFunction({
       client,
@@ -85,7 +85,7 @@ describe('createCollectionFunction', () => {
       admin: PrivateKey.fromString(''),
       supply: PrivateKey.fromString(''),
     };
-    const treasuryAccount = '1.0.1234';
+    const treasuryAccount = '0.0.4321';
 
     await expect(
       createCollectionFunction({
@@ -106,7 +106,7 @@ describe('createCollectionFunction', () => {
       admin: PrivateKey.fromString(myPrivateKey),
       supply: PrivateKey.fromString(myPrivateKey),
     };
-    const treasuryAccount = '1.0.1234';
+    const treasuryAccount = '0.0.4321';
 
     await expect(
       createCollectionFunction({

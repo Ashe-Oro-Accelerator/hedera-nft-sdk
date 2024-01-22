@@ -15,11 +15,6 @@ const nftSDK = new HederaNFTSDK(myAccountId, myPrivateKey);
     {
       admin: PrivateKey.generate(),
       supply: PrivateKey.generate(),
-      KYC: PrivateKey.generate(),
-      freeze: PrivateKey.generate(),
-      wipe: PrivateKey.generate(),
-      feeSchedule: PrivateKey.generate(),
-      pause: PrivateKey.generate(),
     },
     1
   );

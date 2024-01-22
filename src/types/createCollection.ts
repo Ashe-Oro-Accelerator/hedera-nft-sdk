@@ -5,7 +5,7 @@ export type CreateCollectionKeys = {
   KYC?: Key;
   freeze?: Key;
   wipe?: Key;
-  supply: Key;
+  supply?: Key;
   feeSchedule?: Key;
   pause?: Key;
 };

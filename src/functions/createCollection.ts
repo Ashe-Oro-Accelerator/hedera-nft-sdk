@@ -30,7 +30,7 @@ export const createCollectionFunction = async ({
     .setTokenName(collectionName)
     .setTokenSymbol(collectionSymbol)
     .setTokenType(TokenType.NonFungibleUnique)
-    .setSupplyKey(keys.supply)
+    .setSupplyKey(keys.supply || treasuryKey)
     .setTreasuryAccountId(treasuryAccountId);
 
   if (keys.admin) {
