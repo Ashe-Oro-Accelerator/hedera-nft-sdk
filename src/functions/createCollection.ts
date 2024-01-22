@@ -31,7 +31,6 @@ export const createCollectionFunction = async ({
     .setTokenSymbol(collectionSymbol)
     .setTokenType(TokenType.NonFungibleUnique)
     .setSupplyKey(keys.supply)
-    .setSupplyType(TokenSupplyType.Finite)
     .setTreasuryAccountId(treasuryAccountId);
 
   if (keys.admin) {
@@ -59,6 +58,7 @@ export const createCollectionFunction = async ({
   }
 
   if (maxSupply) {
+    transaction = transaction.setSupplyType(TokenSupplyType.Finite);
     transaction = transaction.setMaxSupply(maxSupply);
   }
 

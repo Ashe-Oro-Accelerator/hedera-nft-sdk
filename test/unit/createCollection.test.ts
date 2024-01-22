@@ -1,6 +1,8 @@
 import { Client, PrivateKey } from '@hashgraph/sdk';
 import { createCollectionFunction } from '../../src/functions/createCollection';
 import { myPrivateKey } from '../__mocks__/consts';
+import errors from '../../src/dictionary/errors.json';
+
 jest.mock('@hashgraph/sdk', () => {
   return {
     Client: {
@@ -22,6 +24,7 @@ jest.mock('@hashgraph/sdk', () => {
       setTokenName: jest.fn().mockReturnThis(),
       setTokenSymbol: jest.fn().mockReturnThis(),
       setTokenType: jest.fn().mockReturnThis(),
+      setSupplyType: jest.fn().mockReturnThis(),
       setSupplyKey: jest.fn().mockReturnThis(),
       setTreasuryAccountId: jest.fn().mockReturnThis(),
       setAdminKey: jest.fn().mockReturnThis(),
@@ -38,7 +41,7 @@ jest.mock('@hashgraph/sdk', () => {
           execute: jest.fn().mockResolvedValue({
             getReceipt: jest.fn().mockResolvedValue({
               tokenId: {
-                toString: jest.fn().mockReturnValue('0.0.1234'),
+                toString: jest.fn().mockReturnValue('1.2.1234'),
               },
             }),
           }),
@@ -60,7 +63,7 @@ describe('createCollectionFunction', () => {
       admin: PrivateKey.fromString(myPrivateKey),
       supply: PrivateKey.fromString(myPrivateKey),
     };
-    const treasuryAccount = '0.0.1234';
+    const treasuryAccount = '1.0.1234';
 
     const tokenId = await createCollectionFunction({
       client,
@@ -71,7 +74,7 @@ describe('createCollectionFunction', () => {
       treasuryAccount,
     });
 
-    expect(tokenId).toEqual('0.0.1234');
+    expect(tokenId).toEqual('1.2.1234');
   });
 
   it('should throw an error if myPrivateKey is not provided', async () => {
@@ -82,7 +85,7 @@ describe('createCollectionFunction', () => {
       admin: PrivateKey.fromString(''),
       supply: PrivateKey.fromString(''),
     };
-    const treasuryAccount = '0.0.1234';
+    const treasuryAccount = '1.0.1234';
 
     await expect(
       createCollectionFunction({
@@ -93,7 +96,7 @@ describe('createCollectionFunction', () => {
         keys,
         treasuryAccount,
       })
-    ).rejects.toThrow();
+    ).rejects.toThrow(errors.myPrivateKeyRequired);
   });
 
   it('should throw an error if collectionName is not provided', async () => {
@@ -103,7 +106,7 @@ describe('createCollectionFunction', () => {
       admin: PrivateKey.fromString(myPrivateKey),
       supply: PrivateKey.fromString(myPrivateKey),
     };
-    const treasuryAccount = '0.0.1234';
+    const treasuryAccount = '1.0.1234';
 
     await expect(
       createCollectionFunction({
@@ -114,6 +117,6 @@ describe('createCollectionFunction', () => {
         keys,
         treasuryAccount,
       })
-    ).rejects.toThrow();
+    ).rejects.toThrow(errors.collectionNameRequired);
   });
 });
