@@ -1,0 +1,7 @@
+{
+  "clientRequired": "client is required",
+  "myPrivateKeyRequired": "myPrivateKey is required",
+  "collectionNameRequired": "collectionName is required",
+  "collectionSymbolRequired": "collectionSymbol is required",
+  "myAccountIdRequired": "myAccountId is required"
+}

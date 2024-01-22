@@ -1,5 +1,6 @@
 import { CreateCollectionType } from '../types/createCollection';
 import { AccountId, PrivateKey, TokenCreateTransaction, TokenType } from '@hashgraph/sdk';
+import errors from '../dictionary/errors.json';
 
 export const createCollectionFunction = async ({
   client,
@@ -11,10 +12,10 @@ export const createCollectionFunction = async ({
   maxSupply,
   customFees,
 }: CreateCollectionType): Promise<string | undefined> => {
-  if (!client) throw new Error('client is required');
-  if (!myPrivateKey) throw new Error('myPrivateKey is required');
-  if (!collectionName) throw new Error('collectionName is required');
-  if (!collectionSymbol) throw new Error('collectionSymbol is required');
+  if (!client) throw new Error(errors.clientRequired);
+  if (!myPrivateKey) throw new Error(errors.myPrivateKeyRequired);
+  if (!collectionName) throw new Error(errors.collectionNameRequired);
+  if (!collectionSymbol) throw new Error(errors.collectionSymbolRequired);
 
   const treasuryAccountId = AccountId.fromString(treasuryAccount);
   const treasuryKey = PrivateKey.fromString(myPrivateKey);
