@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { HederaNFTSDK } from './HederaNFTSDK';
 import 'dotenv/config';
 
@@ -11,3 +12,10 @@ const nftSDK = new HederaNFTSDK(myAccountId, myPrivateKey);
 
   console.log(tokenId);
 })();
+
+// TODO: function fetchForTesting needs to be deleted after we agree that our testing flow is correct
+export const fetchForTesting = async () => {
+  const API_URL = 'https://testnet.mirrornode.hedera.com/api/v1/accounts';
+  const response = await axios.get(API_URL);
+  return response;
+};

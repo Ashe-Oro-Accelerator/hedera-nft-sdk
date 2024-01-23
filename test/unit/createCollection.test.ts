@@ -8,6 +8,11 @@ jest.mock('@hashgraph/sdk', () => {
     Client: {
       forTestnet: jest.fn().mockImplementation(() => ({
         setOperator: jest.fn(),
+        getOperator: jest.fn().mockResolvedValue({
+          accountId: {
+            toString: jest.fn().mockReturnValue('1.2.1234'),
+          },
+        }),
         _maxExecutionTime: jest.fn(),
         setMaxExecutionTime: jest.fn(),
         _setNetworkFromName: jest.fn(),
@@ -37,13 +42,11 @@ jest.mock('@hashgraph/sdk', () => {
       setCustomFees: jest.fn().mockReturnThis(),
       freezeWith: jest.fn().mockReturnThis(),
       sign: jest.fn().mockResolvedValue({
-        sign: jest.fn().mockResolvedValue({
-          execute: jest.fn().mockResolvedValue({
-            getReceipt: jest.fn().mockResolvedValue({
-              tokenId: {
-                toString: jest.fn().mockReturnValue('1.2.1234'),
-              },
-            }),
+        execute: jest.fn().mockResolvedValue({
+          getReceipt: jest.fn().mockResolvedValue({
+            tokenId: {
+              toString: jest.fn().mockReturnValue('1.2.1234'),
+            },
           }),
         }),
       }),
@@ -59,44 +62,62 @@ describe('createCollectionFunction', () => {
     const client = Client.forTestnet();
     const collectionName = 'test';
     const collectionSymbol = 'test2';
-    const keys = {
-      admin: PrivateKey.fromString(myPrivateKey),
-      supply: PrivateKey.fromString(myPrivateKey),
-    };
-    const treasuryAccount = '0.0.4321';
 
     const tokenId = await createCollectionFunction({
       client,
       myPrivateKey,
       collectionName,
       collectionSymbol,
-      keys,
-      treasuryAccount,
     });
 
     expect(tokenId).toEqual('1.2.1234');
   });
 
-  it('should throw an error if myPrivateKey is not provided', async () => {
+  it('should throw and error when only treasuryAccount is passed', async () => {
     const client = Client.forTestnet();
     const collectionName = 'test';
     const collectionSymbol = 'test2';
-    const keys = {
-      admin: PrivateKey.fromString(''),
-      supply: PrivateKey.fromString(''),
-    };
-    const treasuryAccount = '0.0.4321';
 
     await expect(
       createCollectionFunction({
         client,
-        myPrivateKey: '',
+        myPrivateKey,
         collectionName,
         collectionSymbol,
-        keys,
-        treasuryAccount,
+        treasuryAccount: '0.0.4321',
       })
-    ).rejects.toThrow(errors.myPrivateKeyRequired);
+    ).rejects.toThrow(errors.treasuryAccountPrivateKeySignRequired);
+  });
+
+  it('should throw and error when only treasuryAccountPrivateKey is passed', async () => {
+    const client = Client.forTestnet();
+    const collectionName = 'test';
+    const collectionSymbol = 'test2';
+
+    await expect(
+      createCollectionFunction({
+        client,
+        myPrivateKey,
+        collectionName,
+        collectionSymbol,
+        treasuryAccountPrivateKey: '0.0.4321',
+      })
+    ).rejects.toThrow(errors.treasuryAccountPrivateKeySignRequired);
+  });
+
+  it('should create collection when treasuryAccount and treasuryAccountPrivateKey are passed', async () => {
+    const client = Client.forTestnet();
+    const collectionName = 'test';
+    const collectionSymbol = 'test2';
+
+    const tokenId = await createCollectionFunction({
+      client,
+      myPrivateKey,
+      collectionName,
+      collectionSymbol,
+    });
+
+    expect(tokenId).toEqual('1.2.1234');
   });
 
   it('should throw an error if collectionName is not provided', async () => {
@@ -118,5 +139,25 @@ describe('createCollectionFunction', () => {
         treasuryAccount,
       })
     ).rejects.toThrow(errors.collectionNameRequired);
+  });
+
+  it('should throw an error if collectionSymbol is not provided', async () => {
+    const client = Client.forTestnet();
+    const keys = {
+      admin: PrivateKey.fromString(myPrivateKey),
+      supply: PrivateKey.fromString(myPrivateKey),
+    };
+    const treasuryAccount = '0.0.4321';
+
+    await expect(
+      createCollectionFunction({
+        client,
+        myPrivateKey,
+        collectionName: 'abc',
+        collectionSymbol: '',
+        keys,
+        treasuryAccount,
+      })
+    ).rejects.toThrow(errors.collectionSymbolRequired);
   });
 });

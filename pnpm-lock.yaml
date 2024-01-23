@@ -8,9 +8,9 @@ dependencies:
   '@hashgraph/sdk':
     specifier: ^2.40.0
     version: 2.40.0
-  dotenv:
-    specifier: ^16.3.2
-    version: 16.3.2
+  axios:
+    specifier: ^1.6.5
+    version: 1.6.5
 
 devDependencies:
   '@size-limit/preset-small-lib':
@@ -31,6 +31,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.19.0
     version: 6.19.0(eslint@8.56.0)(typescript@5.3.3)
+  dotenv:
+    specifier: ^16.3.2
+    version: 16.3.2
   dts-cli:
     specifier: ^2.0.4
     version: 2.0.4(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(@types/node@20.11.5)
@@ -40,12 +43,21 @@ devDependencies:
   husky:
     specifier: ^8.0.3
     version: 8.0.3
+  jest:
+    specifier: ^29.7.0
+    version: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.2)
   prettier:
     specifier: ^3.2.4
     version: 3.2.4
   size-limit:
     specifier: ^11.0.2
     version: 11.0.2
+  ts-jest:
+    specifier: ^29.1.1
+    version: 29.1.1(@babel/core@7.23.7)(babel-jest@29.7.0)(jest@29.7.0)(typescript@5.3.3)
+  ts-node:
+    specifier: ^10.9.2
+    version: 10.9.2(@types/node@20.11.5)(typescript@5.3.3)
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
@@ -3712,7 +3724,7 @@ packages:
   /dotenv@16.3.2:
     resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
     engines: {node: '>=12'}
-    dev: false
+    dev: true
 
   /dts-cli@2.0.4(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(@types/node@20.11.5):
     resolution: {integrity: sha512-5UQANG6APcPN4O9QtTmzH69jCFOac8G3rScD6sC67D+g5irUox+5s6HTmj/CKg0wu8N5KlZMSou+NyDeL8Zveg==}
