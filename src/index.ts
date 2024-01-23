@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { csvToJson } from './csvToJson';
+import { CSV_FILE_PATH } from './utils/const';
 
 export const sum = (a: number, b: number) => {
   if ('development' === process.env.NODE_ENV) {
@@ -13,3 +15,11 @@ export const fetchForTesting = async () => {
   const response = await axios.get(API_URL);
   return response;
 };
+
+csvToJson(CSV_FILE_PATH)
+  .then((targetDirectory) => {
+    console.log(`JSON files have been saved in directory: ${targetDirectory}`);
+  })
+  .catch((errors) => {
+    console.error('An error occurred:', errors);
+  });

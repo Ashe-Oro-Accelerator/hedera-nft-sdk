@@ -1,3 +1,1 @@
-const a = 2;
-
-console.log(a);
+export const CSV_FILE_PATH = './metadata-example-attributes-and-properties.csv';
