@@ -8,6 +8,9 @@ dependencies:
   '@hashgraph/sdk':
     specifier: ^2.40.0
     version: 2.40.0
+  dotenv:
+    specifier: ^16.3.2
+    version: 16.3.2
 
 devDependencies:
   '@size-limit/preset-small-lib':
@@ -3705,6 +3708,11 @@ packages:
     dependencies:
       webidl-conversions: 7.0.0
     dev: true
+
+  /dotenv@16.3.2:
+    resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /dts-cli@2.0.4(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(@types/node@20.11.5):
     resolution: {integrity: sha512-5UQANG6APcPN4O9QtTmzH69jCFOac8G3rScD6sC67D+g5irUox+5s6HTmj/CKg0wu8N5KlZMSou+NyDeL8Zveg==}

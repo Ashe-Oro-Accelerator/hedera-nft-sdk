@@ -17,8 +17,9 @@ export class HederaNFTSDK {
   createCollection(
     collectionName: string,
     collectionSymbol: string,
-    treasuryAccount: string,
-    keys: CreateCollectionKeys,
+    treasuryAccountPrivateKey?: string,
+    treasuryAccount?: string,
+    keys?: CreateCollectionKeys,
     maxSupply?: number
   ) {
     return createCollectionFunction({
@@ -28,6 +29,7 @@ export class HederaNFTSDK {
       keys: keys,
       myPrivateKey: this.privateKey,
       treasuryAccount: treasuryAccount,
+      treasuryAccountPrivateKey: treasuryAccountPrivateKey,
       maxSupply: maxSupply || undefined,
     });
   }
