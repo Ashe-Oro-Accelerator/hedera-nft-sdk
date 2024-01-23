@@ -18,17 +18,10 @@ export const createCollectionFunction = async ({
   treasuryAccountPrivateKey,
   maxSupply,
   customFees,
-}: CreateCollectionType): Promise<string | undefined> => {
+}: CreateCollectionType): Promise<string> => {
   if (!client) throw new Error(errors.clientRequired);
   if (!collectionName) throw new Error(errors.collectionNameRequired);
   if (!collectionSymbol) throw new Error(errors.collectionSymbolRequired);
-
-  const treasuryAccountId = treasuryAccount
-    ? AccountId.fromString(treasuryAccount)
-    : client.getOperator()!.accountId;
-  const treasuryAccountPrivateKeyId = treasuryAccountPrivateKey
-    ? PrivateKey.fromString(treasuryAccountPrivateKey)
-    : PrivateKey.fromString(myPrivateKey);
 
   if (
     (treasuryAccount && !treasuryAccountPrivateKey) ||
@@ -36,6 +29,13 @@ export const createCollectionFunction = async ({
   ) {
     throw new Error(errors.treasuryAccountPrivateKeySignRequired);
   }
+
+  const treasuryAccountId = treasuryAccount
+    ? AccountId.fromString(treasuryAccount)
+    : client.getOperator()!.accountId;
+  const treasuryAccountPrivateKeyId = treasuryAccountPrivateKey
+    ? PrivateKey.fromString(treasuryAccountPrivateKey)
+    : PrivateKey.fromString(myPrivateKey);
 
   let transaction = new TokenCreateTransaction()
     .setTokenName(collectionName)
@@ -89,5 +89,9 @@ export const createCollectionFunction = async ({
 
   const receipt = await txResponse.getReceipt(client);
 
-  return receipt.tokenId?.toString() || undefined;
+  if (!receipt.tokenId) {
+    throw new Error(errors.collectionNotCreated);
+  }
+
+  return receipt.tokenId.toString();
 };

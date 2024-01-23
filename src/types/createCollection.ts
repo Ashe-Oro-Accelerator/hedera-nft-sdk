@@ -1,7 +1,7 @@
-import { Client, CustomFee, Key } from '@hashgraph/sdk';
+import { Client, CustomFee, Key, PrivateKey } from '@hashgraph/sdk';
 
 export type CreateCollectionKeys = {
-  admin?: Key;
+  admin?: PrivateKey;
   KYC?: Key;
   freeze?: Key;
   wipe?: Key;
