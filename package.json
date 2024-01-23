@@ -16,7 +16,7 @@
     "prepare": "dts build",
     "size": "size-limit",
     "start": "dts watch",
-    "test": "dts test",
+    "test": "dts test --testPathIgnorePatterns=\"<rootDir>/test/e2e/\"",
     "test:e2e": "dts test test/e2e --verbose"
   },
   "prettier": {
@@ -57,6 +57,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "axios": "^1.6.5"
+    "axios": "^1.6.5",
+    "dotenv": "^16.3.2"
   }
 }
