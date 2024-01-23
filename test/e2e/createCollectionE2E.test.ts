@@ -1,5 +1,5 @@
 import { PrivateKey, TokenId, TokenInfoQuery } from "@hashgraph/sdk";
-import { nftSDK } from "../__mocks__/consts";
+import { nftSDK, secondAccountId, secondPrivateKey } from "../__mocks__/consts";
 
 afterAll(async () => {
   nftSDK.client.close();
