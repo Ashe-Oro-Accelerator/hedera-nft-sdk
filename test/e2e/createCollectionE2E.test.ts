@@ -1,8 +1,9 @@
-import { PrivateKey, TokenId, TokenInfoQuery } from '@hashgraph/sdk';
+import { PrivateKey } from '@hashgraph/sdk';
 import { nftSDK, secondAccountId, secondPrivateKey } from './e2eConsts';
 import { beforeEach } from 'node:test';
 import { HederaNFTSDK } from '../../src/HederaNFTSDK';
 import { myAccountId, myPrivateKey } from '../__mocks__/consts';
+import { getTokenInfo } from '../../src/utils/hedera/utils';
 
 beforeEach(async () => {
   new HederaNFTSDK(myAccountId, myPrivateKey);
@@ -25,7 +26,7 @@ describe('createCollectionFunction e2e', () => {
       admin: adminKey,
     });
 
-    const tokenInfo = await getTokenInfo(tokenId);
+    const tokenInfo = await getTokenInfo(tokenId, nftSDK.client);
 
     expect(tokenId).toBeDefined();
     expect(tokenInfo.adminKey?.toString()).toEqual(adminKey.publicKey.toStringDer());
@@ -39,15 +40,9 @@ describe('createCollectionFunction e2e', () => {
       secondAccountId
     );
 
-    const tokenInfo = await getTokenInfo(tokenId);
+    const tokenInfo = await getTokenInfo(tokenId, nftSDK.client);
 
     expect(tokenId).toBeDefined();
     expect(tokenInfo.treasuryAccountId?.toString()).toEqual(secondAccountId);
   });
 });
-
-async function getTokenInfo(tokenId: string) {
-  const query = new TokenInfoQuery().setTokenId(TokenId.fromString(tokenId));
-
-  return await query.execute(nftSDK.client);
-}
