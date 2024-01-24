@@ -74,7 +74,7 @@ describe('createCollectionFunction', () => {
     expect(tokenId).toEqual('1.2.1234');
   });
 
-  it('should throw and error when only treasuryAccount is passed', async () => {
+  it('should throw an error when only treasuryAccount is passed', async () => {
     const client = Client.forTestnet();
     const collectionName = 'test';
     const collectionSymbol = 'test2';
@@ -90,7 +90,7 @@ describe('createCollectionFunction', () => {
     ).rejects.toThrow(errors.treasuryAccountPrivateKeySignRequired);
   });
 
-  it('should throw and error when only treasuryAccountPrivateKey is passed', async () => {
+  it('should throw an error when only treasuryAccountPrivateKey is passed', async () => {
     const client = Client.forTestnet();
     const collectionName = 'test';
     const collectionSymbol = 'test2';

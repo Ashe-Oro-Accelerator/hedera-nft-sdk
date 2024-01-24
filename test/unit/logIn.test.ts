@@ -2,6 +2,7 @@ import { logIn } from '../../src/functions/logIn';
 import { Client } from '@hashgraph/sdk';
 import { myAccountId, myPrivateKey } from '../__mocks__/consts';
 import errors from '../../src/dictionary/errors.json';
+
 jest.mock('@hashgraph/sdk', () => {
   return {
     Client: {

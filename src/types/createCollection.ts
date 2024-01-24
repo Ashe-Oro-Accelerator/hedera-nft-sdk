@@ -1,6 +1,6 @@
 import { Client, CustomFee, Key, PrivateKey } from '@hashgraph/sdk';
 
-export type CreateCollectionKeys = {
+export type CreateCollectionKeysType = {
   admin?: PrivateKey;
   KYC?: Key;
   freeze?: Key;
@@ -15,7 +15,7 @@ export type CreateCollectionType = {
   myPrivateKey: string;
   collectionName: string;
   collectionSymbol: string;
-  keys?: CreateCollectionKeys;
+  keys?: CreateCollectionKeysType;
   treasuryAccount?: string;
   treasuryAccountPrivateKey?: string;
   maxSupply?: number;
