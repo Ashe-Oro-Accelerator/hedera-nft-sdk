@@ -1,5 +1,5 @@
 import { PrivateKey, TokenId, TokenInfoQuery } from "@hashgraph/sdk";
-import { nftSDK, secondAccountId, secondPrivateKey } from "../__mocks__/consts";
+import { nftSDK, secondAccountId, secondPrivateKey } from "./e2eConsts";
 
 afterAll(async () => {
   nftSDK.client.close();
@@ -23,7 +23,6 @@ describe('createCollectionFunction e2e', () => {
   });
 
   it('creates a collection with different treasury account', async () => {
-    const adminKey = PrivateKey.generateED25519();
     const tokenId = await nftSDK.createCollection('test', 'test2', secondPrivateKey, secondAccountId);
 
     const tokenInfo = await getTokenInfo(tokenId);

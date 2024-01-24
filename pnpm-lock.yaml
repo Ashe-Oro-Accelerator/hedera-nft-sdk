@@ -34,9 +34,6 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.19.0
     version: 6.19.0(eslint@8.56.0)(typescript@5.3.3)
-  dotenv:
-    specifier: ^16.3.2
-    version: 16.3.2
   dts-cli:
     specifier: ^2.0.4
     version: 2.0.4(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(@types/node@20.11.5)
@@ -3722,11 +3719,6 @@ packages:
     deprecated: Use your platform's native DOMException instead
     dependencies:
       webidl-conversions: 7.0.0
-    dev: true
-
-  /dotenv@16.3.2:
-    resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
-    engines: {node: '>=12'}
     dev: true
 
   /dotenv@16.3.2:
