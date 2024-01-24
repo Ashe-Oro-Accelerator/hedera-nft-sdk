@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { csvToJson } from './csvToJson';
-import { CSV_FILE_PATH } from './utils/const';
+import { CSV_FILE_PATH } from './utils/constants/csvFilePath';
 
 export const sum = (a: number, b: number) => {
   if ('development' === process.env.NODE_ENV) {

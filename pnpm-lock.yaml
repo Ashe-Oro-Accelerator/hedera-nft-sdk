@@ -28,6 +28,9 @@ devDependencies:
   '@types/jest':
     specifier: ^29.5.11
     version: 29.5.11
+  '@types/lodash':
+    specifier: ^4.14.202
+    version: 4.14.202
   '@types/node':
     specifier: ^20.11.5
     version: 20.11.5
@@ -49,6 +52,9 @@ devDependencies:
   jest:
     specifier: ^29.7.0
     version: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.2)
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   prettier:
     specifier: ^3.2.4
     version: 3.2.4
@@ -2191,6 +2197,10 @@ packages:
     resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
     dependencies:
       '@types/node': 20.11.5
+    dev: true
+
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
     dev: true
 
   /@types/minimatch@5.1.2:
