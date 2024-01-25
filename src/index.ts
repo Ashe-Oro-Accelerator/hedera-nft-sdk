@@ -9,7 +9,7 @@ const nftSDK = new HederaNFTSDK(myAccountId, myPrivateKey);
 
 (async () => {
   // const tokenId = await nftSDK.createCollection('test', 'test2');
-  const transactionStatus = await nftSDK.mintUniqueMetadata(
+  const transactionStatus = await nftSDK.mintSharedMetadata(
     '0.0.7693793',
     8,
     5,

@@ -35,7 +35,7 @@ export class HederaNFTSDK {
     });
   }
 
-  mintUniqueMetadata(
+  mintSharedMetadata(
     tokenId: string,
     amount: number,
     buffer: number = 5,
