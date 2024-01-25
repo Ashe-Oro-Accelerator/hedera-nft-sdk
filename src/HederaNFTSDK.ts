@@ -1,5 +1,5 @@
 import { Client } from '@hashgraph/sdk';
-import { CreateCollectionKeys } from './types/createCollection';
+import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
 import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
@@ -21,18 +21,18 @@ export class HederaNFTSDK {
     collectionSymbol: string,
     treasuryAccountPrivateKey?: string,
     treasuryAccount?: string,
-    keys?: CreateCollectionKeys,
+    keys?: CreateCollectionKeysType,
     maxSupply?: number
   ) {
     return createCollectionFunction({
       client: this.client,
-      collectionName: collectionName,
-      collectionSymbol: collectionSymbol,
-      keys: keys,
+      collectionName,
+      collectionSymbol,
+      keys,
       myPrivateKey: this.privateKey,
-      treasuryAccount: treasuryAccount,
-      treasuryAccountPrivateKey: treasuryAccountPrivateKey,
-      maxSupply: maxSupply || undefined,
+      treasuryAccount,
+      treasuryAccountPrivateKey,
+      maxSupply,
     });
   }
 

@@ -11,5 +11,6 @@
   "tokenIdRequired": "tokenId is required",
   "minAmount": "Amount needs to be greater than 0",
   "metadataRequired": "metadata is required",
-  "supplyKeyRequired": "supplyKey is required"
+  "supplyKeyRequired": "supplyKey is required",
+  "collectionNotCreated": "Something went wrong while creating the collection"
 }
