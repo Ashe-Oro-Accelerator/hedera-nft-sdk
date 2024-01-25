@@ -24,6 +24,7 @@ jest.mock('@hashgraph/sdk', () => {
     },
     PrivateKey: {
       fromString: jest.fn().mockReturnThis(),
+      generateED25519: jest.fn().mockReturnThis(),
     },
     TokenCreateTransaction: jest.fn(() => ({
       setTokenName: jest.fn().mockReturnThis(),
@@ -73,7 +74,7 @@ describe('createCollectionFunction', () => {
     expect(tokenId).toEqual('1.2.1234');
   });
 
-  it('should throw and error when only treasuryAccount is passed', async () => {
+  it('should throw an error when only treasuryAccount is passed', async () => {
     const client = Client.forTestnet();
     const collectionName = 'test';
     const collectionSymbol = 'test2';
@@ -89,7 +90,7 @@ describe('createCollectionFunction', () => {
     ).rejects.toThrow(errors.treasuryAccountPrivateKeySignRequired);
   });
 
-  it('should throw and error when only treasuryAccountPrivateKey is passed', async () => {
+  it('should throw an error when only treasuryAccountPrivateKey is passed', async () => {
     const client = Client.forTestnet();
     const collectionName = 'test';
     const collectionSymbol = 'test2';
@@ -159,5 +160,25 @@ describe('createCollectionFunction', () => {
         treasuryAccount,
       })
     ).rejects.toThrow(errors.collectionSymbolRequired);
+  });
+
+  it('should create a collection with keys', async () => {
+    const client = Client.forTestnet();
+    const collectionName = 'test';
+    const collectionSymbol = 'test2';
+    const keys = {
+      admin: PrivateKey.generateED25519(),
+      supply: PrivateKey.fromString(myPrivateKey),
+    };
+
+    const tokenId = await createCollectionFunction({
+      client,
+      myPrivateKey,
+      collectionName,
+      collectionSymbol,
+      keys,
+    });
+
+    expect(tokenId).toEqual('1.2.1234');
   });
 });
