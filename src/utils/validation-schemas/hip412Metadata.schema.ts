@@ -1,5 +1,5 @@
 import { isImageFile } from '../helpers/isImageFile';
-import type { BufferFile } from '../../../types/bufferFile';
+import type { BufferFile } from '../../types/bufferFile';
 import isString from 'lodash/isString';
 import omit from 'lodash/omit';
 import { type ZodTypeAny, z } from 'zod';
