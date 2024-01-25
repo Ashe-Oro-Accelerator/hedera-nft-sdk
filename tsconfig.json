@@ -3,7 +3,6 @@
   "include": ["src"],
   "compilerOptions": {
     "resolveJsonModule": true,
-    "moduleResolution": "node",
     "rootDir": "src",
     "outDir": "dist",
     "module": "esnext",

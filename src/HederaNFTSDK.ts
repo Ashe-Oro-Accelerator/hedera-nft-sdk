@@ -2,6 +2,7 @@ import { Client } from '@hashgraph/sdk';
 import { CreateCollectionKeys } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
+import { mintUniqueMetadataFunction } from './functions/mintUniqueMetadataFunction';
 
 export class HederaNFTSDK {
   accountId: string;
@@ -31,6 +32,23 @@ export class HederaNFTSDK {
       treasuryAccount: treasuryAccount,
       treasuryAccountPrivateKey: treasuryAccountPrivateKey,
       maxSupply: maxSupply || undefined,
+    });
+  }
+
+  mintUniqueMetadata(
+    tokenId: string,
+    amount: number,
+    buffer: number = 5,
+    metaData: string,
+    supplyKey: string
+  ) {
+    return mintUniqueMetadataFunction({
+      client: this.client,
+      tokenId,
+      amount,
+      buffer,
+      metaData,
+      supplyKey,
     });
   }
 }

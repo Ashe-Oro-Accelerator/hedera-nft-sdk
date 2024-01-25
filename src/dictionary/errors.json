@@ -4,5 +4,12 @@
   "collectionNameRequired": "collectionName is required",
   "collectionSymbolRequired": "collectionSymbol is required",
   "myAccountIdRequired": "myAccountId is required",
-  "treasuryAccountPrivateKeySignRequired": "If you want to use treasuryAccount to sign, you need to pass the treasuryAccountPrivateKey also"
+  "treasuryAccountPrivateKeySignRequired": "If you want to use treasuryAccount to sign, you need to pass the treasuryAccountPrivateKey also",
+  "mintingError": "There was an error while minting the NFT. Successfully minted: ",
+  "maxBuffer": "Max Buffer exceeded. Use buffer smaller than 10",
+  "minBuffer": "Min Buffer exceeded. Use buffer greater than 0",
+  "tokenIdRequired": "tokenId is required",
+  "minAmount": "Amount needs to be greater than 0",
+  "metadataRequired": "metadata is required",
+  "supplyKeyRequired": "supplyKey is required"
 }
