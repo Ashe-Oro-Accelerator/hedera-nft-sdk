@@ -16,7 +16,7 @@
     "prepare": "dts build",
     "size": "size-limit",
     "start": "dts watch",
-    "test": "dts test",
+    "test": "dts test --testPathIgnorePatterns=\"<rootDir>/test/e2e/\"",
     "test:e2e": "dts test test/e2e --verbose"
   },
   "prettier": {
@@ -26,7 +26,7 @@
     "trailingComma": "es5"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=20"
   },
   "size-limit": [
     {
@@ -65,6 +65,8 @@
     "csv-parser": "^3.0.0",
     "file-type": "^19.0.0",
     "fs-extra": "^11.2.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "dotenv": "^16.3.2",
+    "@hashgraph/sdk": "^2.40.0"
   }
 }
