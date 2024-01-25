@@ -2,7 +2,7 @@ import { Client } from '@hashgraph/sdk';
 import { CreateCollectionKeys } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
-import { mintUniqueMetadataFunction } from './functions/mintUniqueMetadataFunction';
+import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
 
 export class HederaNFTSDK {
   accountId: string;
@@ -42,7 +42,7 @@ export class HederaNFTSDK {
     metaData: string,
     supplyKey: string
   ) {
-    return mintUniqueMetadataFunction({
+    return mintSharedMetadataFunction({
       client: this.client,
       tokenId,
       amount,

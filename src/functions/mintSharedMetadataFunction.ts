@@ -2,7 +2,7 @@ import { MintTokenType } from '../types/mintToken';
 import { tokenMinter } from './tokenMinter';
 import errors from '../dictionary/errors.json';
 
-export const mintUniqueMetadataFunction = async ({
+export const mintSharedMetadataFunction = async ({
   client,
   tokenId,
   amount,

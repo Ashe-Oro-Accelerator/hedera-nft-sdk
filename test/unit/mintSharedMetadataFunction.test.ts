@@ -1,4 +1,4 @@
-import { mintUniqueMetadataFunction } from '../../src/functions/mintUniqueMetadataFunction';
+import { mintSharedMetadataFunction } from '../../src/functions/mintSharedMetadataFunction';
 import { tokenMinter } from '../../src/functions/tokenMinter';
 import { Client } from '@hashgraph/sdk';
 import errors from '../../src/dictionary/errors.json';
@@ -18,7 +18,7 @@ describe('mintUniqueMetadataFunction', () => {
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
-    const result = await mintUniqueMetadataFunction({
+    const result = await mintSharedMetadataFunction({
       client: mockClient,
       metaData: mockMetaData,
       tokenId: mockTokenId,
@@ -40,7 +40,7 @@ describe('mintUniqueMetadataFunction', () => {
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
-    const result = await mintUniqueMetadataFunction({
+    const result = await mintSharedMetadataFunction({
       client: mockClient,
       metaData: mockMetaData,
       tokenId: mockTokenId,
@@ -63,7 +63,7 @@ describe('mintUniqueMetadataFunction', () => {
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
     await expect(
-      mintUniqueMetadataFunction({
+      mintSharedMetadataFunction({
         client: mockClient,
         metaData: mockMetaData,
         tokenId: mockTokenId,
@@ -85,7 +85,7 @@ describe('mintUniqueMetadataFunction', () => {
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
     await expect(
-      mintUniqueMetadataFunction({
+      mintSharedMetadataFunction({
         client: mockClient,
         metaData: mockMetaData,
         tokenId: mockTokenId,
@@ -107,7 +107,7 @@ describe('mintUniqueMetadataFunction', () => {
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
     await expect(
-      mintUniqueMetadataFunction({
+      mintSharedMetadataFunction({
         client: mockClient,
         metaData: mockMetaData,
         tokenId: mockTokenId,
@@ -129,7 +129,7 @@ describe('mintUniqueMetadataFunction', () => {
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
     await expect(
-      mintUniqueMetadataFunction({
+      mintSharedMetadataFunction({
         client: mockClient,
         metaData: mockMetaData,
         tokenId: mockTokenId,
@@ -151,7 +151,7 @@ describe('mintUniqueMetadataFunction', () => {
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
     await expect(
-      mintUniqueMetadataFunction({
+      mintSharedMetadataFunction({
         client: mockClient,
         metaData: mockMetaData,
         tokenId: mockTokenId,
@@ -173,7 +173,7 @@ describe('mintUniqueMetadataFunction', () => {
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
     await expect(
-      mintUniqueMetadataFunction({
+      mintSharedMetadataFunction({
         client: mockClient,
         metaData: mockMetaData,
         tokenId: mockTokenId,
