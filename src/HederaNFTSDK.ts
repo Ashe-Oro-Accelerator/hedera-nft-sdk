@@ -3,6 +3,7 @@ import { CreateCollectionKeys } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
 import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
+import { mintUniqueMetadataFunction } from './functions/mintUniqueMetadataFunction';
 
 export class HederaNFTSDK {
   accountId: string;
@@ -35,7 +36,7 @@ export class HederaNFTSDK {
     });
   }
 
-  mintUniqueMetadata(
+  mintSharedMetadata(
     tokenId: string,
     amount: number,
     buffer: number = 5,
@@ -43,6 +44,23 @@ export class HederaNFTSDK {
     supplyKey: string
   ) {
     return mintSharedMetadataFunction({
+      client: this.client,
+      tokenId,
+      amount,
+      buffer,
+      metaData,
+      supplyKey,
+    });
+  }
+
+  mintUniqueMetadata(
+    tokenId: string,
+    amount: number,
+    buffer: number = 5,
+    metaData: string[],
+    supplyKey: string
+  ) {
+    return mintUniqueMetadataFunction({
       client: this.client,
       tokenId,
       amount,

@@ -13,11 +13,15 @@ const nftSDK = new HederaNFTSDK(myAccountId, myPrivateKey);
     '0.0.7693793',
     8,
     5,
-    'https://example.com/metadata',
+    [
+      'https://example.com/metadata1',
+      'https://example.com/metadata2',
+      'https://example.com/metadata3',
+    ],
     myPrivateKey
   );
 
-  console.log('Succesfull tokens: ' + transactionStatus);
+  console.log(transactionStatus);
 })();
 
 // TODO: function fetchForTesting needs to be deleted after we agree that our testing flow is correct
