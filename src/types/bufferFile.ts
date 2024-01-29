@@ -1,5 +1,4 @@
 import type { MimeType } from 'file-type';
-
 export interface BufferFile {
   name: string;
   mimeType: MimeType | 'text/json' | 'application/octet-stream';

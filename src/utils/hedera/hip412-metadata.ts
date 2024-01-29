@@ -2,7 +2,8 @@ import {
   noPropertiesErrorOptions,
   validateObjectWithSchema,
 } from '../helpers/validateObjectWithSchema';
-import type { BufferFile, Directory } from '../services/directoryReader';
+import type { BufferFile } from '../../types/bufferFile';
+import type { Directory } from '../../types/directory';
 import type { CSVRowAsObject } from '../../types/csv';
 import type { NFTMetadata } from '../../types/nftMetadata';
 import { Hip412MetadataCSVSchema } from '../validation-schemas/hip412Metadata.schema';

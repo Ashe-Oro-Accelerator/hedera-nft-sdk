@@ -3,6 +3,7 @@ import type { BufferFile } from '../../types/bufferFile';
 import isString from 'lodash/isString';
 import omit from 'lodash/omit';
 import { type ZodTypeAny, z } from 'zod';
+import { dictionary } from '../constants/dictionary';
 
 const AttributeSchema = z.object({
   trait_type: z.string(),
@@ -47,9 +48,7 @@ export const imageForHip412MetadataSchema = z
       ctx.addIssue({
         fatal: true,
         code: z.ZodIssueCode.custom,
-        // TODO: move message to dictionary
-        message:
-          'Image for NFT not found. Please make sure the image is included in the "data/media" directory.  The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
+        message: dictionary.csvToJson.imageForNftNotFound,
       });
       return false;
     }
@@ -58,8 +57,7 @@ export const imageForHip412MetadataSchema = z
       ctx.addIssue({
         fatal: true,
         code: z.ZodIssueCode.custom,
-        // TODO: move message to dictionary
-        message: 'Media file is not supported.',
+        message: dictionary.csvToJson.mediaFileNotSupported,
       });
       return false;
     }
