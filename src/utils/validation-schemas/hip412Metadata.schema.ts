@@ -75,6 +75,7 @@ export const Hip412MetadataSchema = z.object({
   ...Hip412MetadataCommonSchema,
   image: imageForHip412MetadataSchema,
 });
+
 export const Hip412MetadataCSVSchema = z.object({
   ...omit(Hip412MetadataCommonSchema, ['format']),
   image: imageForHip412MetadataSchema,
