@@ -27,7 +27,7 @@ export interface Attribute {
   max_value?: string | number;
 }
 
-interface Localization {
+export interface Localization {
   uri: string;
   default: string;
   locales: string[];
