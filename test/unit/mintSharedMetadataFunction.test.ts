@@ -7,14 +7,14 @@ jest.mock('../../src/functions/tokenMinter', () => ({
   tokenMinter: jest.fn(),
 }));
 
-describe('mintUniqueMetadataFunction', () => {
+describe('mintSharedMetadataFunction', () => {
   it('should return correct metadata', async () => {
     const mockClient = {} as Client;
     const mockMetaData = 'meta1';
     const mockTokenId = 'tokenId';
     const mockSupplyKey = 'supplyKey';
     const mockAmount = 10;
-    const mockBuffer = 2;
+    const mockBatchSize = 2;
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -24,19 +24,19 @@ describe('mintUniqueMetadataFunction', () => {
       tokenId: mockTokenId,
       supplyKey: mockSupplyKey,
       amount: mockAmount,
-      buffer: mockBuffer,
+      batchSize: mockBatchSize,
     });
 
     expect(result).toEqual(expect.arrayContaining([mockMetaData]));
   });
 
-  it('should handle amount less than buffer correctly', async () => {
+  it('should handle amount less than batchSize correctly', async () => {
     const mockClient = {} as Client;
     const mockMetaData = 'meta1';
     const mockTokenId = 'tokenId';
     const mockSupplyKey = 'supplyKey';
     const mockAmount = 1;
-    const mockBuffer = 2;
+    const mockBatchSize = 2;
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -46,19 +46,63 @@ describe('mintUniqueMetadataFunction', () => {
       tokenId: mockTokenId,
       supplyKey: mockSupplyKey,
       amount: mockAmount,
-      buffer: mockBuffer,
+      batchSize: mockBatchSize,
     });
 
     expect(result).toEqual(expect.arrayContaining([mockMetaData]));
   });
 
-  it('should handle error when buffer is lower than 0', async () => {
+  it('should handle batchSize of 1 correctly', async () => {
     const mockClient = {} as Client;
     const mockMetaData = 'meta1';
     const mockTokenId = 'tokenId';
     const mockSupplyKey = 'supplyKey';
     const mockAmount = 1;
-    const mockBuffer = 0;
+    const mockBatchSize = 1;
+
+    (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
+
+    const result = await mintSharedMetadataFunction({
+      client: mockClient,
+      metaData: mockMetaData,
+      tokenId: mockTokenId,
+      supplyKey: mockSupplyKey,
+      amount: mockAmount,
+      batchSize: mockBatchSize,
+    });
+
+    expect(result).toEqual(expect.arrayContaining([mockMetaData]));
+  });
+
+  it('should handle batchSize of 10 correctly', async () => {
+    const mockClient = {} as Client;
+    const mockMetaData = 'meta1';
+    const mockTokenId = 'tokenId';
+    const mockSupplyKey = 'supplyKey';
+    const mockAmount = 10;
+    const mockBatchSize = 10;
+
+    (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
+
+    const result = await mintSharedMetadataFunction({
+      client: mockClient,
+      metaData: mockMetaData,
+      tokenId: mockTokenId,
+      supplyKey: mockSupplyKey,
+      amount: mockAmount,
+      batchSize: mockBatchSize,
+    });
+
+    expect(result).toEqual(expect.arrayContaining([mockMetaData]));
+  });
+
+  it('should handle error when batchSize is lower than 0', async () => {
+    const mockClient = {} as Client;
+    const mockMetaData = 'meta1';
+    const mockTokenId = 'tokenId';
+    const mockSupplyKey = 'supplyKey';
+    const mockAmount = 1;
+    const mockBatchSize = 0;
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -69,18 +113,18 @@ describe('mintUniqueMetadataFunction', () => {
         tokenId: mockTokenId,
         supplyKey: mockSupplyKey,
         amount: mockAmount,
-        buffer: mockBuffer,
+        batchSize: mockBatchSize,
       })
-    ).rejects.toThrow(errors.minBuffer);
+    ).rejects.toThrow(errors.minBatchSize);
   });
 
-  it('should handle error when buffer is higher than 10', async () => {
+  it('should handle error when batchSize is higher than 10', async () => {
     const mockClient = {} as Client;
     const mockMetaData = 'meta1';
     const mockTokenId = 'tokenId';
     const mockSupplyKey = 'supplyKey';
     const mockAmount = 1;
-    const mockBuffer = 11;
+    const mockBatchSize = 11;
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -91,9 +135,9 @@ describe('mintUniqueMetadataFunction', () => {
         tokenId: mockTokenId,
         supplyKey: mockSupplyKey,
         amount: mockAmount,
-        buffer: mockBuffer,
+        batchSize: mockBatchSize,
       })
-    ).rejects.toThrow(errors.maxBuffer);
+    ).rejects.toThrow(errors.maxBatchSize);
   });
 
   it('should handle error when metaData is not passed', async () => {
@@ -102,7 +146,7 @@ describe('mintUniqueMetadataFunction', () => {
     const mockTokenId = 'tokenId';
     const mockSupplyKey = 'supplyKey';
     const mockAmount = 1;
-    const mockBuffer = 10;
+    const mockBatchSize = 10;
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -113,7 +157,7 @@ describe('mintUniqueMetadataFunction', () => {
         tokenId: mockTokenId,
         supplyKey: mockSupplyKey,
         amount: mockAmount,
-        buffer: mockBuffer,
+        batchSize: mockBatchSize,
       })
     ).rejects.toThrow(errors.metadataRequired);
   });
@@ -124,7 +168,7 @@ describe('mintUniqueMetadataFunction', () => {
     const mockTokenId = '';
     const mockSupplyKey = 'supplyKey';
     const mockAmount = 1;
-    const mockBuffer = 10;
+    const mockBatchSize = 10;
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -135,7 +179,7 @@ describe('mintUniqueMetadataFunction', () => {
         tokenId: mockTokenId,
         supplyKey: mockSupplyKey,
         amount: mockAmount,
-        buffer: mockBuffer,
+        batchSize: mockBatchSize,
       })
     ).rejects.toThrow(errors.tokenIdRequired);
   });
@@ -146,7 +190,7 @@ describe('mintUniqueMetadataFunction', () => {
     const mockTokenId = 'tokenId';
     const mockSupplyKey = 'supplyKey';
     const mockAmount = 0;
-    const mockBuffer = 10;
+    const mockBatchSize = 10;
 
     (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -157,7 +201,7 @@ describe('mintUniqueMetadataFunction', () => {
         tokenId: mockTokenId,
         supplyKey: mockSupplyKey,
         amount: mockAmount,
-        buffer: mockBuffer,
+        batchSize: mockBatchSize,
       })
     ).rejects.toThrow(errors.minAmount);
   });
