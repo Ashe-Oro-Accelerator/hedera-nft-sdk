@@ -12,5 +12,6 @@
   "minAmount": "Amount needs to be greater than 0",
   "metadataRequired": "metadata is required",
   "supplyKeyRequired": "supplyKey is required",
-  "collectionNotCreated": "Something went wrong while creating the collection"
+  "collectionNotCreated": "Something went wrong while creating the collection",
+  "pathRequired": "Path to CSV required"
 }

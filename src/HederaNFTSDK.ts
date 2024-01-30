@@ -57,7 +57,7 @@ export class HederaNFTSDK {
     tokenId: string,
     amount: number,
     buffer: number = 5,
-    metaData: string[],
+    pathToCSV: string,
     supplyKey: string
   ) {
     return mintUniqueMetadataFunction({
@@ -65,7 +65,7 @@ export class HederaNFTSDK {
       tokenId,
       amount,
       buffer,
-      metaData,
+      pathToCSV,
       supplyKey,
     });
   }
