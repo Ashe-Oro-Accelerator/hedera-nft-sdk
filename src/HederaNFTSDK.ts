@@ -38,17 +38,17 @@ export class HederaNFTSDK {
   mintSharedMetadata(
     tokenId: string,
     amount: number,
-    buffer: number = 5,
+    batchSize: number = 5,
     metaData: string,
-    supplyKey: string
+    supplyKey?: string
   ) {
     return mintSharedMetadataFunction({
       client: this.client,
       tokenId,
       amount,
-      buffer,
+      batchSize,
       metaData,
-      supplyKey,
+      supplyKey: supplyKey || this.privateKey,
     });
   }
 }

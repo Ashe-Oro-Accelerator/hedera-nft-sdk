@@ -6,24 +6,24 @@ export const mintSharedMetadataFunction = async ({
   client,
   tokenId,
   amount,
-  buffer,
+  batchSize,
   metaData,
   supplyKey,
 }: MintTokenType) => {
-  if (buffer > 10) throw new Error(errors.maxBuffer);
-  if (buffer < 1) throw new Error(errors.minBuffer);
+  if (batchSize > 10) throw new Error(errors.maxBatchSize);
+  if (batchSize < 1) throw new Error(errors.minBatchSize);
   if (!tokenId) throw new Error(errors.tokenIdRequired);
   if (!amount) throw new Error(errors.minAmount);
   if (!metaData) throw new Error(errors.metadataRequired);
-  if (!supplyKey) throw new Error(errors.supplyKeyRequired);
 
   const successMetadata = [];
-  const numberOfCalls = Math.ceil(amount / buffer);
+  // Example if amount = 8 and batchSize = 5. NumberOfCalls should be 2. So 8/5 = 1.6. Math.ceil(1.6) = 2. Because Math.ceil rounds up to the next largest integer.
+  const numberOfCalls = Math.ceil(amount / batchSize);
 
   try {
     for (let i = 0; i < numberOfCalls; i++) {
-      const optionsHelper = new Array(Math.min(buffer, amount)).fill(metaData);
-      amount -= buffer;
+      const optionsHelper = new Array(Math.min(batchSize, amount)).fill(metaData);
+      amount -= batchSize;
       await tokenMinter(optionsHelper, tokenId, supplyKey, client);
       successMetadata.push(optionsHelper);
     }

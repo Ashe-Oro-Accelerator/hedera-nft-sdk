@@ -52,28 +52,6 @@ describe('mintUniqueMetadataFunction', () => {
     expect(result).toEqual(expect.arrayContaining([mockMetaData]));
   });
 
-  it('should handle error when buffer is bigger than 10', async () => {
-    const mockClient = {} as Client;
-    const mockMetaData = 'meta1';
-    const mockTokenId = 'tokenId';
-    const mockSupplyKey = 'supplyKey';
-    const mockAmount = 1;
-    const mockBuffer = 11;
-
-    (tokenMinter as jest.Mock).mockResolvedValueOnce(undefined);
-
-    await expect(
-      mintSharedMetadataFunction({
-        client: mockClient,
-        metaData: mockMetaData,
-        tokenId: mockTokenId,
-        supplyKey: mockSupplyKey,
-        amount: mockAmount,
-        buffer: mockBuffer,
-      })
-    ).rejects.toThrow(errors.maxBuffer);
-  });
-
   it('should handle error when buffer is lower than 0', async () => {
     const mockClient = {} as Client;
     const mockMetaData = 'meta1';

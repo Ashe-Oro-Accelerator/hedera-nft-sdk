@@ -4,7 +4,7 @@ export type MintTokenType = {
   client: Client;
   tokenId: string;
   amount: number;
-  buffer: number;
+  batchSize: number;
   metaData: string;
   supplyKey: string;
 };
