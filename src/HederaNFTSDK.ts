@@ -2,6 +2,7 @@ import { Client } from '@hashgraph/sdk';
 import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
+import { createJsonMetadataFromCsv } from './functions/createJsonMetadataFromCsv';
 
 export class HederaNFTSDK {
   accountId: string;
@@ -31,6 +32,18 @@ export class HederaNFTSDK {
       treasuryAccount,
       treasuryAccountPrivateKey,
       maxSupply,
+    });
+  }
+
+  createJsonMetadataFromCsv(
+    jsonMetadataOutputFolderPath: string,
+    csvFilePath: string,
+    nftsLimit?: number
+  ) {
+    return createJsonMetadataFromCsv({
+      jsonMetadataOutputFolderPath,
+      csvFilePath,
+      nftsLimit,
     });
   }
 }

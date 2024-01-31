@@ -31,9 +31,8 @@ export const createJsonMetadataFromCsv = async ({
   const { objectsFromCsvRows, redundantCells } = CsvTransformer.metadataObjectsFromRows({
     csvRows: csvFile,
     path: csvFilePath,
-
-    headerAttributes: CSVFileReader.attributes,
-    headerProperties: CSVFileReader.properties,
+    headerAttributes: CSVFileReader.ATTRIBUTES,
+    headerProperties: CSVFileReader.PROPERTIES,
   });
 
   const csvValidationErrors: string[] = [];

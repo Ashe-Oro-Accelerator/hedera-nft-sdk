@@ -3,8 +3,13 @@ import { NFTS_LIMIT_ERROR } from './utils/constants/nftsLimitError';
 import { dictionary } from './utils/constants/dictionary';
 import type { CSVRow } from './types/csv';
 import csvParser from 'csv-parser';
+import { selectSeparator } from './utils/helpers/selectSeparator';
+
+const EXTRA_SECOND_HEADER_ROW_COUNT = 1;
 
 type CSVReaderErrorId = 'invalid-headers';
+
+type CurrentType = 'attributes' | 'properties' | null;
 
 export class CSVReaderError extends Error {
   id: CSVReaderErrorId;
@@ -16,9 +21,80 @@ export class CSVReaderError extends Error {
 }
 
 export class CSVFileReader {
-  static attributes = 'attributes' as const;
-  static properties = 'properties' as const;
+  static ATTRIBUTES = 'attributes' as const;
+  static PROPERTIES = 'properties' as const;
   static AMOUNT_OF_HEADERS = 2;
+
+  private static checkForErrorsAndLimit({
+    headersErrors,
+    limit,
+    currentRowCount,
+  }: {
+    headersErrors: string[];
+    limit?: number;
+    currentRowCount: number;
+  }): void {
+    if (headersErrors.length) {
+      throw new CSVReaderError(headersErrors[0], 'invalid-headers');
+    }
+
+    const effectiveLimit = Number(limit) + EXTRA_SECOND_HEADER_ROW_COUNT;
+    if (limit && currentRowCount >= effectiveLimit) {
+      throw new Error(NFTS_LIMIT_ERROR);
+    }
+  }
+
+  private static processHeader(
+    header: { header: string; index: number },
+    currentType: CurrentType,
+    propertyIndex: number,
+    attributesIndex: number,
+    refToErrorArray: string[]
+  ): {
+    result: string | null;
+    currentType: CurrentType;
+    propertyIndex: number;
+    attributesIndex: number;
+  } {
+    let result: string | null = null;
+
+    if (header.header === this.ATTRIBUTES) {
+      currentType = 'attributes';
+      attributesIndex++;
+    } else if (header.header === this.PROPERTIES) {
+      currentType = 'properties';
+      propertyIndex = 1;
+    } else if (!currentType) {
+      return { result: header.header, currentType, propertyIndex, attributesIndex };
+    }
+
+    if (
+      header.header !== '' &&
+      header.header !== this.ATTRIBUTES &&
+      header.header !== this.PROPERTIES
+    ) {
+      refToErrorArray.push(dictionary.csvToJson.errorInCellWithHeader(1, header.index + 1));
+    }
+
+    if (
+      (propertyIndex > 1 && header.header === this.PROPERTIES) ||
+      (attributesIndex > 1 && header.header === this.ATTRIBUTES)
+    ) {
+      refToErrorArray.push(dictionary.csvToJson.errorInCellWithHeader(1, header.index + 1));
+    }
+
+    if (currentType === 'properties') {
+      result = `${this.PROPERTIES}_${propertyIndex}`;
+      propertyIndex++;
+    }
+
+    if (currentType === 'attributes') {
+      result = `${this.ATTRIBUTES}_${attributesIndex}`;
+      attributesIndex++;
+    }
+
+    return { result, currentType, propertyIndex, attributesIndex };
+  }
 
   static async readCSVFile(
     fullPath: string,
@@ -26,18 +102,10 @@ export class CSVFileReader {
       limit?: number;
     }
   ): Promise<CSVRow[]> {
-    let separator = ',';
-
-    if (!!process.env?.CSV_SEPARATOR && process.env?.CSV_SEPARATOR === 'semicolon') {
-      separator = ';';
-    }
-
+    const separator = selectSeparator();
     const rows: CSVRow[] = [];
-
     const readStream = fs.createReadStream(fullPath);
-
     const headersErrors: string[] = [];
-    const extraSecondHeaderRow = 1;
 
     try {
       await new Promise((resolve, reject) => {
@@ -49,18 +117,17 @@ export class CSVFileReader {
             })
           )
           .on('data', (row: CSVRow) => {
-            if (headersErrors.length) {
-              reject(new CSVReaderError(headersErrors[0], 'invalid-headers'));
-            }
+            try {
+              this.checkForErrorsAndLimit({
+                headersErrors,
+                limit: config?.limit,
+                currentRowCount: rows.length,
+              });
 
-            if (
-              Number(config?.limit) + extraSecondHeaderRow &&
-              rows.length >= Number(config?.limit) + extraSecondHeaderRow
-            ) {
-              return reject(new Error(NFTS_LIMIT_ERROR));
+              rows.push(row);
+            } catch (e) {
+              return reject(e);
             }
-
-            rows.push(row);
           })
           .on('end', () => resolve(readStream.read()))
           .on('error', (e) => {
@@ -71,8 +138,6 @@ export class CSVFileReader {
       if (e instanceof CSVReaderError) {
         throw e;
       }
-
-      return rows;
     }
 
     return rows;
@@ -83,51 +148,19 @@ export class CSVFileReader {
   ): (header: { header: string; index: number }) => string | null {
     let propertyIndex = 0;
     let attributesIndex = 0;
-
-    let currentType: typeof this.attributes | typeof this.properties | null = null;
+    let currentType: CurrentType = null;
 
     return (header: { header: string; index: number }): string | null => {
-      let result: string | null = null;
+      const {
+        result,
+        currentType: updatedType,
+        propertyIndex: updatedPropertyIndex,
+        attributesIndex: updatedAttributesIndex,
+      } = this.processHeader(header, currentType, propertyIndex, attributesIndex, refToErrorArray);
 
-      if (header.header === this.attributes) {
-        currentType = 'attributes';
-        attributesIndex++;
-      }
-
-      if (header.header === this.properties) {
-        currentType = 'properties';
-        propertyIndex = 1;
-      }
-
-      if (!currentType) {
-        return header.header;
-      }
-
-      if (
-        currentType &&
-        header.header !== '' &&
-        header.header !== this.attributes &&
-        header.header !== this.properties
-      ) {
-        refToErrorArray.push(dictionary.csvToJson.errorInCellWithHeader(1, header.index + 1));
-      }
-
-      if (
-        (propertyIndex > 1 && header.header === this.properties) ||
-        (attributesIndex > 1 && header.header === this.attributes)
-      ) {
-        refToErrorArray.push(dictionary.csvToJson.errorInCellWithHeader(1, header.index + 1));
-      }
-
-      if (currentType === 'properties') {
-        result = `${this.properties}_${propertyIndex}`;
-        propertyIndex++;
-      }
-
-      if (currentType === 'attributes') {
-        result = `${this.attributes}_${attributesIndex}`;
-        attributesIndex++;
-      }
+      currentType = updatedType;
+      propertyIndex = updatedPropertyIndex;
+      attributesIndex = updatedAttributesIndex;
 
       return result;
     };
