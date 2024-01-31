@@ -1,4 +1,4 @@
-import { Client } from '@hashgraph/sdk';
+import { Client, PrivateKey } from '@hashgraph/sdk';
 import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
@@ -40,7 +40,7 @@ export class HederaNFTSDK {
     amount: number,
     batchSize: number = 5,
     metaData: string,
-    supplyKey?: string
+    supplyKey?: PrivateKey
   ) {
     return mintSharedMetadataFunction({
       client: this.client,
@@ -48,7 +48,7 @@ export class HederaNFTSDK {
       amount,
       batchSize,
       metaData,
-      supplyKey: supplyKey || this.privateKey,
+      supplyKey: supplyKey || PrivateKey.fromString(this.privateKey),
     });
   }
 }
