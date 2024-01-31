@@ -3,6 +3,7 @@ import { beforeEach } from 'node:test';
 import { HederaNFTSDK } from '../../src/HederaNFTSDK';
 import { myAccountId, myPrivateKey } from '../__mocks__/consts';
 import errors from '../../src/dictionary/errors.json';
+import { PrivateKey } from '@hashgraph/sdk';
 
 beforeEach(async () => {
   new HederaNFTSDK(myAccountId, myPrivateKey);
@@ -29,7 +30,7 @@ describe('mintSharedMetadata function e2e', () => {
       1,
       2,
       'www.youtube.com',
-      myPrivateKey
+      PrivateKey.fromString(myPrivateKey)
     );
 
     expect(tokenId).toBeDefined();
@@ -44,7 +45,7 @@ describe('mintSharedMetadata function e2e', () => {
       10,
       5,
       'www.youtube.com',
-      myPrivateKey
+      PrivateKey.fromString(myPrivateKey)
     );
 
     expect(tokenId).toBeDefined();
@@ -70,7 +71,7 @@ describe('mintSharedMetadata function e2e', () => {
       3,
       1,
       'www.youtube.com',
-      myPrivateKey
+      PrivateKey.fromString(myPrivateKey)
     );
 
     expect(tokenId).toBeDefined();
@@ -82,7 +83,13 @@ describe('mintSharedMetadata function e2e', () => {
     const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
 
     await expect(
-      nftSDK.mintSharedMetadata(tokenId, 11, 11, 'www.youtube.com', myPrivateKey)
+      nftSDK.mintSharedMetadata(
+        tokenId,
+        11,
+        11,
+        'www.youtube.com',
+        PrivateKey.fromString(myPrivateKey)
+      )
     ).rejects.toThrow(errors.maxBatchSize);
   });
 });

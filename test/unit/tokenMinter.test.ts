@@ -1,5 +1,6 @@
 import { tokenMinter } from '../../src/functions/tokenMinter';
-import { Client, Status } from '@hashgraph/sdk';
+import { Client, PrivateKey, Status } from '@hashgraph/sdk';
+import { myPrivateKey } from '../__mocks__/consts';
 
 jest.mock('@hashgraph/sdk', () => ({
   Client: jest.fn(),
@@ -30,7 +31,7 @@ describe('tokenMinter', () => {
     const mockClient = {} as Client;
     const mockMetaData = ['meta1'];
     const mockTokenId = 'tokenId';
-    const mockSupplyKey = 'supplyKey';
+    const mockSupplyKey = PrivateKey.fromString(myPrivateKey);
 
     const result = await tokenMinter(mockMetaData, mockTokenId, mockSupplyKey, mockClient);
 
