@@ -1,6 +1,7 @@
 import { MintTokenType } from '../types/mintToken';
 import { tokenMinter } from './tokenMinter';
 import errors from '../dictionary/errors.json';
+import { validateProps } from '../utils/validateProps';
 
 export const mintSharedMetadataFunction = async ({
   client,
@@ -10,11 +11,7 @@ export const mintSharedMetadataFunction = async ({
   metaData,
   supplyKey,
 }: MintTokenType) => {
-  if (batchSize > 10) throw new Error(errors.maxBatchSize);
-  if (batchSize < 1) throw new Error(errors.minBatchSize);
-  if (!tokenId) throw new Error(errors.tokenIdRequired);
-  if (!amount) throw new Error(errors.minAmount);
-  if (!metaData) throw new Error(errors.metadataRequired);
+  validateProps({ tokenId, amount, metaData, supplyKey, buffer: batchSize });
 
   const successMetadata = [];
   // Example if amount = 8 and batchSize = 5. NumberOfCalls should be 2. So 8/5 = 1.6. Math.ceil(1.6) = 2. Because Math.ceil rounds up to the next largest integer.
