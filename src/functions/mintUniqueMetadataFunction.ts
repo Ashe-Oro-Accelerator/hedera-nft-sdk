@@ -1,5 +1,4 @@
 import { MintUniqueTokenType } from '../types/mintToken';
-import { mintSharedMetadataFunction } from './mintSharedMetadataFunction';
 import errors from '../dictionary/errors.json';
 import * as fs from 'fs';
 import csv from 'csv-parser';
