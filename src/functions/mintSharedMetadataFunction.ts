@@ -19,14 +19,14 @@ export const mintSharedMetadataFunction = async ({
 
   try {
     for (let i = 0; i < numberOfCalls; i++) {
-      const optionsHelper = new Array(Math.min(batchSize, amount)).fill(metaData);
+      const metadataBatchArray = new Array(Math.min(batchSize, amount)).fill(metaData);
       amount -= batchSize;
-      await tokenMinter(optionsHelper, tokenId, supplyKey, client);
-      successMetadata.push(optionsHelper);
+      await tokenMinter(metadataBatchArray, tokenId, supplyKey, client);
+      successMetadata.push(metadataBatchArray);
     }
 
-    return successMetadata.flat(1);
+    return successMetadata.flat();
   } catch (error) {
-    throw new Error(`${errors.mintingError} ${successMetadata.flat(1).join(' ')}`);
+    throw new Error(`${errors.mintingError} ${successMetadata.flat().join(' ')}`);
   }
 };

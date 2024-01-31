@@ -1,4 +1,4 @@
-import { Client } from '@hashgraph/sdk';
+import { Client, PrivateKey } from '@hashgraph/sdk';
 
 export type MintTokenType = {
   client: Client;
@@ -6,5 +6,5 @@ export type MintTokenType = {
   amount: number;
   batchSize: number;
   metaData: string;
-  supplyKey: string;
+  supplyKey: PrivateKey;
 };

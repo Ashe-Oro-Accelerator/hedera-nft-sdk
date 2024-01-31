@@ -1,4 +1,5 @@
 import errors from '../dictionary/errors.json';
+import { PrivateKey } from '@hashgraph/sdk';
 
 export const validateProps = ({
   buffer = null,
@@ -11,7 +12,7 @@ export const validateProps = ({
   tokenId?: string | null;
   amount?: number | null;
   metaData?: string | null;
-  supplyKey?: string | null;
+  supplyKey?: PrivateKey | null;
 }) => {
   if (buffer !== null && buffer > 10) throw new Error(errors.maxBatchSize);
   if (buffer !== null && buffer < 1) throw new Error(errors.minBatchSize);
