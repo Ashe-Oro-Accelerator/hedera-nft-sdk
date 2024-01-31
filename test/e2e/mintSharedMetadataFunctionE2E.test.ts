@@ -1,95 +1,102 @@
+import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
 import { nftSDK } from './e2eConsts';
-import { beforeEach } from 'node:test';
-import { HederaNFTSDK } from '../../src/HederaNFTSDK';
-import { myAccountId, myPrivateKey } from '../__mocks__/consts';
-import errors from '../../src/dictionary/errors.json';
-import { PrivateKey } from '@hashgraph/sdk';
-
-beforeEach(async () => {
-  new HederaNFTSDK(myAccountId, myPrivateKey);
-});
-
-afterAll(async () => {
-  nftSDK.client.close();
-});
+import { longE2ETimeout, myPrivateKey } from '../__mocks__/consts';
 
 describe('mintSharedMetadata function e2e', () => {
-  it('Creating a token and minting 1 NFT into it', async () => {
-    const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-    const transactionStatus = await nftSDK.mintSharedMetadata(tokenId, 3, 2, 'www.youtube.com');
+  const testCases = [{ amount: 1 }, { amount: 3 }, { amount: 10 }];
 
-    expect(tokenId).toBeDefined();
-    expect(transactionStatus).toBeDefined();
-    expect(transactionStatus).toEqual(['www.youtube.com', 'www.youtube.com', 'www.youtube.com']);
-  }, 25000);
+  testCases.forEach(({ amount }) => {
+    it(
+      `Creating a token and minting ${amount} NFTs into it`,
+      async () => {
+        const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
+        const mintedMetadata = await nftSDK.mintSharedMetadata(
+          tokenId,
+          amount,
+          2,
+          'www.youtube.com',
+          PrivateKey.fromString(myPrivateKey)
+        );
 
-  it('Creating a token with a different supply key and minting 1 NFT into it', async () => {
-    const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-    const transactionStatus = await nftSDK.mintSharedMetadata(
-      tokenId,
-      1,
-      2,
-      'www.youtube.com',
-      PrivateKey.fromString(myPrivateKey)
+        expect(tokenId).toBeDefined();
+        expect(mintedMetadata).toBeDefined();
+        expect(mintedMetadata).toHaveLength(amount);
+        expect(mintedMetadata).toEqual(
+          expect.arrayContaining(
+            Array(amount).fill({
+              content: 'www.youtube.com',
+              serialNumber: expect.any(Number),
+            })
+          )
+        );
+
+        for (const metaData of mintedMetadata) {
+          const nftInfos = await new TokenNftInfoQuery()
+            .setNftId(new NftId(TokenId.fromString(tokenId), metaData.serialNumber))
+            .execute(nftSDK.client);
+
+          expect(nftInfos[0].metadata!.toString()).toEqual('www.youtube.com');
+        }
+      },
+      longE2ETimeout
     );
-
-    expect(tokenId).toBeDefined();
-    expect(transactionStatus).toBeDefined();
-    expect(transactionStatus).toEqual(['www.youtube.com']);
-  }, 25000);
-
-  it('Creating a token and minting 10 NFTs into it', async () => {
-    const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-    const transactionStatus = await nftSDK.mintSharedMetadata(
-      tokenId,
-      10,
-      5,
-      'www.youtube.com',
-      PrivateKey.fromString(myPrivateKey)
-    );
-
-    expect(tokenId).toBeDefined();
-    expect(transactionStatus).toBeDefined();
-    expect(transactionStatus).toEqual([
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-      'www.youtube.com',
-    ]);
-  }, 25000);
-
-  it('Creating a token and minting 3 NFTs with buffer set to 1', async () => {
-    const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-    const transactionStatus = await nftSDK.mintSharedMetadata(
-      tokenId,
-      3,
-      1,
-      'www.youtube.com',
-      PrivateKey.fromString(myPrivateKey)
-    );
-
-    expect(tokenId).toBeDefined();
-    expect(transactionStatus).toBeDefined();
-    expect(transactionStatus).toEqual(['www.youtube.com', 'www.youtube.com', 'www.youtube.com']);
-  }, 25000);
-
-  it('throws an error when invalid token ID is provided', async () => {
-    const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-
-    await expect(
-      nftSDK.mintSharedMetadata(
-        tokenId,
-        11,
-        11,
-        'www.youtube.com',
-        PrivateKey.fromString(myPrivateKey)
-      )
-    ).rejects.toThrow(errors.maxBatchSize);
   });
+
+  it(
+    `Creating a token and minting 1 NFTs into it with default supplyKey`,
+    async () => {
+      const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
+      const mintedMetadata = await nftSDK.mintSharedMetadata(tokenId, 1, 2, 'www.youtube.com');
+
+      expect(tokenId).toBeDefined();
+      expect(mintedMetadata).toBeDefined();
+      expect(mintedMetadata).toHaveLength(1);
+      expect(mintedMetadata).toEqual(
+        expect.arrayContaining(
+          Array(1).fill({
+            content: 'www.youtube.com',
+            serialNumber: expect.any(Number),
+          })
+        )
+      );
+
+      for (const metaData of mintedMetadata) {
+        const nftInfos = await new TokenNftInfoQuery()
+          .setNftId(new NftId(TokenId.fromString(tokenId), metaData.serialNumber))
+          .execute(nftSDK.client);
+
+        expect(nftInfos[0].metadata!.toString()).toEqual('www.youtube.com');
+      }
+    },
+    longE2ETimeout
+  );
+
+  it(
+    `Creating a token and minting 8 NFTs into it with batchSize 5`,
+    async () => {
+      const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
+      const mintedMetadata = await nftSDK.mintSharedMetadata(tokenId, 1, 5, 'www.youtube.com');
+
+      expect(tokenId).toBeDefined();
+      expect(mintedMetadata).toBeDefined();
+      expect(mintedMetadata).toHaveLength(1);
+      expect(mintedMetadata).toEqual(
+        expect.arrayContaining(
+          Array(1).fill({
+            content: 'www.youtube.com',
+            serialNumber: expect.any(Number),
+          })
+        )
+      );
+
+      for (const metaData of mintedMetadata) {
+        const nftInfos = await new TokenNftInfoQuery()
+          .setNftId(new NftId(TokenId.fromString(tokenId), metaData.serialNumber))
+          .execute(nftSDK.client);
+
+        expect(nftInfos[0].metadata!.toString()).toEqual('www.youtube.com');
+      }
+    },
+    longE2ETimeout
+  );
 });

@@ -1,7 +1,7 @@
 import { Client, Hbar, PrivateKey, TokenMintTransaction } from '@hashgraph/sdk';
 import { mintingMaxTransactionFee } from '../utils/const';
 
-export async function tokenMinter(
+export async function mintToken(
   metaData: string[],
   tokenId: string,
   supplyKey: PrivateKey,
@@ -19,7 +19,5 @@ export async function tokenMinter(
 
   const txResponse = await signTx.execute(client);
 
-  const receipt = await txResponse.getReceipt(client);
-
-  return receipt.status;
+  return await txResponse.getReceipt(client);
 }

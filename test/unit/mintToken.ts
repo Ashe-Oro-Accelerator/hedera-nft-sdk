@@ -1,4 +1,4 @@
-import { tokenMinter } from '../../src/functions/tokenMinter';
+import { mintToken } from '../../src/functions/mintToken';
 import { Client, PrivateKey, Status } from '@hashgraph/sdk';
 import { myPrivateKey } from '../__mocks__/consts';
 
@@ -26,14 +26,14 @@ jest.mock('@hashgraph/sdk', () => ({
   })),
 }));
 
-describe('tokenMinter', () => {
+describe('mintToken', () => {
   it('should return Success status', async () => {
     const mockClient = {} as Client;
     const mockMetaData = ['meta1'];
     const mockTokenId = 'tokenId';
     const mockSupplyKey = PrivateKey.fromString(myPrivateKey);
 
-    const result = await tokenMinter(mockMetaData, mockTokenId, mockSupplyKey, mockClient);
+    const result = await mintToken(mockMetaData, mockTokenId, mockSupplyKey, mockClient);
 
     expect(result).toEqual(Status.Success);
   });
