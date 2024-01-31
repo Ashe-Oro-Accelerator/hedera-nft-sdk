@@ -1,4 +1,4 @@
-name,creator,creatorDID,description,image,type,properties,,attributes,,
+name,creator,creatorDID,description,image,type,properties,attributes,
 --,--,--,--,--,--,external_url,url,color,hasPipe,stamina
 Example NFT 1,Hedera,,This is an example NFT 1,,,https://nft.com/mycollection/1,https://nft.com/mycollection/1,"rgb(0,255,0)",false,65
 Example NFT 2,Hedera,,This is an example NFT 2,,,https://nft.com/mycollection/2,https://nft.com/mycollection/2,"rgb(255,0,0)",true,83

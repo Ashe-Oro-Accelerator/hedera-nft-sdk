@@ -21,12 +21,12 @@ export const dictionary = {
     csvFileIsEmpty: (path: string) => `No metadata found in CSV file "${getFullSystemPath(path)}".`,
     errorInRow: (line: number | string, error: string) =>
       `Error at: line number ${typeof line === 'number' ? line + 1 : line} in ${getFullSystemPath(
-        'metadata.csv'
+        'exampleCSV.csv'
       )}\n${error}`,
     missingAttributesInRow: (csvFilePath: string, row: number) =>
       ` - "${getFullSystemPath(csvFilePath)}" in row ${row}`,
     imageForNftNotFound:
-      'Image for NFT not found. Please make sure the image is included in the "data/media" directory.  The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
+      'Image for NFT not found. The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
     mediaFileNotSupported: 'Media file is not supported.',
   },
 } as const;

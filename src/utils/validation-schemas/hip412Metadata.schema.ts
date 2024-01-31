@@ -29,7 +29,7 @@ const FileSchema = z.object({
 
 export const Hip412MetadataCommonSchema = {
   name: z.string().min(1),
-  description: z.string().min(1),
+  description: z.string().optional(),
   creator: z.string().optional(),
   creatorDID: z.string().optional(),
   checksum: z.string().optional(),
