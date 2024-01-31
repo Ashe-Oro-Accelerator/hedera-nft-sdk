@@ -13,7 +13,7 @@ export const mintSharedMetadataFunction = async ({
 }: MintTokenType) => {
   validateProps({ tokenId, amount, metaData, supplyKey, buffer: batchSize });
 
-  const mintedMetadata = [];
+  const mintedNFTs = [];
   // Example if amount = 8 and batchSize = 5. NumberOfCalls should be 2. So 8/5 = 1.6. Math.ceil(1.6) = 2. Because Math.ceil rounds up to the next largest integer.
   const numberOfCalls = Math.ceil(amount / batchSize);
 
@@ -31,12 +31,12 @@ export const mintSharedMetadataFunction = async ({
       });
 
       if (result) {
-        mintedMetadata.push(...result);
+        mintedNFTs.push(...result);
       }
     }
 
-    return mintedMetadata.flat();
+    return mintedNFTs.flat();
   } catch (error) {
-    throw new Error(`${errors.mintingError} ${mintedMetadata.flat().join(' ')}`);
+    throw new Error(`${errors.mintingError}${JSON.stringify(mintedNFTs.flat())}`);
   }
 };
