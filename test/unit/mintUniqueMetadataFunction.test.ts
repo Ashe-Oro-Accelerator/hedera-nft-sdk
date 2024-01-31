@@ -1,12 +1,12 @@
 import * as fs from 'fs';
-import { mintSharedMetadataFunction } from '../../src/functions/mintSharedMetadataFunction';
 import { MintUniqueTokenType } from '../../src/types/mintToken';
 import { mintUniqueMetadataFunction } from '../../src/functions/mintUniqueMetadataFunction';
 import { Client } from '@hashgraph/sdk';
+import { tokenMinter } from '../../src/functions/tokenMinter';
 
 jest.mock('fs');
 jest.mock('csv-parser');
-jest.mock('../../src/functions/mintSharedMetadataFunction');
+jest.mock('../../src/functions/tokenMinter');
 
 describe('mintUniqueMetadataFunction', () => {
   beforeEach(() => {
@@ -31,12 +31,11 @@ describe('mintUniqueMetadataFunction', () => {
       }),
     };
     (fs.createReadStream as jest.Mock).mockReturnValue(mockReadStream);
-    (mintSharedMetadataFunction as jest.Mock).mockResolvedValue('mockMetadata');
+    (tokenMinter as jest.Mock).mockImplementation((batch) => Promise.resolve(batch));
 
     const input: MintUniqueTokenType = {
       client: mockClient,
       tokenId: 'mockTokenId',
-      amount: 8,
       buffer: 5,
       pathToCSV: 'mockPath',
       supplyKey: 'mockSupplyKey',
@@ -44,26 +43,16 @@ describe('mintUniqueMetadataFunction', () => {
 
     const result = await mintUniqueMetadataFunction(input);
 
-    expect(result).toEqual(['mockMetadata', 'mockMetadata']);
+    expect(result).toEqual(['url1', 'url2']);
     expect(fs.createReadStream).toHaveBeenCalledWith('mockPath');
-    expect(mintSharedMetadataFunction).toHaveBeenCalledTimes(2);
-    expect(mintSharedMetadataFunction).toHaveBeenNthCalledWith(1, {
-      amount: 8,
-      buffer: 5,
-      client: mockClient,
-      metaData: 'url1',
-      supplyKey: 'mockSupplyKey',
-      tokenId: 'mockTokenId',
-    });
-
-    expect(mintSharedMetadataFunction).toHaveBeenNthCalledWith(2, {
-      amount: 8,
-      buffer: 5,
-      client: mockClient,
-      metaData: 'url2',
-      supplyKey: 'mockSupplyKey',
-      tokenId: 'mockTokenId',
-    });
+    expect(tokenMinter).toHaveBeenCalledTimes(1);
+    expect(tokenMinter).toHaveBeenNthCalledWith(
+      1,
+      ['url1', 'url2'],
+      'mockTokenId',
+      'mockSupplyKey',
+      {}
+    );
   });
 
   it('should throw an error when the CSV contains invalid data', async () => {
@@ -85,7 +74,6 @@ describe('mintUniqueMetadataFunction', () => {
     const input: MintUniqueTokenType = {
       client: mockClient,
       tokenId: 'mockTokenId',
-      amount: 1,
       pathToCSV: 'mockPath',
       supplyKey: 'mockSupplyKey',
     };

@@ -3,7 +3,6 @@ import { Client } from '@hashgraph/sdk';
 export type MintUniqueTokenType = {
   client: Client;
   tokenId: string;
-  amount: number;
   buffer?: number;
   pathToCSV: string;
   supplyKey: string;

@@ -53,17 +53,10 @@ export class HederaNFTSDK {
     });
   }
 
-  mintUniqueMetadata(
-    tokenId: string,
-    amount: number,
-    buffer: number = 5,
-    pathToCSV: string,
-    supplyKey: string
-  ) {
+  mintUniqueMetadata(tokenId: string, buffer: number = 5, pathToCSV: string, supplyKey: string) {
     return mintUniqueMetadataFunction({
       client: this.client,
       tokenId,
-      amount,
       buffer,
       pathToCSV,
       supplyKey,

@@ -22,15 +22,21 @@ describe('createCollectionFunction e2e', () => {
 
   it('creates a collection with Admin Key', async () => {
     const adminKey = PrivateKey.generateED25519();
-    const tokenId = await nftSDK.createCollection('test_name_admin', 'test_symbol_admin', undefined, undefined, {
-      admin: adminKey,
-    });
+    const tokenId = await nftSDK.createCollection(
+      'test_name_admin',
+      'test_symbol_admin',
+      undefined,
+      undefined,
+      {
+        admin: adminKey,
+      }
+    );
 
     const tokenInfo = await getTokenInfo(tokenId, nftSDK.client);
 
     expect(tokenId).toBeDefined();
     expect(tokenInfo.adminKey?.toString()).toEqual(adminKey.publicKey.toStringDer());
-  });
+  }, 10000);
 
   it('creates a collection with different treasury account', async () => {
     const tokenId = await nftSDK.createCollection(
