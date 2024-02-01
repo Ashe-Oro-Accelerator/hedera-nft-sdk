@@ -5,7 +5,7 @@ import type { CSVRow } from './types/csv';
 import csvParser from 'csv-parser';
 import { selectSeparator } from './utils/helpers/selectSeparator';
 
-const EXTRA_SECOND_HEADER_ROW_COUNT = 1;
+const HEADER_ROW_ADJUSTMENT = 1;
 
 type CSVReaderErrorId = 'invalid-headers';
 
@@ -38,7 +38,7 @@ export class CSVFileReader {
       throw new CSVReaderError(headersErrors[0], 'invalid-headers');
     }
 
-    const effectiveLimit = Number(limit) + EXTRA_SECOND_HEADER_ROW_COUNT;
+    const effectiveLimit = Number(limit) + HEADER_ROW_ADJUSTMENT;
     if (limit && currentRowCount >= effectiveLimit) {
       throw new Error(NFTS_LIMIT_ERROR);
     }

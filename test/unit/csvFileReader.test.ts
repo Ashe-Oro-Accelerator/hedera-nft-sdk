@@ -1,10 +1,9 @@
 import { CSVFileReader, CSVReaderError } from '../../src/CsvFileReader';
+import { CSV_EXAMPLE_INVALID_HEADERS } from '../__mocks__/consts';
 
 describe('CSVFileReader', () => {
-  const invalidHeadersFilePath = 'test/__mocks__/csvFileReader/invalidHeaders.csv';
-
   test('should throw error if invalid headers', async () => {
-    await expect(() => CSVFileReader.readCSVFile(invalidHeadersFilePath)).rejects.toThrow(
+    await expect(() => CSVFileReader.readCSVFile(CSV_EXAMPLE_INVALID_HEADERS)).rejects.toThrow(
       CSVReaderError
     );
   });
