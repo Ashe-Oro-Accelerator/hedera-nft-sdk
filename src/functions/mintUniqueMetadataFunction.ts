@@ -1,4 +1,4 @@
-import { MintUniqueTokenType } from '../types/mintToken';
+import { MintedNFTType, MintUniqueTokenType } from '../types/mintToken';
 import errors from '../dictionary/errors.json';
 import * as fs from 'fs';
 import csv from 'csv-parser';
@@ -15,7 +15,7 @@ export const mintUniqueMetadataFunction = async ({
   validateProps({ batchSize, tokenId, pathToCSV, supplyKey });
 
   if (!pathToCSV) throw new Error(errors.pathRequired);
-  const successMetadata = [];
+  const successMetadata: MintedNFTType[] = [];
   const results: string[] = [];
 
   const metaData = await new Promise<string[]>((resolve, reject) => {
@@ -41,8 +41,18 @@ export const mintUniqueMetadataFunction = async ({
     const numberOfCalls = Math.ceil(metaData.length / batchSize);
     for (let i = 0; i < numberOfCalls; i++) {
       const batch = metaData.slice(i * batchSize, (i + 1) * batchSize);
-      await mintToken(batch, tokenId, supplyKey, client);
-      successMetadata.push(batch);
+      const mintTokenReceipt = await mintToken(batch, tokenId, supplyKey, client);
+
+      const result: MintedNFTType[] = mintTokenReceipt?.serials.map((longValue, index) => {
+        return {
+          content: batch[index],
+          serialNumber: longValue.toNumber(),
+        };
+      });
+
+      if (result) {
+        successMetadata.push(...result);
+      }
     }
   } catch (error) {
     throw new Error(`${errors.mintingError} ${successMetadata.flat(1).join(' ')}`);

@@ -16,6 +16,7 @@ describe('mintUniqueMetadataFunction', () => {
 
   it('should return success metadata when given valid input', async () => {
     const mockClient = {} as Client;
+    const supplyKey = PrivateKey.fromString(myPrivateKey);
 
     const mockReadStream = {
       pipe: jest.fn().mockReturnThis(),
@@ -32,28 +33,30 @@ describe('mintUniqueMetadataFunction', () => {
       }),
     };
     (fs.createReadStream as jest.Mock).mockReturnValue(mockReadStream);
-    (mintToken as jest.Mock).mockImplementation((batch) => Promise.resolve(batch));
+
+    (mintToken as jest.Mock).mockResolvedValueOnce({
+      serials: Array.from({ length: 2 }, (_, i) => ({
+        toNumber: () => i + 1,
+      })),
+    });
 
     const input: MintUniqueTokenType = {
       client: mockClient,
       tokenId: 'mockTokenId',
       batchSize: 5,
       pathToCSV: 'mockPath',
-      supplyKey: PrivateKey.fromString(myPrivateKey),
+      supplyKey: supplyKey,
     };
 
     const result = await mintUniqueMetadataFunction(input);
 
-    expect(result).toEqual(['url1', 'url2']);
+    expect(result).toEqual([
+      { content: 'url1', serialNumber: 1 },
+      { content: 'url2', serialNumber: 2 },
+    ]);
     expect(fs.createReadStream).toHaveBeenCalledWith('mockPath');
     expect(mintToken).toHaveBeenCalledTimes(1);
-    expect(mintToken).toHaveBeenNthCalledWith(
-      1,
-      ['url1', 'url2'],
-      'mockTokenId',
-      'mockSupplyKey',
-      {}
-    );
+    expect(mintToken).toHaveBeenNthCalledWith(1, ['url1', 'url2'], 'mockTokenId', supplyKey, {});
   });
 
   it('should throw an error when the CSV contains invalid data', async () => {
