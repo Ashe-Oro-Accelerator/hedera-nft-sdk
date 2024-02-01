@@ -13,5 +13,6 @@
   "tokenIdRequired": "tokenId is required",
   "minAmount": "Amount needs to be greater than 0",
   "metadataRequired": "metadata is required",
+  "csvOrArrayRequired": "Either pass a path to file(pathToMetadataURIsFile) or an array of strings(metadata)",
   "supplyKeyRequired": "supplyKey is required"
 }

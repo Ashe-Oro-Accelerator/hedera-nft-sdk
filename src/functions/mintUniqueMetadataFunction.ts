@@ -1,41 +1,25 @@
 import { MintedNFTType, MintUniqueTokenType } from '../types/mintToken';
 import errors from '../dictionary/errors.json';
-import * as fs from 'fs';
-import csv from 'csv-parser';
 import { mintToken } from './mintToken';
 import { validateProps } from '../utils/validateProps';
+import { MintingError } from '../utils/mintingError';
+import { getDataFromFile } from '../utils/getDataFromFile';
 
 export const mintUniqueMetadataFunction = async ({
   client,
   tokenId,
   batchSize = 5,
-  pathToCSV,
   supplyKey,
+  pathToMetadataURIsFile,
+  metadataArray,
 }: MintUniqueTokenType) => {
-  validateProps({ batchSize, tokenId, pathToCSV, supplyKey });
+  validateProps({ batchSize, tokenId, pathToMetadataURIsFile, supplyKey, metadataArray });
+  const mintedNFTs: MintedNFTType[] = [];
 
-  if (!pathToCSV) throw new Error(errors.pathRequired);
-  const successMetadata: MintedNFTType[] = [];
-  const results: string[] = [];
-
-  const metaData = await new Promise<string[]>((resolve, reject) => {
-    fs.createReadStream(pathToCSV)
-      .pipe(csv({ separator: ',', quote: ',', headers: false }))
-      .on('data', (data) => {
-        const chunk = Object.values(data)[0];
-        if (typeof chunk === 'string') {
-          const urls = chunk
-            .split(',')
-            .map((url) => url.trim())
-            .filter((i) => i);
-          results.push(...urls);
-        } else {
-          reject(new Error(`Invalid data: ${chunk}`));
-        }
-      })
-      .on('end', () => resolve(results))
-      .on('error', (error) => reject(error));
-  });
+  const metaData = pathToMetadataURIsFile
+    ? await getDataFromFile(pathToMetadataURIsFile)
+    : metadataArray || [];
+  if (!metaData.length) throw new Error(errors.metadataRequired);
 
   try {
     const numberOfCalls = Math.ceil(metaData.length / batchSize);
@@ -51,12 +35,12 @@ export const mintUniqueMetadataFunction = async ({
       });
 
       if (result) {
-        successMetadata.push(...result);
+        mintedNFTs.push(...result);
       }
     }
   } catch (error) {
-    throw new Error(`${errors.mintingError} ${successMetadata.flat(1).join(' ')}`);
+    throw new MintingError(`${errors.mintingError} ${error}`, mintedNFTs.flat());
   }
 
-  return successMetadata.flat(1);
+  return mintedNFTs.flat(1);
 };

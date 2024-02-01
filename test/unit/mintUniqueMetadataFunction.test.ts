@@ -14,7 +14,7 @@ describe('mintUniqueMetadataFunction', () => {
     jest.clearAllMocks();
   });
 
-  it('should return success metadata when given valid input', async () => {
+  it('should return success metadata when given valid input from file path', async () => {
     const mockClient = {} as Client;
     const supplyKey = PrivateKey.fromString(myPrivateKey);
 
@@ -44,7 +44,7 @@ describe('mintUniqueMetadataFunction', () => {
       client: mockClient,
       tokenId: 'mockTokenId',
       batchSize: 5,
-      pathToCSV: 'mockPath',
+      pathToMetadataURIsFile: 'mockPath',
       supplyKey: supplyKey,
     };
 
@@ -57,6 +57,34 @@ describe('mintUniqueMetadataFunction', () => {
     expect(fs.createReadStream).toHaveBeenCalledWith('mockPath');
     expect(mintToken).toHaveBeenCalledTimes(1);
     expect(mintToken).toHaveBeenNthCalledWith(1, ['url1', 'url2'], 'mockTokenId', supplyKey, {});
+  });
+
+  it('should return success metadata when given valid input from array', async () => {
+    const mockClient = {} as Client;
+    const supplyKey = PrivateKey.fromString(myPrivateKey);
+
+    (mintToken as jest.Mock).mockResolvedValueOnce({
+      serials: Array.from({ length: 2 }, (_, i) => ({
+        toNumber: () => i + 1,
+      })),
+    });
+
+    const input: MintUniqueTokenType = {
+      client: mockClient,
+      tokenId: 'mockTokenId',
+      batchSize: 5,
+      supplyKey: supplyKey,
+      metadataArray: ['url5', 'url3'],
+    };
+
+    const result = await mintUniqueMetadataFunction(input);
+
+    expect(result).toEqual([
+      { content: 'url5', serialNumber: 1 },
+      { content: 'url3', serialNumber: 2 },
+    ]);
+    expect(mintToken).toHaveBeenCalledTimes(1);
+    expect(mintToken).toHaveBeenNthCalledWith(1, ['url5', 'url3'], 'mockTokenId', supplyKey, {});
   });
 
   it('should throw an error when the CSV contains invalid data', async () => {
@@ -78,7 +106,7 @@ describe('mintUniqueMetadataFunction', () => {
     const input: MintUniqueTokenType = {
       client: mockClient,
       tokenId: 'mockTokenId',
-      pathToCSV: 'mockPath',
+      pathToMetadataURIsFile: 'mockPath',
       supplyKey: PrivateKey.fromString(myPrivateKey),
     };
 

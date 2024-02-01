@@ -7,14 +7,16 @@ export const validateProps = ({
   amount = null,
   metaData = null,
   supplyKey = null,
-  pathToCSV = null,
+  pathToMetadataURIsFile = null,
+  metadataArray = null,
 }: {
   batchSize?: number | null;
   tokenId?: string | null;
   amount?: number | null;
   metaData?: string | null;
   supplyKey?: PrivateKey | null;
-  pathToCSV?: string | null;
+  pathToMetadataURIsFile?: string | null;
+  metadataArray?: string[] | null;
 }) => {
   if (batchSize !== null && batchSize > 10) throw new Error(errors.maxBatchSize);
   if (batchSize !== null && batchSize < 1) throw new Error(errors.minBatchSize);
@@ -22,5 +24,13 @@ export const validateProps = ({
   if (amount !== null && (!amount || amount < 1)) throw new Error(errors.minAmount);
   if (metaData !== null && !metaData) throw new Error(errors.metadataRequired);
   if (supplyKey !== null && !supplyKey) throw new Error(errors.supplyKeyRequired);
-  if (pathToCSV !== null && !pathToCSV) throw new Error(errors.pathRequired);
+  if (pathToMetadataURIsFile !== null && !pathToMetadataURIsFile)
+    throw new Error(errors.pathRequired);
+  if (
+    metadataArray !== null &&
+    pathToMetadataURIsFile !== null &&
+    !metadataArray &&
+    !pathToMetadataURIsFile
+  )
+    throw new Error(errors.csvOrArrayRequired);
 };

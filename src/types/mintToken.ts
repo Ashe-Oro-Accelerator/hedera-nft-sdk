@@ -4,8 +4,9 @@ export type MintUniqueTokenType = {
   client: Client;
   tokenId: string;
   batchSize?: number;
-  pathToCSV: string;
   supplyKey: PrivateKey;
+  pathToMetadataURIsFile?: string;
+  metadataArray?: string[];
 };
 
 export type MintTokenType = {
