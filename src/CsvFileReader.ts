@@ -58,6 +58,7 @@ export class CSVFileReader {
   } {
     let result: string | null = null;
 
+    // TODO: try to simplyfy this
     if (header.header === this.ATTRIBUTES) {
       currentType = 'attributes';
       attributesIndex++;
