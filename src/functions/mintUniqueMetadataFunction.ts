@@ -42,5 +42,5 @@ export const mintUniqueMetadataFunction = async ({
     throw new MintingError(`${errors.mintingError} ${error}`, mintedNFTs.flat());
   }
 
-  return mintedNFTs.flat(1);
+  return mintedNFTs.flat();
 };
