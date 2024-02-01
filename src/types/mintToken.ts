@@ -8,3 +8,5 @@ export type MintTokenType = {
   metaData: string;
   supplyKey: PrivateKey;
 };
+
+export type MintedNFTType = { serialNumber: number; content: string };

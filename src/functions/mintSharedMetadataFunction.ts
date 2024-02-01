@@ -1,7 +1,8 @@
-import { MintTokenType } from '../types/mintToken';
+import { MintedNFTType, MintTokenType } from '../types/mintToken';
 import { mintToken } from './mintToken';
 import errors from '../dictionary/errors.json';
 import { validateProps } from '../utils/validateProps';
+import { MintingError } from '../utils/mintingError';
 
 export const mintSharedMetadataFunction = async ({
   client,
@@ -13,7 +14,7 @@ export const mintSharedMetadataFunction = async ({
 }: MintTokenType) => {
   validateProps({ tokenId, amount, metaData, supplyKey, buffer: batchSize });
 
-  const mintedNFTs = [];
+  const mintedNFTs: MintedNFTType[] = [];
   // Example if amount = 8 and batchSize = 5. NumberOfCalls should be 2. So 8/5 = 1.6. Math.ceil(1.6) = 2. Because Math.ceil rounds up to the next largest integer.
   const numberOfCalls = Math.ceil(amount / batchSize);
 
@@ -23,7 +24,7 @@ export const mintSharedMetadataFunction = async ({
       amount -= batchSize;
       const mintTokenReceipt = await mintToken(metadataBatchArray, tokenId, supplyKey, client);
 
-      const result = mintTokenReceipt?.serials.map((longValue) => {
+      const result: MintedNFTType[] = mintTokenReceipt?.serials.map((longValue) => {
         return {
           content: metaData,
           serialNumber: longValue.toNumber(),
@@ -37,6 +38,6 @@ export const mintSharedMetadataFunction = async ({
 
     return mintedNFTs.flat();
   } catch (error) {
-    throw new Error(`${errors.mintingError}${JSON.stringify(mintedNFTs.flat())}`);
+    throw new MintingError(`${errors.mintingError} ${error}`, mintedNFTs.flat());
   }
 };
