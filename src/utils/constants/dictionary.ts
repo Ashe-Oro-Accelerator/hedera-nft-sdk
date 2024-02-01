@@ -1,9 +1,10 @@
 import { getFullSystemPath } from '../helpers/getFullSystemPath';
 
 export const dictionary = {
-  general: {
+  errors: {
     unhandledError: 'Unknown error.',
   },
+
   createCollection: {
     clientRequired: 'client is required. You need to log in first.',
     myPrivateKeyRequired: 'myPrivateKey is required',

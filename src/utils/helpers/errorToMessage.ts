@@ -5,7 +5,7 @@ export const errorToMessage = (e: unknown): string => {
 
   if (e instanceof Error) error = e.message;
   if (typeof e === 'string') error = e;
-  if (!error) error = dictionary.general.unhandledError;
+  if (!error) error = dictionary.errors.unhandledError;
 
   return error;
 };
