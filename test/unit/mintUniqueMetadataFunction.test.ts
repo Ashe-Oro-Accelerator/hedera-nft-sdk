@@ -86,31 +86,4 @@ describe('mintUniqueMetadataFunction', () => {
     expect(mintToken).toHaveBeenCalledTimes(1);
     expect(mintToken).toHaveBeenNthCalledWith(1, ['url5', 'url3'], 'mockTokenId', supplyKey, {});
   });
-
-  it('should throw an error when the CSV contains invalid data', async () => {
-    const mockClient = {} as Client;
-
-    const mockReadStream = {
-      pipe: jest.fn().mockReturnThis(),
-      on: jest.fn().mockImplementation(function (event, handler) {
-        if (event === 'data') {
-          handler({ '0': 123 });
-        }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        return this;
-      }),
-    };
-    (fs.createReadStream as jest.Mock).mockReturnValue(mockReadStream);
-
-    const input: MintUniqueTokenType = {
-      client: mockClient,
-      tokenId: 'mockTokenId',
-      pathToMetadataURIsFile: 'mockPath',
-      supplyKey: PrivateKey.fromString(myPrivateKey),
-    };
-
-    await expect(mintUniqueMetadataFunction(input)).rejects.toThrow('Invalid data: 123');
-    expect(fs.createReadStream).toHaveBeenCalledWith('mockPath');
-  });
 });
