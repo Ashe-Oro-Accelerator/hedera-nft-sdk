@@ -2,6 +2,10 @@ import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
 import { nftSDK } from './e2eConsts';
 import { longE2ETimeout, myPrivateKey } from '../__mocks__/consts';
 
+afterAll(async () => {
+  nftSDK.client.close();
+});
+
 describe('mintSharedMetadata function e2e', () => {
   const testCases = [{ amount: 1 }, { amount: 3 }, { amount: 10 }];
 
