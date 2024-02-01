@@ -12,4 +12,4 @@ export const CSV_EXAMPLE_WITH_MISSING_REQUIRED_FIELDS =
 
 export const JSON_METADATA_TESTS_OUTPUT_FOLDER_PATH = 'test/integration/output';
 
-export const TIME_FOR_LONG_TEST = 10000;
+export const LONG_E2E_TIMEOUT = 25000;

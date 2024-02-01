@@ -1,8 +1,9 @@
-import { Client } from '@hashgraph/sdk';
+import { Client, PrivateKey } from '@hashgraph/sdk';
 import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
 import { createJsonMetadataFromCsv } from './functions/createJsonMetadataFromCsv';
+import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
 
 export class HederaNFTSDK {
   accountId: string;
@@ -44,6 +45,23 @@ export class HederaNFTSDK {
       jsonMetadataOutputFolderPath,
       csvFilePath,
       nftsLimit,
+    });
+  }
+
+  mintSharedMetadata(
+    tokenId: string,
+    amount: number,
+    batchSize: number = 5,
+    metaData: string,
+    supplyKey?: PrivateKey
+  ) {
+    return mintSharedMetadataFunction({
+      client: this.client,
+      tokenId,
+      amount,
+      batchSize,
+      metaData,
+      supplyKey: supplyKey || PrivateKey.fromString(this.privateKey),
     });
   }
 }
