@@ -8,7 +8,7 @@ import {
   CSV_EXAMPLE_WITH_IMAGES,
   CSV_EXAMPLE_ONLY_REQUIRED_FIELDS,
   CSV_EXAMPLE_WITH_MISSING_REQUIRED_FIELDS,
-  TIME_FOR_LONG_TEST,
+  LONG_E2E_TIMEOUT,
 } from '../__mocks__/consts';
 
 const HEADERS_COUNT = 2;
@@ -45,7 +45,7 @@ describe('createJsonMetadataFromCsv Integration Test', () => {
 
       expect(files.length).toBe(expectedJsonFilesCount);
     },
-    TIME_FOR_LONG_TEST
+    LONG_E2E_TIMEOUT
   );
 
   test('Each file should match Hip412MetadataSchema', () => {

@@ -29,4 +29,21 @@ export const dictionary = {
       'Image for NFT not found. The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
     mediaFileNotSupported: 'Media file is not supported.',
   },
+  hederaActions: {
+    clientRequired: 'client is required. You need to log in first.',
+    myPrivateKeyRequired: 'myPrivateKey is required',
+    collectionNameRequired: 'collectionName is required',
+    collectionSymbolRequired: 'collectionSymbol is required',
+    myAccountIdRequired: 'myAccountId is required',
+    treasuryAccountPrivateKeySignRequired:
+      'If you want to use treasuryAccount to sign, you need to pass the treasuryAccountPrivateKey also',
+    collectionNotCreated: 'Something went wrong while creating the collection',
+    mintingError: 'There was an error while minting the NFT.',
+    maxBatchSize: 'Max Buffer exceeded. Use batchSize smaller of equal to 10',
+    minBatchSize: 'Min Buffer exceeded. Use batchSize greater than 0',
+    tokenIdRequired: 'tokenId is required',
+    minAmount: 'Amount needs to be greater than 0',
+    metadataRequired: 'metadata is required',
+    supplyKeyRequired: 'supplyKey is required',
+  },
 } as const;

@@ -1,6 +1,6 @@
 import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
 import { nftSDK } from './e2eConsts';
-import { longE2ETimeout, myPrivateKey } from '../__mocks__/consts';
+import { LONG_E2E_TIMEOUT, myPrivateKey } from '../__mocks__/consts';
 
 describe('mintSharedMetadata function e2e', () => {
   const testCases = [{ amount: 1 }, { amount: 3 }, { amount: 10 }];
@@ -38,7 +38,7 @@ describe('mintSharedMetadata function e2e', () => {
           expect(nftInfos[0].metadata!.toString()).toEqual('www.youtube.com');
         }
       },
-      longE2ETimeout
+      LONG_E2E_TIMEOUT
     );
   });
 
@@ -68,7 +68,7 @@ describe('mintSharedMetadata function e2e', () => {
         expect(nftInfos[0].metadata!.toString()).toEqual('www.youtube.com');
       }
     },
-    longE2ETimeout
+    LONG_E2E_TIMEOUT
   );
 
   it(
@@ -97,6 +97,6 @@ describe('mintSharedMetadata function e2e', () => {
         expect(nftInfos[0].metadata!.toString()).toEqual('www.youtube.com');
       }
     },
-    longE2ETimeout
+    LONG_E2E_TIMEOUT
   );
 });
