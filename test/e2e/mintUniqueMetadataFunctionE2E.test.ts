@@ -3,6 +3,7 @@ import { beforeEach } from 'node:test';
 import { HederaNFTSDK } from '../../src/HederaNFTSDK';
 import { myAccountId, myPrivateKey } from '../__mocks__/consts';
 import errors from '../../src/dictionary/errors.json';
+import { PrivateKey } from '@hashgraph/sdk';
 
 beforeEach(async () => {
   new HederaNFTSDK(myAccountId, myPrivateKey);
@@ -19,7 +20,7 @@ describe('mintUniqueMetadata function e2e', () => {
       tokenId,
       2,
       'test/__mocks__/testOneLine.csv',
-      myPrivateKey
+      PrivateKey.fromString(myPrivateKey)
     );
 
     expect(tokenId).toBeDefined();
@@ -33,7 +34,7 @@ describe('mintUniqueMetadata function e2e', () => {
       tokenId,
       2,
       'test/__mocks__/testRows.csv',
-      myPrivateKey
+      PrivateKey.fromString(myPrivateKey)
     );
 
     expect(tokenId).toBeDefined();
@@ -45,7 +46,12 @@ describe('mintUniqueMetadata function e2e', () => {
     const invalidTokenId = 'invalidTokenId';
 
     await expect(
-      nftSDK.mintUniqueMetadata(invalidTokenId, 2, 'test/__mocks__/testRows.csv', myPrivateKey)
+      nftSDK.mintUniqueMetadata(
+        invalidTokenId,
+        2,
+        'test/__mocks__/testRows.csv',
+        PrivateKey.fromString(myPrivateKey)
+      )
     ).rejects.toThrow(errors.mintingError);
   });
 
@@ -53,7 +59,12 @@ describe('mintUniqueMetadata function e2e', () => {
     const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
 
     await expect(
-      nftSDK.mintUniqueMetadata(tokenId, 2, 'test/__mocks__/testRows.csv', 'invalidPrivateKey')
+      nftSDK.mintUniqueMetadata(
+        tokenId,
+        2,
+        'test/__mocks__/testRows.csv',
+        PrivateKey.fromString('invalidPrivateKey')
+      )
     ).rejects.toThrow(errors.mintingError);
   });
 });

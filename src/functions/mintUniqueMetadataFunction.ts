@@ -2,17 +2,17 @@ import { MintUniqueTokenType } from '../types/mintToken';
 import errors from '../dictionary/errors.json';
 import * as fs from 'fs';
 import csv from 'csv-parser';
-import { tokenMinter } from './tokenMinter';
+import { mintToken } from './mintToken';
 import { validateProps } from '../utils/validateProps';
 
 export const mintUniqueMetadataFunction = async ({
   client,
   tokenId,
-  buffer = 5,
+  batchSize = 5,
   pathToCSV,
   supplyKey,
 }: MintUniqueTokenType) => {
-  validateProps({ buffer, tokenId, pathToCSV, supplyKey });
+  validateProps({ batchSize, tokenId, pathToCSV, supplyKey });
 
   if (!pathToCSV) throw new Error(errors.pathRequired);
   const successMetadata = [];
@@ -38,10 +38,10 @@ export const mintUniqueMetadataFunction = async ({
   });
 
   try {
-    const numberOfCalls = Math.ceil(metaData.length / buffer);
+    const numberOfCalls = Math.ceil(metaData.length / batchSize);
     for (let i = 0; i < numberOfCalls; i++) {
-      const batch = metaData.slice(i * buffer, (i + 1) * buffer);
-      await tokenMinter(batch, tokenId, supplyKey, client);
+      const batch = metaData.slice(i * batchSize, (i + 1) * batchSize);
+      await mintToken(batch, tokenId, supplyKey, client);
       successMetadata.push(batch);
     }
   } catch (error) {

@@ -1,12 +1,13 @@
 import * as fs from 'fs';
 import { MintUniqueTokenType } from '../../src/types/mintToken';
 import { mintUniqueMetadataFunction } from '../../src/functions/mintUniqueMetadataFunction';
-import { Client } from '@hashgraph/sdk';
-import { tokenMinter } from '../../src/functions/tokenMinter';
+import { Client, PrivateKey } from '@hashgraph/sdk';
+import { mintToken } from '../../src/functions/mintToken';
+import { myPrivateKey } from '../__mocks__/consts';
 
 jest.mock('fs');
 jest.mock('csv-parser');
-jest.mock('../../src/functions/tokenMinter');
+jest.mock('../../src/functions/mintToken');
 
 describe('mintUniqueMetadataFunction', () => {
   beforeEach(() => {
@@ -31,22 +32,22 @@ describe('mintUniqueMetadataFunction', () => {
       }),
     };
     (fs.createReadStream as jest.Mock).mockReturnValue(mockReadStream);
-    (tokenMinter as jest.Mock).mockImplementation((batch) => Promise.resolve(batch));
+    (mintToken as jest.Mock).mockImplementation((batch) => Promise.resolve(batch));
 
     const input: MintUniqueTokenType = {
       client: mockClient,
       tokenId: 'mockTokenId',
-      buffer: 5,
+      batchSize: 5,
       pathToCSV: 'mockPath',
-      supplyKey: 'mockSupplyKey',
+      supplyKey: PrivateKey.fromString(myPrivateKey),
     };
 
     const result = await mintUniqueMetadataFunction(input);
 
     expect(result).toEqual(['url1', 'url2']);
     expect(fs.createReadStream).toHaveBeenCalledWith('mockPath');
-    expect(tokenMinter).toHaveBeenCalledTimes(1);
-    expect(tokenMinter).toHaveBeenNthCalledWith(
+    expect(mintToken).toHaveBeenCalledTimes(1);
+    expect(mintToken).toHaveBeenNthCalledWith(
       1,
       ['url1', 'url2'],
       'mockTokenId',
@@ -75,7 +76,7 @@ describe('mintUniqueMetadataFunction', () => {
       client: mockClient,
       tokenId: 'mockTokenId',
       pathToCSV: 'mockPath',
-      supplyKey: 'mockSupplyKey',
+      supplyKey: PrivateKey.fromString(myPrivateKey),
     };
 
     await expect(mintUniqueMetadataFunction(input)).rejects.toThrow('Invalid data: 123');

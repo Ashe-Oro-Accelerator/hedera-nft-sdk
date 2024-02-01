@@ -1,18 +1,20 @@
-import { Client } from '@hashgraph/sdk';
+import { Client, PrivateKey } from '@hashgraph/sdk';
 
 export type MintUniqueTokenType = {
   client: Client;
   tokenId: string;
-  buffer?: number;
+  batchSize?: number;
   pathToCSV: string;
-  supplyKey: string;
+  supplyKey: PrivateKey;
 };
 
 export type MintTokenType = {
   client: Client;
   tokenId: string;
   amount: number;
-  buffer?: number;
+  batchSize: number;
   metaData: string;
-  supplyKey: string;
+  supplyKey: PrivateKey;
 };
+
+export type MintedNFTType = { serialNumber: number; content: string };

@@ -5,13 +5,13 @@
   "collectionSymbolRequired": "collectionSymbol is required",
   "myAccountIdRequired": "myAccountId is required",
   "treasuryAccountPrivateKeySignRequired": "If you want to use treasuryAccount to sign, you need to pass the treasuryAccountPrivateKey also",
-  "mintingError": "There was an error while minting the NFT. Successfully minted: ",
-  "maxBuffer": "Max Buffer exceeded. Use buffer smaller than 10",
-  "minBuffer": "Min Buffer exceeded. Use buffer greater than 0",
+  "pathRequired": "Path to CSV required",
+  "collectionNotCreated": "Something went wrong while creating the collection",
+  "mintingError": "There was an error while minting the NFT.",
+  "maxBatchSize": "Max batchSize exceeded. Use batchSize smaller of equal to 10",
+  "minBatchSize": "Min batchSize exceeded. Use batchSize greater than 0",
   "tokenIdRequired": "tokenId is required",
   "minAmount": "Amount needs to be greater than 0",
   "metadataRequired": "metadata is required",
-  "supplyKeyRequired": "supplyKey is required",
-  "collectionNotCreated": "Something went wrong while creating the collection",
-  "pathRequired": "Path to CSV required"
+  "supplyKeyRequired": "supplyKey is required"
 }

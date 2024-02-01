@@ -1,3 +1,1 @@
-const a = 2;
-
-console.log(a);
+export const mintingMaxTransactionFee = 20;
