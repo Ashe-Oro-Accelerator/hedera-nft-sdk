@@ -69,7 +69,7 @@ export class Hip412Metadata implements Partial<NFTMetadata> {
     );
   }
 
-  static validateMetadataFromCsv(metadata: Partial<CSVRowAsObject>): boolean {
+  static validateMetadataFromCSV(metadata: Partial<CSVRowAsObject>): boolean {
     validateObjectWithSchema(Hip412MetadataCSVSchema, metadata, noPropertiesErrorOptions);
     return true;
   }

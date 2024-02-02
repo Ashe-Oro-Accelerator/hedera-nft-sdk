@@ -2,7 +2,7 @@ import { Client, PrivateKey } from '@hashgraph/sdk';
 import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
-import { createJsonMetadataFromCsv } from './functions/createJsonMetadataFromCsv';
+import { createJsonMetadataFromCSV } from './functions/createJsonMetadataFromCSV';
 import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
 
 export class HederaNFTSDK {
@@ -36,12 +36,12 @@ export class HederaNFTSDK {
     });
   }
 
-  createJsonMetadataFromCsv(
+  createJsonMetadataFromCSV(
     jsonMetadataOutputFolderPath: string,
     csvFilePath: string,
     nftsLimit?: number
   ) {
-    return createJsonMetadataFromCsv({
+    return createJsonMetadataFromCSV({
       jsonMetadataOutputFolderPath,
       csvFilePath,
       nftsLimit,

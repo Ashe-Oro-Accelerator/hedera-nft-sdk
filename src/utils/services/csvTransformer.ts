@@ -1,25 +1,25 @@
 import fs from 'fs';
 import { dictionary } from '../constants/dictionary';
-import { CSVFileReader } from '../../CsvFileReader';
+import { CSVFileReader } from '../../CSVFileReader';
 import type { CSVRow, CSVRowAsObject, RedundantCell } from '../../types/csv';
 
 const OMITTED_HEADER_COUNT = 1;
 
-export class CsvTransformer {
-  static saveCsvRowsAsJsonFiles = (metadataFromCsv: CSVRowAsObject[], folderPath: string): void => {
+export class CSVTransformer {
+  static saveCSVRowsAsJsonFiles = (metadataFromCSV: CSVRowAsObject[], folderPath: string): void => {
     if (fs.existsSync(folderPath)) {
       fs.rmSync(folderPath, { recursive: true, force: true });
     }
 
     fs.mkdirSync(folderPath, { recursive: true });
 
-    metadataFromCsv.forEach((fileContent, index) => {
+    metadataFromCSV.forEach((fileContent, index) => {
       const fileName = `${folderPath}/${index + 1}.json`;
       fs.writeFileSync(fileName, JSON.stringify(fileContent), { encoding: 'utf-8' });
     });
   };
 
-  private static processCsvRowEntry(
+  private static processCSVRowEntry(
     csvRowAsObject: CSVRowAsObject,
     header: string,
     cell: string,
@@ -56,7 +56,7 @@ export class CsvTransformer {
     headerAttributes: string;
     headerProperties: string;
   }): {
-    objectsFromCsvRows: CSVRowAsObject[];
+    objectsFromCSVRows: CSVRowAsObject[];
     redundantCells: RedundantCell[];
   } {
     if (csvRows.length <= CSVFileReader.AMOUNT_OF_HEADERS - OMITTED_HEADER_COUNT) {
@@ -72,7 +72,7 @@ export class CsvTransformer {
       const attributes: Record<string, string>[] = [];
 
       const result = csvRowAsEntries.reduce<CSVRowAsObject>((acc, [header, cell]) => {
-        return this.processCsvRowEntry(
+        return this.processCSVRowEntry(
           acc,
           header,
           cell,
@@ -97,6 +97,6 @@ export class CsvTransformer {
       return result;
     });
 
-    return { objectsFromCsvRows: transformedRows, redundantCells };
+    return { objectsFromCSVRows: transformedRows, redundantCells };
   }
 }

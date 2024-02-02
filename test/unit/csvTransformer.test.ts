@@ -1,7 +1,7 @@
 import fs from 'fs';
 import cloneDeep from 'lodash/cloneDeep';
 import { CSVRow, CSVRowAsObject, RedundantCell } from '../../src/types/csv';
-import { CsvTransformer } from '../../src/utils/services/csvTransformer';
+import { CSVTransformer } from '../../src/utils/services/csvTransformer';
 import {
   JSON_METADATA_UNIT_TESTS_OUTPUT_METADATA_FOLDER_PATH,
   JSON_METADATA_UNIT_TESTS_OUTPUT_NEW_METADATA_FOLDER_PATH,
@@ -93,7 +93,7 @@ const csvRowsWithRedundantCells: CSVRow[] = [
   },
 ];
 
-const objectsFromCsvRows = [
+const objectsFromCSVRows = [
   {
     name: 'Example NFT 1',
     creator: 'Hedera',
@@ -117,20 +117,20 @@ const objectsFromCsvRows = [
 ];
 
 describe('csvTransformer', () => {
-  describe('saveCsvRowsAsJsonFiles', () => {
+  describe('saveCSVRowsAsJsonFiles', () => {
     it('should save content of CSVRowAsObject[] to json files', () => {
       const csvRowAsObjects: {
-        objectsFromCsvRows: CSVRowAsObject[];
+        objectsFromCSVRows: CSVRowAsObject[];
         redundantCells: RedundantCell[];
-      } = CsvTransformer.metadataObjectsFromRows({
+      } = CSVTransformer.metadataObjectsFromRows({
         csvRows: cloneDeep(csvRows),
         path: 'csvFilePath',
         headerAttributes: 'attributes',
         headerProperties: 'properties',
       });
 
-      CsvTransformer.saveCsvRowsAsJsonFiles(
-        csvRowAsObjects.objectsFromCsvRows,
+      CSVTransformer.saveCSVRowsAsJsonFiles(
+        csvRowAsObjects.objectsFromCSVRows,
         JSON_METADATA_UNIT_TESTS_OUTPUT_METADATA_FOLDER_PATH
       );
 
@@ -147,22 +147,22 @@ describe('csvTransformer', () => {
       });
       fs.mkdirSync(JSON_METADATA_UNIT_TESTS_OUTPUT_METADATA_FOLDER_PATH, { recursive: true });
 
-      expect([firstJson, secondJson]).toStrictEqual(objectsFromCsvRows);
+      expect([firstJson, secondJson]).toStrictEqual(objectsFromCSVRows);
     });
 
     it('should create directory if path do not point to directory save content of CSVRowAsObject[] to json files', () => {
       const csvRowAsObjects: {
-        objectsFromCsvRows: CSVRowAsObject[];
+        objectsFromCSVRows: CSVRowAsObject[];
         redundantCells: RedundantCell[];
-      } = CsvTransformer.metadataObjectsFromRows({
+      } = CSVTransformer.metadataObjectsFromRows({
         csvRows: cloneDeep(csvRows),
         path: 'csvFilePath',
         headerAttributes: 'attributes',
         headerProperties: 'properties',
       });
 
-      CsvTransformer.saveCsvRowsAsJsonFiles(
-        csvRowAsObjects.objectsFromCsvRows,
+      CSVTransformer.saveCSVRowsAsJsonFiles(
+        csvRowAsObjects.objectsFromCSVRows,
         JSON_METADATA_UNIT_TESTS_OUTPUT_NEW_METADATA_FOLDER_PATH
       );
 
@@ -183,27 +183,27 @@ describe('csvTransformer', () => {
       });
       fs.mkdirSync(JSON_METADATA_UNIT_TESTS_OUTPUT_NEW_METADATA_FOLDER_PATH, { recursive: true });
 
-      expect([firstJson, secondJson]).toStrictEqual(objectsFromCsvRows);
+      expect([firstJson, secondJson]).toStrictEqual(objectsFromCSVRows);
     });
   });
 
   describe('metadataObjectsFromRows', () => {
     it('should transform CSV rows into metadata objects', () => {
-      const result = CsvTransformer.metadataObjectsFromRows({
+      const result = CSVTransformer.metadataObjectsFromRows({
         csvRows: csvRows,
         path: 'csvFilePath',
         headerAttributes: 'attributes',
         headerProperties: 'properties',
       });
       expect(result).toEqual({
-        objectsFromCsvRows,
+        objectsFromCSVRows,
         redundantCells: [],
       });
     });
 
     it('should throw an error when the CSV rows are empty', () => {
       expect(() =>
-        CsvTransformer.metadataObjectsFromRows({
+        CSVTransformer.metadataObjectsFromRows({
           csvRows: [],
           path: 'csvFilePath',
           headerAttributes: 'attributes',
@@ -212,14 +212,14 @@ describe('csvTransformer', () => {
       ).toThrow();
     });
     it('should transform CSV rows into metadata objects and redundant cells', () => {
-      const result = CsvTransformer.metadataObjectsFromRows({
+      const result = CSVTransformer.metadataObjectsFromRows({
         csvRows: csvRowsWithRedundantCells,
         path: 'csvFilePath',
         headerAttributes: 'attributes',
         headerProperties: 'properties',
       });
       expect(result).toEqual({
-        objectsFromCsvRows,
+        objectsFromCSVRows,
         redundantCells: [
           { cell: '', index: 0 },
           { cell: '', index: 0 },

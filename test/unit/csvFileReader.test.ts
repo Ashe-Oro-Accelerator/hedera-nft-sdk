@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { CSVFileReader } from '../../src/CsvFileReader';
+import { CSVFileReader } from '../../src/CSVFileReader';
 import { CSVRow } from '../../src/types/csv';
 import { Readable } from 'stream';
 
