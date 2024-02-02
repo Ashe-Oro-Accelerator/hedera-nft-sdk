@@ -1,11 +1,11 @@
 import fs from 'fs';
 import { dictionary } from '../constants/dictionary';
 import { CSVFileReader } from '../../CSVFileReader';
-import type { CSVRow, CSVRowAsObject, RedundantCell } from '../../types/csv';
+import type { CSVRow, CSVRowAsObject } from '../../types/csv';
 
 const OMITTED_HEADER_COUNT = 1;
 
-export class CSVTransformer {
+export class JsonMetadataFromCSVConverter {
   static saveCSVRowsAsJsonFiles = (metadataFromCSV: CSVRowAsObject[], folderPath: string): void => {
     if (fs.existsSync(folderPath)) {
       fs.rmSync(folderPath, { recursive: true, force: true });
@@ -23,18 +23,13 @@ export class CSVTransformer {
     csvRowAsObject: CSVRowAsObject,
     header: string,
     cell: string,
-    index: number,
     secondHeader: CSVRow,
     headerAttributes: string,
     headerProperties: string,
     attributes: Record<string, string>[],
-    properties: Record<string, string>,
-    redundantCells: RedundantCell[]
+    properties: Record<string, string>
   ): CSVRowAsObject {
-    // in csv-parser cells without corresponding headers start with "_"
-    if (header.startsWith('_')) {
-      redundantCells.push({ cell, index });
-    } else if (cell && header.includes(headerAttributes)) {
+    if (cell && header.includes(headerAttributes)) {
       attributes.push({ trait_type: secondHeader[header], value: cell });
     } else if (cell && header.includes(headerProperties)) {
       properties[secondHeader[header]] = cell;
@@ -45,46 +40,44 @@ export class CSVTransformer {
     return csvRowAsObject;
   }
 
-  static metadataObjectsFromRows({
-    csvRows,
-    path,
+  static parseCSVRowsToMetadataObjects({
+    csvParsedRows,
+    csvFilePath,
     headerAttributes,
     headerProperties,
   }: {
-    csvRows: CSVRow[];
-    path: string;
+    csvParsedRows: CSVRow[];
+    csvFilePath: string;
     headerAttributes: string;
     headerProperties: string;
-  }): {
-    objectsFromCSVRows: CSVRowAsObject[];
-    redundantCells: RedundantCell[];
-  } {
-    if (csvRows.length <= CSVFileReader.AMOUNT_OF_HEADERS - OMITTED_HEADER_COUNT) {
-      throw new Error(dictionary.csvToJson.csvFileIsEmpty(path));
+  }): CSVRowAsObject[] {
+    if (csvParsedRows.length <= CSVFileReader.AMOUNT_OF_HEADERS - OMITTED_HEADER_COUNT) {
+      throw new Error(dictionary.csvToJson.csvFileIsEmpty(csvFilePath));
     }
-    const redundantCells: { cell: string; index: number }[] = [];
-    const secondHeader = csvRows[0];
-    csvRows.shift();
 
-    const transformedRows = csvRows.map((csvRow, index): CSVRowAsObject => {
-      const csvRowAsEntries = Object.entries(csvRow);
+    const secondHeader = csvParsedRows[0];
+    csvParsedRows.shift();
+
+    const metadataObjectsFromCSVRows = csvParsedRows.map((csvRow): CSVRowAsObject => {
+      const csvRowKeyValuesAsEntries = Object.entries(csvRow);
       const properties: Record<string, string> = {};
       const attributes: Record<string, string>[] = [];
 
-      const result = csvRowAsEntries.reduce<CSVRowAsObject>((acc, [header, cell]) => {
-        return this.processCSVRowEntry(
-          acc,
-          header,
-          cell,
-          index,
-          secondHeader,
-          headerAttributes,
-          headerProperties,
-          attributes,
-          properties,
-          redundantCells
-        );
-      }, {});
+      const result = csvRowKeyValuesAsEntries.reduce<CSVRowAsObject>(
+        (currentMetadataObject, [header, cell]) => {
+          return this.processCSVRowEntry(
+            currentMetadataObject,
+            header,
+            cell,
+            secondHeader,
+            headerAttributes,
+            headerProperties,
+            attributes,
+            properties
+          );
+        },
+        {}
+      );
 
       if (Object.keys(properties).length) {
         result.properties = properties;
@@ -97,6 +90,6 @@ export class CSVTransformer {
       return result;
     });
 
-    return { objectsFromCSVRows: transformedRows, redundantCells };
+    return metadataObjectsFromCSVRows;
   }
 }

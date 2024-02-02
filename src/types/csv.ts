@@ -10,8 +10,3 @@ export type PropertyFromCSVFile = Record<string, string>;
 export interface CSVRowAsObject {
   [key: string]: string | AttributeObjectFromCSVFile | PropertyFromCSVFile | undefined | BufferFile;
 }
-
-export interface RedundantCell {
-  cell: string;
-  index: number;
-}

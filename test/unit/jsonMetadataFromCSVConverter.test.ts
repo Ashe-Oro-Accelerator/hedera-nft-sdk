@@ -1,7 +1,7 @@
 import fs from 'fs';
 import cloneDeep from 'lodash/cloneDeep';
-import { CSVRow, CSVRowAsObject, RedundantCell } from '../../src/types/csv';
-import { CSVTransformer } from '../../src/utils/services/csvTransformer';
+import { CSVRow, CSVRowAsObject } from '../../src/types/csv';
+import { JsonMetadataFromCSVConverter } from '../../src/utils/services/JsonMetadataFromCSVConverter';
 import {
   JSON_METADATA_UNIT_TESTS_OUTPUT_METADATA_FOLDER_PATH,
   JSON_METADATA_UNIT_TESTS_OUTPUT_NEW_METADATA_FOLDER_PATH,
@@ -40,59 +40,6 @@ const csvRows: CSVRow[] = [
   },
 ];
 
-const csvRowsWithRedundantCells: CSVRow[] = [
-  {
-    name: '',
-    creator: '',
-    description: '',
-    properties_1: 'url',
-    properties_2: 'url',
-    attributes_1: 'color',
-    attributes_2: 'color',
-    attributes_3: '',
-  },
-  {
-    name: 'Example NFT 1',
-    creator: 'Hedera',
-    description: 'This is an example NFT 2',
-    properties_1: 'Cool collection',
-    properties_2: 'https://nft.com/mycollection/1',
-    attributes_1: 'red',
-    attributes_2: 'long',
-    attributes_3: '',
-    attributes_4: '',
-    attributes_5: '',
-    attributes_6: '',
-    attributes_7: '',
-    attributes_8: '',
-    attributes_9: '',
-    attributes_10: '',
-    attributes_11: '',
-    attributes_12: '',
-    attributes_13: '',
-    attributes_14: '',
-    attributes_15: '',
-    _20: '',
-    _21: '',
-    _22: '',
-    _23: '',
-    _24: '',
-    _25: '',
-    _26: 'adasd',
-    _27: '',
-  },
-  {
-    name: 'Example NFT 2',
-    creator: 'Hedera',
-    description: 'This is an example NFT 2',
-    properties_1: 'Cool collection',
-    properties_2: 'https://nft.com/mycollection/2',
-    attributes_1: 'black',
-    attributes_2: 'short',
-    attributes_3: '',
-  },
-];
-
 const objectsFromCSVRows = [
   {
     name: 'Example NFT 1',
@@ -116,21 +63,19 @@ const objectsFromCSVRows = [
   },
 ];
 
-describe('csvTransformer', () => {
+describe('JsonMetadataFromCSVConverter', () => {
   describe('saveCSVRowsAsJsonFiles', () => {
     it('should save content of CSVRowAsObject[] to json files', () => {
-      const csvRowAsObjects: {
-        objectsFromCSVRows: CSVRowAsObject[];
-        redundantCells: RedundantCell[];
-      } = CSVTransformer.metadataObjectsFromRows({
-        csvRows: cloneDeep(csvRows),
-        path: 'csvFilePath',
-        headerAttributes: 'attributes',
-        headerProperties: 'properties',
-      });
+      const metadataObjectsFromCSVRows: CSVRowAsObject[] =
+        JsonMetadataFromCSVConverter.parseCSVRowsToMetadataObjects({
+          csvParsedRows: cloneDeep(csvRows),
+          csvFilePath: 'csvFilePath',
+          headerAttributes: 'attributes',
+          headerProperties: 'properties',
+        });
 
-      CSVTransformer.saveCSVRowsAsJsonFiles(
-        csvRowAsObjects.objectsFromCSVRows,
+      JsonMetadataFromCSVConverter.saveCSVRowsAsJsonFiles(
+        metadataObjectsFromCSVRows,
         JSON_METADATA_UNIT_TESTS_OUTPUT_METADATA_FOLDER_PATH
       );
 
@@ -151,18 +96,16 @@ describe('csvTransformer', () => {
     });
 
     it('should create directory if path do not point to directory save content of CSVRowAsObject[] to json files', () => {
-      const csvRowAsObjects: {
-        objectsFromCSVRows: CSVRowAsObject[];
-        redundantCells: RedundantCell[];
-      } = CSVTransformer.metadataObjectsFromRows({
-        csvRows: cloneDeep(csvRows),
-        path: 'csvFilePath',
-        headerAttributes: 'attributes',
-        headerProperties: 'properties',
-      });
+      const metadataObjectsFromCSVRows: CSVRowAsObject[] =
+        JsonMetadataFromCSVConverter.parseCSVRowsToMetadataObjects({
+          csvParsedRows: cloneDeep(csvRows),
+          csvFilePath: 'csvFilePath',
+          headerAttributes: 'attributes',
+          headerProperties: 'properties',
+        });
 
-      CSVTransformer.saveCSVRowsAsJsonFiles(
-        csvRowAsObjects.objectsFromCSVRows,
+      JsonMetadataFromCSVConverter.saveCSVRowsAsJsonFiles(
+        metadataObjectsFromCSVRows,
         JSON_METADATA_UNIT_TESTS_OUTPUT_NEW_METADATA_FOLDER_PATH
       );
 
@@ -189,48 +132,24 @@ describe('csvTransformer', () => {
 
   describe('metadataObjectsFromRows', () => {
     it('should transform CSV rows into metadata objects', () => {
-      const result = CSVTransformer.metadataObjectsFromRows({
-        csvRows: csvRows,
-        path: 'csvFilePath',
+      const result = JsonMetadataFromCSVConverter.parseCSVRowsToMetadataObjects({
+        csvParsedRows: csvRows,
+        csvFilePath: 'csvFilePath',
         headerAttributes: 'attributes',
         headerProperties: 'properties',
       });
-      expect(result).toEqual({
-        objectsFromCSVRows,
-        redundantCells: [],
-      });
+      expect(result).toEqual(objectsFromCSVRows);
     });
 
     it('should throw an error when the CSV rows are empty', () => {
       expect(() =>
-        CSVTransformer.metadataObjectsFromRows({
-          csvRows: [],
-          path: 'csvFilePath',
+        JsonMetadataFromCSVConverter.parseCSVRowsToMetadataObjects({
+          csvParsedRows: [],
+          csvFilePath: 'csvFilePath',
           headerAttributes: 'attributes',
           headerProperties: 'properties',
         })
       ).toThrow();
-    });
-    it('should transform CSV rows into metadata objects and redundant cells', () => {
-      const result = CSVTransformer.metadataObjectsFromRows({
-        csvRows: csvRowsWithRedundantCells,
-        path: 'csvFilePath',
-        headerAttributes: 'attributes',
-        headerProperties: 'properties',
-      });
-      expect(result).toEqual({
-        objectsFromCSVRows,
-        redundantCells: [
-          { cell: '', index: 0 },
-          { cell: '', index: 0 },
-          { cell: '', index: 0 },
-          { cell: '', index: 0 },
-          { cell: '', index: 0 },
-          { cell: '', index: 0 },
-          { cell: 'adasd', index: 0 },
-          { cell: '', index: 0 },
-        ],
-      });
     });
   });
 });

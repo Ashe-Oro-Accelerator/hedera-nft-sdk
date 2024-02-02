@@ -4,6 +4,7 @@ import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
 import { createJsonMetadataFromCSV } from './functions/createJsonMetadataFromCSV';
 import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
+import { JsonMetadataFromCSVInterface } from './types/jsonMetadataFromCSV';
 
 export class HederaNFTSDK {
   accountId: string;
@@ -37,12 +38,12 @@ export class HederaNFTSDK {
   }
 
   createJsonMetadataFromCSV(
-    jsonMetadataOutputFolderPath: string,
+    savedJsonFilesLocation: string,
     csvFilePath: string,
     nftsLimit?: number
-  ) {
+  ): Promise<JsonMetadataFromCSVInterface> {
     return createJsonMetadataFromCSV({
-      jsonMetadataOutputFolderPath,
+      savedJsonFilesLocation,
       csvFilePath,
       nftsLimit,
     });

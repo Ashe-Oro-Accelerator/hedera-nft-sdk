@@ -2,62 +2,71 @@ import { dictionary } from '../utils/constants/dictionary';
 import { Hip412Metadata } from '../utils/hedera/hip412-metadata';
 import { errorToMessage } from '../utils/helpers/errorToMessage';
 import { CSVFileReader } from '../CSVFileReader';
-import { CSVTransformer } from '../utils/services/csvTransformer';
-import type { RedundantCell } from '../types/csv';
-import forEach from 'lodash/forEach';
+import { JsonMetadataFromCSVConverter } from '../utils/services/JsonMetadataFromCSVConverter';
+import { CSVRowAsObject } from '../types/csv';
+import { JsonMetadataFromCSVInterface } from '../types/jsonMetadataFromCSV';
+
+const validateMetadataObjects = (
+  metadataObjectsFromCSVRows: CSVRowAsObject[],
+  csvFilePath: string
+): { metadataObjectsValidationErrors: string[]; missingAttributesErrors: string[] } => {
+  const metadataObjectsValidationErrors: string[] = [];
+  const missingAttributesErrors: string[] = [];
+
+  for (const [index, metadataObject] of metadataObjectsFromCSVRows.entries()) {
+    try {
+      Hip412Metadata.validateMetadataFromCSV(metadataObject);
+    } catch (e) {
+      metadataObjectsValidationErrors.push(
+        dictionary.csvToJson.errorInRow(index + 1, errorToMessage(e))
+      );
+    }
+
+    if (!metadataObject.attributes) {
+      missingAttributesErrors.push(
+        dictionary.csvToJson.missingAttributesInRow(csvFilePath, index + 1)
+      );
+    }
+  }
+
+  return { metadataObjectsValidationErrors, missingAttributesErrors };
+};
 
 export const createJsonMetadataFromCSV = async ({
-  jsonMetadataOutputFolderPath,
+  savedJsonFilesLocation,
   csvFilePath,
   nftsLimit,
 }: {
-  jsonMetadataOutputFolderPath: string;
+  savedJsonFilesLocation: string;
   csvFilePath: string;
   nftsLimit?: number;
-}): Promise<
-  {
-    errors: string[];
-    redundantCells: RedundantCell[];
-    noAttributesFileLocation: string[];
-    savedJsonFilesLocation: string;
-  } & {
-    redundantCells: RedundantCell[];
-  }
-> => {
-  const csvFile = await CSVFileReader.readCSVFile(csvFilePath, {
+}): Promise<JsonMetadataFromCSVInterface> => {
+  const csvParsedRows = await CSVFileReader.readCSVFile(csvFilePath, {
     limit: nftsLimit,
   });
 
-  const { objectsFromCSVRows, redundantCells } = CSVTransformer.metadataObjectsFromRows({
-    csvRows: csvFile,
-    path: csvFilePath,
+  const metadataObjectsFromCSVRows = JsonMetadataFromCSVConverter.parseCSVRowsToMetadataObjects({
+    csvParsedRows,
+    csvFilePath,
     headerAttributes: CSVFileReader.ATTRIBUTES,
     headerProperties: CSVFileReader.PROPERTIES,
   });
 
-  const csvValidationErrors: string[] = [];
+  const { metadataObjectsValidationErrors, missingAttributesErrors } = validateMetadataObjects(
+    metadataObjectsFromCSVRows,
+    csvFilePath
+  );
 
-  forEach(objectsFromCSVRows, (metadata, index) => {
-    try {
-      Hip412Metadata.validateMetadataFromCSV({ ...metadata });
-    } catch (e) {
-      csvValidationErrors.push(dictionary.csvToJson.errorInRow(index + 1, errorToMessage(e)));
-    }
-  });
-
-  CSVTransformer.saveCSVRowsAsJsonFiles(objectsFromCSVRows, jsonMetadataOutputFolderPath);
-
-  const noAttributesRowsLocations = objectsFromCSVRows.reduce<string[]>((acc, row, index) => {
-    if (!row.attributes) {
-      acc.push(dictionary.csvToJson.missingAttributesInRow(csvFilePath, index + 1));
-    }
-    return acc;
-  }, []);
+  JsonMetadataFromCSVConverter.saveCSVRowsAsJsonFiles(
+    metadataObjectsFromCSVRows,
+    savedJsonFilesLocation
+  );
 
   return {
-    errors: [...csvValidationErrors],
-    redundantCells,
-    noAttributesFileLocation: noAttributesRowsLocations,
-    savedJsonFilesLocation: jsonMetadataOutputFolderPath,
+    errors: {
+      metadataObjectsValidationErrors,
+      missingAttributesErrors,
+    },
+    savedJsonFilesLocation,
   };
 };

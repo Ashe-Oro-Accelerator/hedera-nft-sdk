@@ -60,10 +60,10 @@ export class CSVFileReader {
 
     // TODO: try to simplyfy this
     if (header.header === this.ATTRIBUTES) {
-      currentType = 'attributes';
+      currentType = this.ATTRIBUTES;
       attributesIndex++;
     } else if (header.header === this.PROPERTIES) {
-      currentType = 'properties';
+      currentType = this.PROPERTIES;
       propertyIndex = 1;
     } else if (!currentType) {
       return { result: header.header, currentType, propertyIndex, attributesIndex };
@@ -98,14 +98,14 @@ export class CSVFileReader {
   }
 
   static async readCSVFile(
-    fullPath: string,
+    absolutePath: string,
     config?: {
       limit?: number;
     }
   ): Promise<CSVRow[]> {
     const separator = selectSeparator();
     const rows: CSVRow[] = [];
-    const readStream = fs.createReadStream(fullPath);
+    const readStream = fs.createReadStream(absolutePath);
     const headersErrors: string[] = [];
 
     try {
