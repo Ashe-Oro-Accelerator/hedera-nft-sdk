@@ -1,19 +1,7 @@
-import { nftSDK } from './e2eConsts';
-import { beforeEach } from 'node:test';
-import { HederaNFTSDK } from '../../src/HederaNFTSDK';
-import {
-  longE2ETimeout,
-  myAccountId,
-  myPrivateKey,
-  pathToOneLineCSV,
-  pathToRowCSV,
-} from '../__mocks__/consts';
+import { nftSDK, operatorPrivateKey } from './e2eConsts';
+import { longE2ETimeout, pathToOneLineCSV, pathToRowCSV } from '../__mocks__/consts';
 import errors from '../../src/dictionary/errors.json';
 import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
-
-beforeEach(async () => {
-  new HederaNFTSDK(myAccountId, myPrivateKey);
-});
 
 afterAll(async () => {
   nftSDK.client.close();
@@ -30,7 +18,7 @@ describe('mintUniqueMetadata function e2e', () => {
       const mintedMetadata = await nftSDK.mintUniqueMetadata({
         tokenId,
         batchSize: 2,
-        supplyKey: PrivateKey.fromString(myPrivateKey),
+        supplyKey: PrivateKey.fromString(operatorPrivateKey),
         pathToMetadataURIsFile: pathToOneLineCSV,
       });
 
@@ -62,7 +50,7 @@ describe('mintUniqueMetadata function e2e', () => {
       const mintedMetadata = await nftSDK.mintUniqueMetadata({
         tokenId,
         batchSize: 2,
-        supplyKey: PrivateKey.fromString(myPrivateKey),
+        supplyKey: PrivateKey.fromString(operatorPrivateKey),
         pathToMetadataURIsFile: pathToRowCSV,
       });
 
@@ -93,7 +81,7 @@ describe('mintUniqueMetadata function e2e', () => {
       const mintedMetadata = await nftSDK.mintUniqueMetadata({
         tokenId,
         batchSize: 2,
-        supplyKey: PrivateKey.fromString(myPrivateKey),
+        supplyKey: PrivateKey.fromString(operatorPrivateKey),
         metadata: ['https://www.youtube.com1', 'https://www.youtube.com2'],
       });
 
@@ -121,7 +109,7 @@ describe('mintUniqueMetadata function e2e', () => {
       nftSDK.mintUniqueMetadata({
         tokenId: invalidTokenId,
         batchSize: 2,
-        supplyKey: PrivateKey.fromString(myPrivateKey),
+        supplyKey: PrivateKey.fromString(operatorPrivateKey),
         pathToMetadataURIsFile: pathToRowCSV,
       })
     ).rejects.toThrow(errors.mintingError);

@@ -13,7 +13,14 @@ export const mintUniqueMetadataFunction = async ({
   pathToMetadataURIsFile,
   metadataArray,
 }: MintUniqueTokenType) => {
-  validateProps({ batchSize, tokenId, pathToMetadataURIsFile, supplyKey, metadataArray });
+  validateProps({
+    batchSize,
+    tokenId,
+    pathToMetadataURIsFile,
+    supplyKey,
+    metadataArray,
+    isUnique: true,
+  });
   const mintedNFTs: MintedNFTType[] = [];
 
   const metaData = pathToMetadataURIsFile

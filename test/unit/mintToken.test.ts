@@ -39,12 +39,31 @@ describe('mintToken', () => {
     expect(result).toEqual({ status: Status.Success });
   });
 
-  it('should throw error when CID is longer than 100', async () => {
+  it('should return Success status when metadata is 99 characters long', async () => {
     const mockClient = {} as Client;
-    const mockMetaData = [
-      'http://example.com/longer-than-100-characters-long-string',
-      'http://example.com/longer-than-100-characters-long-string-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16',
-    ];
+    const mockMetaData = ['a'.repeat(99)]; // 99 characters
+    const mockTokenId = 'tokenId';
+    const mockSupplyKey = PrivateKey.fromString(myPrivateKey);
+
+    const result = await mintToken(mockMetaData, mockTokenId, mockSupplyKey, mockClient);
+
+    expect(result).toEqual({ status: Status.Success });
+  });
+
+  it('should return Success status when metadata is 100 characters long', async () => {
+    const mockClient = {} as Client;
+    const mockMetaData = ['a'.repeat(100)]; // 100 characters
+    const mockTokenId = 'tokenId';
+    const mockSupplyKey = PrivateKey.fromString(myPrivateKey);
+
+    const result = await mintToken(mockMetaData, mockTokenId, mockSupplyKey, mockClient);
+
+    expect(result).toEqual({ status: Status.Success });
+  });
+
+  it('should throw error when metadata is 101 characters long', async () => {
+    const mockClient = {} as Client;
+    const mockMetaData = ['a'.repeat(101)]; // 101 characters
     const mockTokenId = 'tokenId';
     const mockSupplyKey = PrivateKey.fromString(myPrivateKey);
 
