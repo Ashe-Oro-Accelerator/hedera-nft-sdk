@@ -136,6 +136,7 @@ export class CSVFileReader {
           });
       });
     } catch (e) {
+      // We want to throw only error related to CSV headers. In this case we want to ignore errors like limit for example and return rows as it is so the whole process can continue.
       if (e instanceof CSVReaderError) {
         throw e;
       }
