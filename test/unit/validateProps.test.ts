@@ -1,6 +1,6 @@
 import { PrivateKey } from '@hashgraph/sdk';
 import errors from '../../src/dictionary/errors.json';
-import { validateProps } from '../../src/utils/validateProps';
+import { validateProps, validatePropsForUniqueNFTMinting } from '../../src/utils/validateProps';
 describe('validateProps_Value_Errors', () => {
   it('should throw an error if batchSize is greater than 10', () => {
     expect(() => validateProps({ batchSize: 11 })).toThrow(errors.maxBatchSize);
@@ -55,23 +55,19 @@ describe('validateProps_MultipleProps_Errors', () => {
     ).toThrow(errors.metadataRequired);
   });
 
-  it('should not throw an error if isUnique is false and metadataArray is defined and has a value, but pathToMetadataURIsFile is not defined', () => {
-    expect(() =>
-      validateProps({ metadataArray: ['metadata1', 'metadata2'], isUnique: false })
-    ).not.toThrow();
+  it('should not throw an error if metadataArray is defined and has a value, but pathToMetadataURIsFile is not defined', () => {
+    expect(() => validateProps({ metadataArray: ['metadata1', 'metadata2'] })).not.toThrow();
   });
 
-  it('should not throw an error if isUnique is false and pathToMetadataURIsFile is defined and has a value, but metadataArray is not defined', () => {
-    expect(() =>
-      validateProps({ pathToMetadataURIsFile: 'path/to/file', isUnique: false })
-    ).not.toThrow();
+  it('should not throw an error if pathToMetadataURIsFile is defined and has a value, but metadataArray is not defined', () => {
+    expect(() => validateProps({ pathToMetadataURIsFile: 'path/to/file' })).not.toThrow();
   });
 });
 
-describe('validateProps_isUnique', () => {
+describe('validateProps_For_Unique', () => {
   it('should not throw an error if isUnique is true and metadataArray is passed', () => {
     expect(() =>
-      validateProps({
+      validatePropsForUniqueNFTMinting({
         metadataArray: ['metadata1', 'metadata2'],
         isUnique: true,
       })
@@ -80,7 +76,7 @@ describe('validateProps_isUnique', () => {
 
   it('should not throw an error if isUnique is true and pathToMetadataURIsFile is passed', () => {
     expect(() =>
-      validateProps({
+      validatePropsForUniqueNFTMinting({
         pathToMetadataURIsFile: 'path/to/file',
         isUnique: true,
       })
@@ -89,7 +85,7 @@ describe('validateProps_isUnique', () => {
 
   it('should throw an error if isUnique is false and metadataArray is undefined', () => {
     expect(() =>
-      validateProps({
+      validatePropsForUniqueNFTMinting({
         metadataArray: undefined,
         isUnique: false,
       })
@@ -98,7 +94,7 @@ describe('validateProps_isUnique', () => {
 
   it('should throw an error if isUnique is false and pathToMetadataURIsFile is undefined', () => {
     expect(() =>
-      validateProps({
+      validatePropsForUniqueNFTMinting({
         pathToMetadataURIsFile: undefined,
         isUnique: false,
       })
@@ -107,7 +103,7 @@ describe('validateProps_isUnique', () => {
 
   it('should throw an error if isUnique is true and metadataArray and pathToMetadataURIsFile are undefined', () => {
     expect(() =>
-      validateProps({
+      validatePropsForUniqueNFTMinting({
         pathToMetadataURIsFile: undefined,
         metadataArray: undefined,
         isUnique: true,
@@ -117,7 +113,7 @@ describe('validateProps_isUnique', () => {
 
   it('should throw an error if isUnique is true and metadataArray is undefined', () => {
     expect(() =>
-      validateProps({
+      validatePropsForUniqueNFTMinting({
         metadataArray: undefined,
         isUnique: true,
       })
@@ -126,7 +122,7 @@ describe('validateProps_isUnique', () => {
 
   it('should throw an error if isUnique is true and pathToMetadataURIsFile is undefined', () => {
     expect(() =>
-      validateProps({
+      validatePropsForUniqueNFTMinting({
         pathToMetadataURIsFile: undefined,
         isUnique: true,
       })

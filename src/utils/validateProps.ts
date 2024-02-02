@@ -9,7 +9,11 @@ export const validateProps = (props: PropsType) => {
   validateMetaData(props);
   validateMetadataArray(props);
   validatePathToMetadataURIsFile(props);
-  validateIsUnique(props);
+};
+
+export const validatePropsForUniqueNFTMinting = (props: PropsType) => {
+  validateProps(props);
+  validateMetadataForUnique(props);
 };
 
 const validateSupplyKey = (props: PropsType) => {
@@ -56,7 +60,7 @@ const validatePathToMetadataURIsFile = (props: PropsType) => {
   }
 };
 
-const validateIsUnique = (props: PropsType) => {
+const validateMetadataForUnique = (props: PropsType) => {
   if (props.isUnique) {
     if (
       (!Object.prototype.hasOwnProperty.call(props, 'metadataArray') || !props.metadataArray) &&
