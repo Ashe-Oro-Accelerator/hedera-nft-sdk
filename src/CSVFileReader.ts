@@ -84,12 +84,12 @@ export class CSVFileReader {
       refToErrorArray.push(dictionary.csvToJson.errorInCellWithHeader(1, header.index + 1));
     }
 
-    if (currentType === 'properties') {
+    if (currentType === this.PROPERTIES) {
       result = `${this.PROPERTIES}_${propertyIndex}`;
       propertyIndex++;
     }
 
-    if (currentType === 'attributes') {
+    if (currentType === this.ATTRIBUTES) {
       result = `${this.ATTRIBUTES}_${attributesIndex}`;
       attributesIndex++;
     }
