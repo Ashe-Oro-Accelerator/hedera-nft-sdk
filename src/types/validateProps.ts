@@ -8,7 +8,7 @@ export type PropsType = {
   supplyKey?: PrivateKey;
 };
 
-export type validateUniqueProps = {
+export type uniqueMintingValidationProps = {
   batchSize?: number;
   tokenId?: string;
   supplyKey?: PrivateKey;

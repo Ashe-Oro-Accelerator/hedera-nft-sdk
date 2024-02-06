@@ -1,7 +1,7 @@
 import {
   PropsType,
   validateCreateCollectionProps,
-  validateUniqueProps,
+  uniqueMintingValidationProps,
 } from '../types/validateProps';
 import { dictionary } from './constants/dictionary';
 
@@ -13,7 +13,7 @@ export const validateProps = (props: PropsType) => {
   validateMetaData(props);
 };
 
-export const validatePropsForUniqueNFTMinting = (props: validateUniqueProps) => {
+export const validatePropsForUniqueNFTMinting = (props: uniqueMintingValidationProps) => {
   validateMetadataForUnique(props);
   validateBatchSize(props);
   validateTokenId(props);
@@ -92,7 +92,7 @@ const validateMetaData = (props: PropsType) => {
   }
 };
 
-const validateMetadataForUnique = (props: validateUniqueProps) => {
+const validateMetadataForUnique = (props: uniqueMintingValidationProps) => {
   if (
     (!Object.prototype.hasOwnProperty.call(props, 'metadataArray') || !props.metadataArray) &&
     (!Object.prototype.hasOwnProperty.call(props, 'pathToMetadataURIsFile') ||
