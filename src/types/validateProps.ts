@@ -1,14 +1,23 @@
 import { Client, PrivateKey } from '@hashgraph/sdk';
 
 export type PropsType = {
-  client?: Client;
   batchSize?: number;
   tokenId?: string;
   amount?: number;
   metaData?: string;
   supplyKey?: PrivateKey;
+};
+
+export type validateUniqueProps = {
+  batchSize?: number;
+  tokenId?: string;
+  supplyKey?: PrivateKey;
   pathToMetadataURIsFile?: string;
   metadataArray?: string[];
+};
+
+export type validateCreateCollectionProps = {
+  client?: Client;
   collectionName?: string;
   collectionSymbol?: string;
   treasuryAccountPrivateKey?: string;

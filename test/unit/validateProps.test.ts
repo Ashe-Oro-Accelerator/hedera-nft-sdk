@@ -78,14 +78,6 @@ describe('validateProps_Success', () => {
     const privateKey = PrivateKey.generate();
     expect(() => validateProps({ supplyKey: privateKey })).not.toThrow();
   });
-
-  it('should not throw an error if pathToMetadataURIsFile is a string', () => {
-    expect(() => validateProps({ pathToMetadataURIsFile: 'path/to/file' })).not.toThrow();
-  });
-
-  it('should not throw an error if metadataArray is an array', () => {
-    expect(() => validateProps({ metadataArray: ['metadata1', 'metadata2'] })).not.toThrow();
-  });
 });
 
 describe('validateProps_For_Unique', () => {
@@ -116,7 +108,7 @@ describe('validateProps_For_Unique', () => {
   it('should throw an error if validatePropsForUniqueNFTMinting and metadataArray is undefined', () => {
     expect(() =>
       validatePropsForUniqueNFTMinting({
-        amount: 5,
+        batchSize: 5,
       })
     ).toThrow(dictionary.mintToken.csvOrArrayRequired);
   });

@@ -1,6 +1,6 @@
 import { MintedNFTType, MintUniqueTokenType } from '../types/mintToken';
 import { mintToken } from './mintToken';
-import { validateProps } from '../utils/validateProps';
+import { validatePropsForUniqueNFTMinting } from '../utils/validateProps';
 import { MintingError } from '../utils/mintingError';
 import { getDataFromFile } from '../utils/getDataFromFile';
 import { dictionary } from '../utils/constants/dictionary';
@@ -13,7 +13,7 @@ export const mintUniqueMetadataFunction = async ({
   pathToMetadataURIsFile,
   metadataArray,
 }: MintUniqueTokenType) => {
-  validateProps({
+  validatePropsForUniqueNFTMinting({
     batchSize,
     tokenId,
     pathToMetadataURIsFile,
