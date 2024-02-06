@@ -7,13 +7,13 @@ export const validateProps = (props: PropsType) => {
   validateTokenId(props);
   validateAmount(props);
   validateMetaData(props);
-  validateMetadataArray(props);
-  validatePathToMetadataURIsFile(props);
 };
 
 export const validatePropsForUniqueNFTMinting = (props: PropsType) => {
-  validateProps(props);
   validateMetadataForUnique(props);
+  validateMetadataArray(props);
+  validatePathToMetadataURIsFile(props);
+  validateProps(props);
 };
 
 const validateSupplyKey = (props: PropsType) => {
@@ -49,25 +49,23 @@ const validateMetaData = (props: PropsType) => {
 };
 
 const validateMetadataArray = (props: PropsType) => {
-  if (!props.isUnique && Object.prototype.hasOwnProperty.call(props, 'metadataArray')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'metadataArray')) {
     if (!props.metadataArray) throw new Error(errors.metadataRequired);
   }
 };
 
 const validatePathToMetadataURIsFile = (props: PropsType) => {
-  if (!props.isUnique && Object.prototype.hasOwnProperty.call(props, 'pathToMetadataURIsFile')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'pathToMetadataURIsFile')) {
     if (!props.pathToMetadataURIsFile) throw new Error(errors.pathRequired);
   }
 };
 
 const validateMetadataForUnique = (props: PropsType) => {
-  if (props.isUnique) {
-    if (
-      (!Object.prototype.hasOwnProperty.call(props, 'metadataArray') || !props.metadataArray) &&
-      (!Object.prototype.hasOwnProperty.call(props, 'pathToMetadataURIsFile') ||
-        !props.pathToMetadataURIsFile)
-    ) {
-      throw new Error(errors.csvOrArrayRequired);
-    }
+  if (
+    (!Object.prototype.hasOwnProperty.call(props, 'metadataArray') || !props.metadataArray) &&
+    (!Object.prototype.hasOwnProperty.call(props, 'pathToMetadataURIsFile') ||
+      !props.pathToMetadataURIsFile)
+  ) {
+    throw new Error(errors.csvOrArrayRequired);
   }
 };

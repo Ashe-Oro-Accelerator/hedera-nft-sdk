@@ -21,10 +21,6 @@ describe('validateProps_Value_Errors', () => {
   it('should throw an error if supplyKey is not provided', () => {
     expect(() => validateProps({ supplyKey: undefined })).toThrow(errors.supplyKeyRequired);
   });
-
-  it('should throw an error if pathToMetadataURIsFile is not provided', () => {
-    expect(() => validateProps({ pathToMetadataURIsFile: '' })).toThrow(errors.pathRequired);
-  });
 });
 
 describe('validateProps_MultipleProps_Errors', () => {
@@ -44,87 +40,66 @@ describe('validateProps_MultipleProps_Errors', () => {
     expect(() =>
       validateProps({
         supplyKey: undefined,
-        pathToMetadataURIsFile: 'path/to/file',
+        batchSize: 9,
       })
     ).toThrow(errors.supplyKeyRequired);
-  });
-
-  it('should throw an error if metadataArray is undefined and pathToMetadataURIsFile is valid', () => {
-    expect(() =>
-      validateProps({ metadataArray: undefined, pathToMetadataURIsFile: 'path/to/file' })
-    ).toThrow(errors.metadataRequired);
-  });
-
-  it('should not throw an error if metadataArray is defined and has a value, but pathToMetadataURIsFile is not defined', () => {
-    expect(() => validateProps({ metadataArray: ['metadata1', 'metadata2'] })).not.toThrow();
-  });
-
-  it('should not throw an error if pathToMetadataURIsFile is defined and has a value, but metadataArray is not defined', () => {
-    expect(() => validateProps({ pathToMetadataURIsFile: 'path/to/file' })).not.toThrow();
   });
 });
 
 describe('validateProps_For_Unique', () => {
-  it('should not throw an error if isUnique is true and metadataArray is passed', () => {
+  it('should not throw an error if validatePropsForUniqueNFTMinting is true and metadataArray is passed', () => {
     expect(() =>
       validatePropsForUniqueNFTMinting({
         metadataArray: ['metadata1', 'metadata2'],
-        isUnique: true,
       })
     ).not.toThrow();
   });
 
-  it('should not throw an error if isUnique is true and pathToMetadataURIsFile is passed', () => {
+  it('should not throw an error if validatePropsForUniqueNFTMinting is true and pathToMetadataURIsFile is passed', () => {
     expect(() =>
       validatePropsForUniqueNFTMinting({
         pathToMetadataURIsFile: 'path/to/file',
-        isUnique: true,
       })
     ).not.toThrow();
   });
 
-  it('should throw an error if isUnique is false and metadataArray is undefined', () => {
+  it('should throw an error if validatePropsForUniqueNFTMinting is false and metadataArray is undefined', () => {
     expect(() =>
       validatePropsForUniqueNFTMinting({
         metadataArray: undefined,
-        isUnique: false,
-      })
-    ).toThrow(errors.metadataRequired);
-  });
-
-  it('should throw an error if isUnique is false and pathToMetadataURIsFile is undefined', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        pathToMetadataURIsFile: undefined,
-        isUnique: false,
-      })
-    ).toThrow(errors.pathRequired);
-  });
-
-  it('should throw an error if isUnique is true and metadataArray and pathToMetadataURIsFile are undefined', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        pathToMetadataURIsFile: undefined,
-        metadataArray: undefined,
-        isUnique: true,
       })
     ).toThrow(errors.csvOrArrayRequired);
   });
 
-  it('should throw an error if isUnique is true and metadataArray is undefined', () => {
+  it('should throw an error if validatePropsForUniqueNFTMinting is true and metadataArray is undefined', () => {
     expect(() =>
       validatePropsForUniqueNFTMinting({
-        metadataArray: undefined,
-        isUnique: true,
+        amount: 5,
       })
     ).toThrow(errors.csvOrArrayRequired);
   });
 
-  it('should throw an error if isUnique is true and pathToMetadataURIsFile is undefined', () => {
+  it('should not throw an error if validatePropsForUniqueNFTMinting is false and metadataArray is provided', () => {
     expect(() =>
       validatePropsForUniqueNFTMinting({
+        metadataArray: ['metadata1', 'metadata2'],
+      })
+    ).not.toThrow();
+  });
+
+  it('should not throw an error if validatePropsForUniqueNFTMinting is false and pathToMetadataURIsFile is provided', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        pathToMetadataURIsFile: 'path/to/file',
+      })
+    ).not.toThrow();
+  });
+
+  it('should throw an error if validatePropsForUniqueNFTMinting is false and both metadataArray and pathToMetadataURIsFile are undefined', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        metadataArray: undefined,
         pathToMetadataURIsFile: undefined,
-        isUnique: true,
       })
     ).toThrow(errors.csvOrArrayRequired);
   });

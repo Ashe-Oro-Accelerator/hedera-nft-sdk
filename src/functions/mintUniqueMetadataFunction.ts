@@ -19,7 +19,6 @@ export const mintUniqueMetadataFunction = async ({
     pathToMetadataURIsFile,
     supplyKey,
     metadataArray,
-    isUnique: true,
   });
   const mintedNFTs: MintedNFTType[] = [];
 

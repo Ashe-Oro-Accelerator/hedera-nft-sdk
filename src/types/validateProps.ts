@@ -8,5 +8,4 @@ export type PropsType = {
   supplyKey?: PrivateKey;
   pathToMetadataURIsFile?: string;
   metadataArray?: string[];
-  isUnique?: boolean;
 };
