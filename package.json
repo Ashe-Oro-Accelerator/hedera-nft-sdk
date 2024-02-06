@@ -61,12 +61,11 @@
     "zod-error": "^1.5.0"
   },
   "dependencies": {
+    "@hashgraph/sdk": "^2.40.0",
     "axios": "^1.6.5",
     "csv-parser": "^3.0.0",
-    "file-type": "^19.0.0",
-    "fs-extra": "^11.2.0",
-    "zod": "^3.22.4",
     "dotenv": "^16.3.2",
-    "@hashgraph/sdk": "^2.40.0"
+    "file-type": "^19.0.0",
+    "zod": "^3.22.4"
   }
 }
