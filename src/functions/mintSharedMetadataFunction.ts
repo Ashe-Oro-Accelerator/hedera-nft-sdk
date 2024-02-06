@@ -1,8 +1,8 @@
 import { MintedNFTType, MintTokenType } from '../types/mintToken';
 import { mintToken } from './mintToken';
-import errors from '../dictionary/errors.json';
 import { validateProps } from '../utils/validateProps';
 import { MintingError } from '../utils/mintingError';
+import { dictionary } from '../utils/constants/dictionary';
 
 export const mintSharedMetadataFunction = async ({
   client,
@@ -38,6 +38,6 @@ export const mintSharedMetadataFunction = async ({
 
     return mintedNFTs.flat();
   } catch (error) {
-    throw new MintingError(`${errors.mintingError} ${error}`, mintedNFTs.flat());
+    throw new MintingError(`${dictionary.hederaActions.mintingError} ${error}`, mintedNFTs.flat());
   }
 };

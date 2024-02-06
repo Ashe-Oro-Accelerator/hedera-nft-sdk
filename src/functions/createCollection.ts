@@ -6,7 +6,7 @@ import {
   TokenSupplyType,
   TokenType,
 } from '@hashgraph/sdk';
-import errors from '../dictionary/errors.json';
+import { dictionary } from '../utils/constants/dictionary';
 
 export const createCollectionFunction = async ({
   client,
@@ -19,15 +19,15 @@ export const createCollectionFunction = async ({
   maxSupply,
   customFees,
 }: CreateCollectionType): Promise<string> => {
-  if (!client) throw new Error(errors.clientRequired);
-  if (!collectionName) throw new Error(errors.collectionNameRequired);
-  if (!collectionSymbol) throw new Error(errors.collectionSymbolRequired);
+  if (!client) throw new Error(dictionary.createCollection.clientRequired);
+  if (!collectionName) throw new Error(dictionary.createCollection.collectionNameRequired);
+  if (!collectionSymbol) throw new Error(dictionary.createCollection.collectionSymbolRequired);
 
   if (
     (treasuryAccount && !treasuryAccountPrivateKey) ||
     (!treasuryAccount && treasuryAccountPrivateKey)
   ) {
-    throw new Error(errors.treasuryAccountPrivateKeySignRequired);
+    throw new Error(dictionary.createCollection.treasuryAccountPrivateKeySignRequired);
   }
 
   const treasuryAccountId = treasuryAccount
@@ -90,7 +90,7 @@ export const createCollectionFunction = async ({
   const receipt = await txResponse.getReceipt(client);
 
   if (!receipt.tokenId) {
-    throw new Error(errors.collectionNotCreated);
+    throw new Error(dictionary.createCollection.collectionNotCreated);
   }
 
   return receipt.tokenId.toString();

@@ -3,7 +3,7 @@ import { nftSDK, secondAccountId, secondPrivateKey } from './e2eConsts';
 import { beforeEach } from 'node:test';
 import { HederaNFTSDK } from '../../src/HederaNFTSDK';
 import { myAccountId, myPrivateKey } from '../__mocks__/consts';
-import { getTokenInfo } from '../../src/utils/hedera/utils';
+import { getTokenInfo } from '../../src/utils/hedera/getTokenInfo';
 
 beforeEach(async () => {
   new HederaNFTSDK(myAccountId, myPrivateKey);

@@ -15,7 +15,7 @@ const config: JestConfigWithTsJest = {
   },
   moduleNameMapper: {
     '^@src(.*)$': '<rootDir>/src$1',
-    '^@mocks(.*)$': '<rootDir>/tests/__mocks__$1',
+    '^@mocks(.*)$': '<rootDir>/test/__mocks__$1',
   },
   roots: ['<rootDir>'],
   coveragePathIgnorePatterns: PATHS_TO_EXCLUDE_FROM_TESTS,

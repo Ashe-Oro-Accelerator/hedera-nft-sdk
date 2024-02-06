@@ -2,7 +2,9 @@ import { Client, PrivateKey } from '@hashgraph/sdk';
 import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
+import { createJsonMetadataFromCSV } from './functions/createJsonMetadataFromCSV';
 import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
+import { JsonMetadataFromCSVInterface } from './types/jsonMetadataFromCSV';
 
 export class HederaNFTSDK {
   accountId: string;
@@ -32,6 +34,18 @@ export class HederaNFTSDK {
       treasuryAccount,
       treasuryAccountPrivateKey,
       maxSupply,
+    });
+  }
+
+  createJsonMetadataFromCSV(
+    savedJsonFilesLocation: string,
+    csvFilePath: string,
+    nftsLimit?: number
+  ): Promise<JsonMetadataFromCSVInterface> {
+    return createJsonMetadataFromCSV({
+      savedJsonFilesLocation,
+      csvFilePath,
+      nftsLimit,
     });
   }
 

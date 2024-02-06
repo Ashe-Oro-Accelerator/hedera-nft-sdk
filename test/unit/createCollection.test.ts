@@ -1,7 +1,7 @@
 import { Client, PrivateKey } from '@hashgraph/sdk';
 import { createCollectionFunction } from '../../src/functions/createCollection';
 import { myPrivateKey } from '../__mocks__/consts';
-import errors from '../../src/dictionary/errors.json';
+import { dictionary } from '../../src/utils/constants/dictionary';
 
 jest.mock('@hashgraph/sdk', () => {
   return {
@@ -87,7 +87,7 @@ describe('createCollectionFunction', () => {
         collectionSymbol,
         treasuryAccount: '0.0.4321',
       })
-    ).rejects.toThrow(errors.treasuryAccountPrivateKeySignRequired);
+    ).rejects.toThrow(dictionary.createCollection.treasuryAccountPrivateKeySignRequired);
   });
 
   it('should throw an error when only treasuryAccountPrivateKey is passed', async () => {
@@ -103,7 +103,7 @@ describe('createCollectionFunction', () => {
         collectionSymbol,
         treasuryAccountPrivateKey: '0.0.4321',
       })
-    ).rejects.toThrow(errors.treasuryAccountPrivateKeySignRequired);
+    ).rejects.toThrow(dictionary.createCollection.treasuryAccountPrivateKeySignRequired);
   });
 
   it('should create collection when treasuryAccount and treasuryAccountPrivateKey are passed', async () => {
@@ -139,7 +139,7 @@ describe('createCollectionFunction', () => {
         keys,
         treasuryAccount,
       })
-    ).rejects.toThrow(errors.collectionNameRequired);
+    ).rejects.toThrow(dictionary.createCollection.collectionNameRequired);
   });
 
   it('should throw an error if collectionSymbol is not provided', async () => {
@@ -159,7 +159,7 @@ describe('createCollectionFunction', () => {
         keys,
         treasuryAccount,
       })
-    ).rejects.toThrow(errors.collectionSymbolRequired);
+    ).rejects.toThrow(dictionary.createCollection.collectionSymbolRequired);
   });
 
   it('should create a collection with keys', async () => {
