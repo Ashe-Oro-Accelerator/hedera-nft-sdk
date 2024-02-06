@@ -45,11 +45,15 @@ export class HederaNFTSDK {
     });
   }
 
-  createJsonMetadataFromCSV(
-    savedJsonFilesLocation: string,
-    csvFilePath: string,
-    nftsLimit?: number
-  ): Promise<JsonMetadataFromCSVInterface> {
+  createJsonMetadataFromCSV({
+    savedJsonFilesLocation,
+    csvFilePath,
+    nftsLimit,
+  }: {
+    savedJsonFilesLocation: string;
+    csvFilePath: string;
+    nftsLimit?: number;
+  }): Promise<JsonMetadataFromCSVInterface> {
     return createJsonMetadataFromCSV({
       savedJsonFilesLocation,
       csvFilePath,

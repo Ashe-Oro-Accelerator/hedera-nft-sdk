@@ -129,6 +129,7 @@ describe('createCollectionFunction', () => {
       supply: PrivateKey.fromString(myPrivateKey),
     };
     const treasuryAccount = '0.0.4321';
+    const treasuryAccountPrivateKey = '0.0.4321';
 
     await expect(
       createCollectionFunction({
@@ -138,6 +139,7 @@ describe('createCollectionFunction', () => {
         collectionSymbol,
         keys,
         treasuryAccount,
+        treasuryAccountPrivateKey
       })
     ).rejects.toThrow(dictionary.createCollection.collectionNameRequired);
   });
@@ -149,6 +151,7 @@ describe('createCollectionFunction', () => {
       supply: PrivateKey.fromString(myPrivateKey),
     };
     const treasuryAccount = '0.0.4321';
+    const treasuryAccountPrivateKey = '0.0.4321';
 
     await expect(
       createCollectionFunction({
@@ -158,6 +161,7 @@ describe('createCollectionFunction', () => {
         collectionSymbol: '',
         keys,
         treasuryAccount,
+        treasuryAccountPrivateKey
       })
     ).rejects.toThrow(dictionary.createCollection.collectionSymbolRequired);
   });

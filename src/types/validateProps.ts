@@ -1,6 +1,7 @@
-import { PrivateKey } from '@hashgraph/sdk';
+import { Client, PrivateKey } from '@hashgraph/sdk';
 
 export type PropsType = {
+  client?: Client;
   batchSize?: number;
   tokenId?: string;
   amount?: number;
@@ -8,4 +9,8 @@ export type PropsType = {
   supplyKey?: PrivateKey;
   pathToMetadataURIsFile?: string;
   metadataArray?: string[];
+  collectionName?: string;
+  collectionSymbol?: string;
+  treasuryAccountPrivateKey?: string;
+  treasuryAccount?: string;
 };

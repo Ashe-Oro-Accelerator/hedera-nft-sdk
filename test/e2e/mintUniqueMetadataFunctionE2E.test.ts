@@ -1,5 +1,5 @@
 import { nftSDK, operatorPrivateKey } from './e2eConsts';
-import { longE2ETimeout, pathToOneLineCSV, pathToRowCSV } from '../__mocks__/consts';
+import { LONG_E2E_TIMEOUT, pathToOneLineCSV, pathToRowCSV } from '../__mocks__/consts';
 import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
 import { dictionary } from '../../src/utils/constants/dictionary';
 
@@ -37,7 +37,7 @@ describe('mintUniqueMetadata function e2e', () => {
         expect(nftInfos[0].metadata!.toString()).toEqual(`https://www.youtube.com${index + 1}`);
       }
     },
-    longE2ETimeout
+    LONG_E2E_TIMEOUT
   );
 
   it(
@@ -68,7 +68,7 @@ describe('mintUniqueMetadata function e2e', () => {
         expect(nftInfos[0].metadata!.toString()).toEqual(`https://www.youtube.com${index + 1}`);
       }
     },
-    longE2ETimeout
+    LONG_E2E_TIMEOUT
   );
 
   it(
@@ -99,7 +99,7 @@ describe('mintUniqueMetadata function e2e', () => {
         expect(nftInfos[0].metadata!.toString()).toEqual(`https://www.youtube.com${index + 1}`);
       }
     },
-    longE2ETimeout
+    LONG_E2E_TIMEOUT
   );
 
   it('throws an error when invalid token ID is provided', async () => {

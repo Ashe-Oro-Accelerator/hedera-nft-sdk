@@ -7,6 +7,9 @@ export const validateProps = (props: PropsType) => {
   validateTokenId(props);
   validateAmount(props);
   validateMetaData(props);
+  validateClient(props);
+  validateCollectionName(props);
+  validateCollectionSymbol(props);
 };
 
 export const validatePropsForUniqueNFTMinting = (props: PropsType) => {
@@ -14,6 +17,40 @@ export const validatePropsForUniqueNFTMinting = (props: PropsType) => {
   validateMetadataArray(props);
   validatePathToMetadataURIsFile(props);
   validateProps(props);
+};
+
+export const validatePropsForCreateCollection = (props: PropsType) => {
+  validateAccountAndPrivateKey(props);
+  validateProps(props);
+};
+
+const validateAccountAndPrivateKey = (props: PropsType) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'treasuryAccount') || Object.prototype.hasOwnProperty.call(props, 'treasuryAccountPrivateKey')) {
+    if (
+      (props.treasuryAccount && !props.treasuryAccountPrivateKey) ||
+      (!props.treasuryAccount && props.treasuryAccountPrivateKey)
+    ) {
+      throw new Error(dictionary.createCollection.treasuryAccountPrivateKeySignRequired);
+    }
+  }
+};
+
+const validateCollectionSymbol = (props: PropsType) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'collectionSymbol')) {
+    if (!props.collectionSymbol) throw new Error(dictionary.createCollection.collectionSymbolRequired);
+  }
+};
+
+const validateCollectionName = (props: PropsType) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'collectionName')) {
+    if (!props.collectionName) throw new Error(dictionary.createCollection.collectionNameRequired);
+  }
+};
+
+const validateClient = (props: PropsType) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'client')) {
+    if (!props.client) throw new Error(dictionary.createCollection.clientRequired);
+  }
 };
 
 const validateSupplyKey = (props: PropsType) => {

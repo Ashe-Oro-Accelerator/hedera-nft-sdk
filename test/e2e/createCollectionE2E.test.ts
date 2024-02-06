@@ -2,8 +2,8 @@ import { PrivateKey } from '@hashgraph/sdk';
 import { nftSDK, secondAccountId, secondPrivateKey } from './e2eConsts';
 import { beforeEach } from 'node:test';
 import { HederaNFTSDK } from '../../src/HederaNFTSDK';
-import { longE2ETimeout, myAccountId, myPrivateKey } from '../__mocks__/consts';
-import { getTokenInfo } from '../../src/utils/hedera/utils';
+import { LONG_E2E_TIMEOUT, myAccountId, myPrivateKey } from '../__mocks__/consts';
+import { getTokenInfo } from '../../src/utils/hedera/getTokenInfo';
 
 beforeEach(async () => {
   new HederaNFTSDK(myAccountId, myPrivateKey);
@@ -40,7 +40,7 @@ describe('createCollectionFunction e2e', () => {
       expect(tokenId).toBeDefined();
       expect(tokenInfo.adminKey?.toString()).toEqual(adminKey.publicKey.toStringDer());
     },
-    longE2ETimeout
+    LONG_E2E_TIMEOUT
   );
 
   it('creates a collection with different treasury account', async () => {

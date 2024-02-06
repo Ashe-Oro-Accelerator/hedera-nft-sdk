@@ -1,6 +1,12 @@
 import { PrivateKey } from '@hashgraph/sdk';
-import { validateProps, validatePropsForUniqueNFTMinting } from '../../src/utils/validateProps';
+import {
+  validateProps,
+  validatePropsForCreateCollection,
+  validatePropsForUniqueNFTMinting,
+} from '../../src/utils/validateProps';
 import { dictionary } from '../../src/utils/constants/dictionary';
+import { mockClient } from '../__mocks__/client';
+import { myAccountId, myPrivateKey } from '../__mocks__/consts';
 
 describe('validateProps_Value_Errors', () => {
   it('should throw an error if batchSize is greater than 10', () => {
@@ -31,7 +37,7 @@ describe('validateProps_Value_Errors', () => {
 describe('validateProps_MultipleProps_Errors', () => {
   it('should throw an error if batchSize is undefined and tokenId is valid', () => {
     expect(() => validateProps({ batchSize: undefined, tokenId: 'token123' })).toThrow(
-      dictionary.mintTokenerrors.batchSizeUndefined
+      dictionary.mintToken.batchSizeUndefined
     );
   });
 
@@ -48,65 +54,6 @@ describe('validateProps_MultipleProps_Errors', () => {
         batchSize: 9,
       })
     ).toThrow(dictionary.hederaActions.supplyKeyRequired);
-  });
-});
-
-describe('validateProps_For_Unique', () => {
-  it('should not throw an error if validatePropsForUniqueNFTMinting is true and metadataArray is passed', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        metadataArray: ['metadata1', 'metadata2'],
-      })
-    ).not.toThrow();
-  });
-
-  it('should not throw an error if validatePropsForUniqueNFTMinting is true and pathToMetadataURIsFile is passed', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        pathToMetadataURIsFile: 'path/to/file',
-      })
-    ).not.toThrow();
-  });
-
-  it('should throw an error if validatePropsForUniqueNFTMinting is false and metadataArray is undefined', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        metadataArray: undefined,
-      })
-    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
-  });
-
-  it('should throw an error if validatePropsForUniqueNFTMinting is true and metadataArray is undefined', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        amount: 5,
-      })
-    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
-  });
-
-  it('should not throw an error if validatePropsForUniqueNFTMinting is false and metadataArray is provided', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        metadataArray: ['metadata1', 'metadata2'],
-      })
-    ).not.toThrow();
-  });
-
-  it('should not throw an error if validatePropsForUniqueNFTMinting is false and pathToMetadataURIsFile is provided', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        pathToMetadataURIsFile: 'path/to/file',
-      })
-    ).not.toThrow();
-  });
-
-  it('should throw an error if validatePropsForUniqueNFTMinting is false and both metadataArray and pathToMetadataURIsFile are undefined', () => {
-    expect(() =>
-      validatePropsForUniqueNFTMinting({
-        metadataArray: undefined,
-        pathToMetadataURIsFile: undefined,
-      })
-    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
   });
 });
 
@@ -138,5 +85,102 @@ describe('validateProps_Success', () => {
 
   it('should not throw an error if metadataArray is an array', () => {
     expect(() => validateProps({ metadataArray: ['metadata1', 'metadata2'] })).not.toThrow();
+  });
+});
+
+describe('validateProps_For_Unique', () => {
+  it('should not throw an error if validatePropsForUniqueNFTMinting and metadataArray is passed', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        metadataArray: ['metadata1', 'metadata2'],
+      })
+    ).not.toThrow();
+  });
+
+  it('should not throw an error if validatePropsForUniqueNFTMinting and pathToMetadataURIsFile is passed', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        pathToMetadataURIsFile: 'path/to/file',
+      })
+    ).not.toThrow();
+  });
+
+  it('should throw an error if validatePropsForUniqueNFTMinting and metadataArray is undefined', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        metadataArray: undefined,
+      })
+    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
+  });
+
+  it('should throw an error if validatePropsForUniqueNFTMinting and metadataArray is undefined', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        amount: 5,
+      })
+    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
+  });
+
+  it('should not throw an error if validatePropsForUniqueNFTMinting and metadataArray is provided', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        metadataArray: ['metadata1', 'metadata2'],
+      })
+    ).not.toThrow();
+  });
+
+  it('should not throw an error if validatePropsForUniqueNFTMinting and pathToMetadataURIsFile is provided', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        pathToMetadataURIsFile: 'path/to/file',
+      })
+    ).not.toThrow();
+  });
+
+  it('should throw an error if validatePropsForUniqueNFTMinting and both metadataArray and pathToMetadataURIsFile are undefined', () => {
+    expect(() =>
+      validatePropsForUniqueNFTMinting({
+        metadataArray: undefined,
+        pathToMetadataURIsFile: undefined,
+      })
+    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
+  });
+});
+
+describe('validatePropsForCreateCollection', () => {
+  it('should throw an error if collectionName is not provided', () => {
+    expect(() =>
+      validatePropsForCreateCollection({
+        treasuryAccount: myAccountId,
+        treasuryAccountPrivateKey: myPrivateKey,
+        collectionSymbol: 'TST',
+        collectionName: '',
+        client: mockClient,
+      })
+    ).toThrow(new Error(dictionary.createCollection.collectionNameRequired));
+  });
+
+  it('should throw an error if collectionSymbol is not provided', () => {
+    expect(() =>
+      validatePropsForCreateCollection({
+        treasuryAccount: myAccountId,
+        treasuryAccountPrivateKey: myPrivateKey,
+        collectionName: 'Test Collection',
+        collectionSymbol: '',
+        client: mockClient,
+      })
+    ).toThrow(new Error(dictionary.createCollection.collectionSymbolRequired));
+  });
+
+  it('should throw an error if client is not provided', () => {
+    expect(() =>
+      validatePropsForCreateCollection({
+        treasuryAccount: myAccountId,
+        treasuryAccountPrivateKey: myPrivateKey,
+        collectionName: 'Test Collection',
+        collectionSymbol: 'TST',
+        client: undefined,
+      })
+    ).toThrow(new Error(dictionary.createCollection.clientRequired));
   });
 });
