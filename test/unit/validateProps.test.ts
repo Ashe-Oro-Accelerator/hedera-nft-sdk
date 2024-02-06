@@ -1,38 +1,43 @@
 import { PrivateKey } from '@hashgraph/sdk';
-import errors from '../../src/dictionary/errors.json';
 import { validateProps, validatePropsForUniqueNFTMinting } from '../../src/utils/validateProps';
+import { dictionary } from '../../src/utils/constants/dictionary';
+
 describe('validateProps_Value_Errors', () => {
   it('should throw an error if batchSize is greater than 10', () => {
-    expect(() => validateProps({ batchSize: 11 })).toThrow(errors.maxBatchSize);
+    expect(() => validateProps({ batchSize: 11 })).toThrow(dictionary.hederaActions.maxBatchSize);
   });
 
   it('should throw an error if batchSize is less than 1', () => {
-    expect(() => validateProps({ batchSize: -1 })).toThrow(errors.minBatchSize);
+    expect(() => validateProps({ batchSize: -1 })).toThrow(dictionary.hederaActions.minBatchSize);
   });
 
   it('should throw an error if tokenId is not provided', () => {
-    expect(() => validateProps({ tokenId: '' })).toThrow(errors.tokenIdRequired);
+    expect(() => validateProps({ tokenId: '' })).toThrow(dictionary.hederaActions.tokenIdRequired);
   });
 
   it('should throw an error if metaData is not provided', () => {
-    expect(() => validateProps({ metaData: '' })).toThrow(errors.metadataRequired);
+    expect(() => validateProps({ metaData: '' })).toThrow(
+      dictionary.hederaActions.metadataRequired
+    );
   });
 
   it('should throw an error if supplyKey is not provided', () => {
-    expect(() => validateProps({ supplyKey: undefined })).toThrow(errors.supplyKeyRequired);
+    expect(() => validateProps({ supplyKey: undefined })).toThrow(
+      dictionary.hederaActions.supplyKeyRequired
+    );
   });
 });
 
 describe('validateProps_MultipleProps_Errors', () => {
   it('should throw an error if batchSize is undefined and tokenId is valid', () => {
     expect(() => validateProps({ batchSize: undefined, tokenId: 'token123' })).toThrow(
-      errors.batchSizeUndefined
+      dictionary.mintTokenerrors.batchSizeUndefined
     );
   });
 
   it('should throw an error if amount is undefined and metaData is valid', () => {
     expect(() => validateProps({ amount: undefined, metaData: 'metadata123' })).toThrow(
-      errors.minAmount
+      dictionary.hederaActions.minAmount
     );
   });
 
@@ -42,7 +47,7 @@ describe('validateProps_MultipleProps_Errors', () => {
         supplyKey: undefined,
         batchSize: 9,
       })
-    ).toThrow(errors.supplyKeyRequired);
+    ).toThrow(dictionary.hederaActions.supplyKeyRequired);
   });
 });
 
@@ -68,7 +73,7 @@ describe('validateProps_For_Unique', () => {
       validatePropsForUniqueNFTMinting({
         metadataArray: undefined,
       })
-    ).toThrow(errors.csvOrArrayRequired);
+    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
   });
 
   it('should throw an error if validatePropsForUniqueNFTMinting is true and metadataArray is undefined', () => {
@@ -76,7 +81,7 @@ describe('validateProps_For_Unique', () => {
       validatePropsForUniqueNFTMinting({
         amount: 5,
       })
-    ).toThrow(errors.csvOrArrayRequired);
+    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
   });
 
   it('should not throw an error if validatePropsForUniqueNFTMinting is false and metadataArray is provided', () => {
@@ -101,7 +106,7 @@ describe('validateProps_For_Unique', () => {
         metadataArray: undefined,
         pathToMetadataURIsFile: undefined,
       })
-    ).toThrow(errors.csvOrArrayRequired);
+    ).toThrow(dictionary.mintToken.csvOrArrayRequired);
   });
 });
 

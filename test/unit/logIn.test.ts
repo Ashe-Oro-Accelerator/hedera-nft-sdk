@@ -1,7 +1,7 @@
 import { logIn } from '../../src/functions/logIn';
 import { Client } from '@hashgraph/sdk';
 import { myAccountId, myPrivateKey } from '../__mocks__/consts';
-import errors from '../../src/dictionary/errors.json';
+import { dictionary } from '../../src/utils/constants/dictionary';
 
 jest.mock('@hashgraph/sdk', () => {
   return {
@@ -21,10 +21,14 @@ describe('logIn', () => {
   });
 
   it('should throw an error if myAccountId is not provided', () => {
-    expect(() => logIn({ myAccountId: '', myPrivateKey })).toThrow(errors.myAccountIdRequired);
+    expect(() => logIn({ myAccountId: '', myPrivateKey })).toThrow(
+      dictionary.createCollection.myAccountIdRequired
+    );
   });
 
   it('should throw an error if myPrivateKey is not provided', () => {
-    expect(() => logIn({ myAccountId, myPrivateKey: '' })).toThrow(errors.myPrivateKeyRequired);
+    expect(() => logIn({ myAccountId, myPrivateKey: '' })).toThrow(
+      dictionary.createCollection.myPrivateKeyRequired
+    );
   });
 });

@@ -1,7 +1,7 @@
 import { nftSDK, operatorPrivateKey } from './e2eConsts';
 import { longE2ETimeout, pathToOneLineCSV, pathToRowCSV } from '../__mocks__/consts';
-import errors from '../../src/dictionary/errors.json';
 import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
+import { dictionary } from '../../src/utils/constants/dictionary';
 
 afterAll(async () => {
   nftSDK.client.close();
@@ -112,6 +112,6 @@ describe('mintUniqueMetadata function e2e', () => {
         supplyKey: PrivateKey.fromString(operatorPrivateKey),
         pathToMetadataURIsFile: pathToRowCSV,
       })
-    ).rejects.toThrow(errors.mintingError);
+    ).rejects.toThrow(dictionary.hederaActions.mintingError);
   });
 });

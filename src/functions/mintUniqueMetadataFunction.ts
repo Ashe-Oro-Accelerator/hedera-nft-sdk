@@ -1,9 +1,9 @@
 import { MintedNFTType, MintUniqueTokenType } from '../types/mintToken';
-import errors from '../dictionary/errors.json';
 import { mintToken } from './mintToken';
 import { validateProps } from '../utils/validateProps';
 import { MintingError } from '../utils/mintingError';
 import { getDataFromFile } from '../utils/getDataFromFile';
+import { dictionary } from '../utils/constants/dictionary';
 
 export const mintUniqueMetadataFunction = async ({
   client,
@@ -25,7 +25,7 @@ export const mintUniqueMetadataFunction = async ({
   const metaData = pathToMetadataURIsFile
     ? await getDataFromFile(pathToMetadataURIsFile)
     : metadataArray || [];
-  if (!metaData.length) throw new Error(errors.metadataRequired);
+  if (!metaData.length) throw new Error(dictionary.hederaActions.metadataRequired);
 
   try {
     const numberOfCalls = Math.ceil(metaData.length / batchSize);
@@ -45,7 +45,7 @@ export const mintUniqueMetadataFunction = async ({
       }
     }
   } catch (error) {
-    throw new MintingError(`${errors.mintingError} ${error}`, mintedNFTs.flat());
+    throw new MintingError(`${dictionary.hederaActions.mintingError} ${error}`, mintedNFTs.flat());
   }
 
   return mintedNFTs.flat();

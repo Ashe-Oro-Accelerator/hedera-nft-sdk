@@ -1,7 +1,7 @@
 import { mintToken } from '../../src/functions/mintToken';
 import { Client, PrivateKey, Status } from '@hashgraph/sdk';
 import { myPrivateKey } from '../__mocks__/consts';
-import errors from '../../src/dictionary/errors.json';
+import { dictionary } from '../../src/utils/constants/dictionary';
 
 jest.mock('@hashgraph/sdk', () => ({
   Client: jest.fn(),
@@ -68,7 +68,7 @@ describe('mintToken', () => {
     const mockSupplyKey = PrivateKey.fromString(myPrivateKey);
 
     await expect(mintToken(mockMetaData, mockTokenId, mockSupplyKey, mockClient)).rejects.toThrow(
-      errors.tooLongCID
+      dictionary.mintToken.tooLongCID
     );
   });
 });

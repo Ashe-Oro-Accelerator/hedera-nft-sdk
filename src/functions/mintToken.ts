@@ -1,6 +1,6 @@
 import { Client, Hbar, PrivateKey, TokenMintTransaction } from '@hashgraph/sdk';
 import { mintingMaxTransactionFee } from '../utils/const';
-import errors from '../dictionary/errors.json';
+import { dictionary } from '../utils/constants/dictionary';
 
 export async function mintToken(
   metaData: string[],
@@ -11,7 +11,7 @@ export async function mintToken(
   const CIDs = metaData.map((metaData) => Buffer.from(metaData));
 
   if (CIDs.some((cid) => cid.toString().length > 100)) {
-    throw new Error(errors.tooLongCID);
+    throw new Error(dictionary.mintToken.tooLongCID);
   }
 
   const transaction = new TokenMintTransaction()

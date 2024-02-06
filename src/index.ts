@@ -1,3 +1,1 @@
-import { HederaNFTSDK } from './HederaNFTSDK';
-
-export default HederaNFTSDK;
+export { HederaNFTSDK } from './HederaNFTSDK';

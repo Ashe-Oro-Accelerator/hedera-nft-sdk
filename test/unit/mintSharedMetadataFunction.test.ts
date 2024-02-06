@@ -1,8 +1,8 @@
 import { mintSharedMetadataFunction } from '../../src/functions/mintSharedMetadataFunction';
 import { mintToken } from '../../src/functions/mintToken';
 import { Client, PrivateKey } from '@hashgraph/sdk';
-import errors from '../../src/dictionary/errors.json';
 import { myPrivateKey } from '../__mocks__/consts';
+import { dictionary } from '../../src/utils/constants/dictionary';
 
 jest.mock('../../src/functions/mintToken', () => ({
   mintToken: jest.fn((amount) => {
@@ -148,7 +148,7 @@ describe('mintSharedMetadataFunction', () => {
         amount: mockAmount,
         batchSize: mockBatchSize,
       })
-    ).rejects.toThrow(errors.minBatchSize);
+    ).rejects.toThrow(dictionary.hederaActions.minBatchSize);
   });
 
   it('should handle error when batchSize is higher than 10', async () => {
@@ -174,7 +174,7 @@ describe('mintSharedMetadataFunction', () => {
         amount: mockAmount,
         batchSize: mockBatchSize,
       })
-    ).rejects.toThrow(errors.maxBatchSize);
+    ).rejects.toThrow(dictionary.hederaActions.maxBatchSize);
   });
 
   it('should handle error when metaData is not passed', async () => {
@@ -199,7 +199,7 @@ describe('mintSharedMetadataFunction', () => {
         amount: mockAmount,
         batchSize: mockBatchSize,
       })
-    ).rejects.toThrow(errors.metadataRequired);
+    ).rejects.toThrow(dictionary.hederaActions.metadataRequired);
   });
 
   it('should handle error when tokenId is not passed', async () => {
@@ -224,6 +224,6 @@ describe('mintSharedMetadataFunction', () => {
         amount: mockAmount,
         batchSize: mockBatchSize,
       })
-    ).rejects.toThrow(errors.tokenIdRequired);
+    ).rejects.toThrow(dictionary.hederaActions.tokenIdRequired);
   });
 });
