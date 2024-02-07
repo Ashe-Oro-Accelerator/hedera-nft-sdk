@@ -1,5 +1,14 @@
 import { Client, PrivateKey } from '@hashgraph/sdk';
 
+export type MintUniqueTokenType = {
+  client: Client;
+  tokenId: string;
+  batchSize?: number;
+  supplyKey: PrivateKey;
+  pathToMetadataURIsFile?: string;
+  metadataArray?: string[];
+};
+
 export type MintTokenType = {
   client: Client;
   tokenId: string;

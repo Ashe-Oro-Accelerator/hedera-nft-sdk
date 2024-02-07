@@ -1,6 +1,10 @@
 import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
-import { nftSDK } from './e2eConsts';
-import { LONG_E2E_TIMEOUT, myPrivateKey } from '../__mocks__/consts';
+import { nftSDK, operatorPrivateKey } from './e2eConsts';
+import { LONG_E2E_TIMEOUT } from '../__mocks__/consts';
+
+afterAll(async () => {
+  nftSDK.client.close();
+});
 
 describe('mintSharedMetadata function e2e', () => {
   const testCases = [{ amount: 1 }, { amount: 3 }, { amount: 10 }];
@@ -9,14 +13,17 @@ describe('mintSharedMetadata function e2e', () => {
     it(
       `Creating a token and minting ${amount} NFTs into it`,
       async () => {
-        const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-        const mintedMetadata = await nftSDK.mintSharedMetadata(
+        const tokenId = await nftSDK.createCollection({
+          collectionName: 'test_name',
+          collectionSymbol: 'test_symbol',
+        });
+        const mintedMetadata = await nftSDK.mintSharedMetadata({
           tokenId,
           amount,
-          2,
-          'www.youtube.com',
-          PrivateKey.fromString(myPrivateKey)
-        );
+          batchSize: 2,
+          metaData: 'www.youtube.com',
+          supplyKey: PrivateKey.fromString(operatorPrivateKey),
+        });
 
         expect(tokenId).toBeDefined();
         expect(mintedMetadata).toBeDefined();
@@ -45,8 +52,16 @@ describe('mintSharedMetadata function e2e', () => {
   it(
     `Creating a token and minting 1 NFTs into it with default supplyKey`,
     async () => {
-      const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-      const mintedMetadata = await nftSDK.mintSharedMetadata(tokenId, 1, 2, 'www.youtube.com');
+      const tokenId = await nftSDK.createCollection({
+        collectionName: 'test_name',
+        collectionSymbol: 'test_symbol',
+      });
+      const mintedMetadata = await nftSDK.mintSharedMetadata({
+        tokenId,
+        amount: 1,
+        batchSize: 2,
+        metaData: 'www.youtube.com',
+      });
 
       expect(tokenId).toBeDefined();
       expect(mintedMetadata).toBeDefined();
@@ -74,8 +89,16 @@ describe('mintSharedMetadata function e2e', () => {
   it(
     `Creating a token and minting 8 NFTs into it with batchSize 5`,
     async () => {
-      const tokenId = await nftSDK.createCollection('test_name', 'test_symbol');
-      const mintedMetadata = await nftSDK.mintSharedMetadata(tokenId, 1, 5, 'www.youtube.com');
+      const tokenId = await nftSDK.createCollection({
+        collectionName: 'test_name',
+        collectionSymbol: 'test_symbol',
+      });
+      const mintedMetadata = await nftSDK.mintSharedMetadata({
+        tokenId,
+        amount: 1,
+        batchSize: 5,
+        metaData: 'www.youtube.com',
+      });
 
       expect(tokenId).toBeDefined();
       expect(mintedMetadata).toBeDefined();

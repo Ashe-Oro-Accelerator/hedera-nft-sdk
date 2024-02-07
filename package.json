@@ -47,6 +47,7 @@
     "@types/node": "^20.11.5",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
+    "dotenv": "^16.3.2",
     "dts-cli": "^2.0.4",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",

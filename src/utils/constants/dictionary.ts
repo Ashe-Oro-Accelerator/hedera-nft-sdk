@@ -47,4 +47,11 @@ export const dictionary = {
     metadataRequired: 'metadata is required',
     supplyKeyRequired: 'supplyKey is required',
   },
+  mintToken: {
+    pathRequired: 'Path to File required',
+    batchSizeUndefined: "batchSize can't be undefined",
+    csvOrArrayRequired:
+      'Either pass a path to file(pathToMetadataURIsFile) or an array of strings(metadata)',
+    tooLongCID: 'One of the CIDs is longer than 100 characters',
+  },
 } as const;
