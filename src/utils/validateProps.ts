@@ -2,6 +2,8 @@ import {
   PropsType,
   validateCreateCollectionProps,
   uniqueMintingValidationProps,
+  validateFixedFeeFunction,
+  validateRoyaltyFeeFunction,
 } from '../types/validateProps';
 import { dictionary } from './constants/dictionary';
 
@@ -25,6 +27,43 @@ export const validatePropsForCreateCollection = (props: validateCreateCollection
   validateCollectionSymbol(props);
   validateCollectionName(props);
   validateClient(props);
+  validateCustomFees(props);
+};
+
+export const validatePropsForFixedFeeFunction = (props: validateFixedFeeFunction) => {
+  validateCollectorAccountId(props);
+};
+
+export const validatePropsForRoyaltyFeeFunction = (props: validateRoyaltyFeeFunction) => {
+  validateCollectorAccountId(props);
+  validateNumerator(props);
+  validateDenominator(props);
+};
+
+const validateNumerator = (props: validateRoyaltyFeeFunction) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'numerator')) {
+    if (!props.numerator) throw new Error(dictionary.createCollection.numeratorRequired);
+  }
+};
+
+const validateDenominator = (props: validateRoyaltyFeeFunction) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'denominator')) {
+    if (!props.denominator) throw new Error(dictionary.createCollection.denominatorRequired);
+  }
+};
+
+const validateCollectorAccountId = (props: validateFixedFeeFunction) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'collectorAccountId')) {
+    if (!props.collectorAccountId)
+      throw new Error(dictionary.createCollection.collectorAccountIdRequired);
+  }
+};
+
+const validateCustomFees = (props: validateCreateCollectionProps) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'collectionSymbol')) {
+    if (props.customFees && props.customFees.length > 10)
+      throw new Error(dictionary.createCollection.tooManyCustomFees);
+  }
 };
 
 const validateAccountAndPrivateKey = (props: validateCreateCollectionProps) => {

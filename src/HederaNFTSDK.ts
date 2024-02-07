@@ -1,4 +1,4 @@
-import { Client, PrivateKey } from '@hashgraph/sdk';
+import { Client, CustomFee, CustomFixedFee, CustomRoyaltyFee, PrivateKey } from '@hashgraph/sdk';
 import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
@@ -25,6 +25,7 @@ export class HederaNFTSDK {
     treasuryAccount,
     keys,
     maxSupply,
+    customFees,
   }: {
     collectionName: string;
     collectionSymbol: string;
@@ -32,6 +33,7 @@ export class HederaNFTSDK {
     treasuryAccount?: string;
     keys?: CreateCollectionKeysType;
     maxSupply?: number;
+    customFees?: CustomFee[];
   }) {
     return createCollectionFunction({
       client: this.client,
@@ -42,6 +44,7 @@ export class HederaNFTSDK {
       treasuryAccount,
       treasuryAccountPrivateKey,
       maxSupply,
+      customFees,
     });
   }
 

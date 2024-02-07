@@ -1,4 +1,4 @@
-import { Client, PrivateKey } from '@hashgraph/sdk';
+import { Client, CustomFee, PrivateKey } from '@hashgraph/sdk';
 
 export type PropsType = {
   batchSize?: number;
@@ -22,4 +22,14 @@ export type validateCreateCollectionProps = {
   collectionSymbol?: string;
   treasuryAccountPrivateKey?: string;
   treasuryAccount?: string;
+  customFees?: CustomFee[];
+};
+
+export type validateFixedFeeFunction = {
+  collectorAccountId?: string;
+};
+
+export type validateRoyaltyFeeFunction = validateFixedFeeFunction & {
+  numerator: number;
+  denominator: number;
 };
