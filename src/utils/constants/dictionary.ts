@@ -32,6 +32,7 @@ export const dictionary = {
   },
   hederaActions: {
     clientRequired: 'client is required. You need to log in first.',
+    clientLedgerRequired: 'Client does not have a ledgerId',
     myPrivateKeyRequired: 'myPrivateKey is required',
     collectionNameRequired: 'collectionName is required',
     collectionSymbolRequired: 'collectionSymbol is required',
@@ -43,6 +44,7 @@ export const dictionary = {
     maxBatchSize: 'Max Buffer exceeded. Use batchSize smaller of equal to 10',
     minBatchSize: 'Min Buffer exceeded. Use batchSize greater than 0',
     tokenIdRequired: 'tokenId is required',
+    nftIdRequired: 'nftId is required',
     minAmount: 'Amount needs to be greater than 0',
     metadataRequired: 'metadata is required',
     supplyKeyRequired: 'supplyKey is required',

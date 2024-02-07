@@ -2,6 +2,7 @@ import {
   PropsType,
   validateCreateCollectionProps,
   uniqueMintingValidationProps,
+  increaseNFTSupplyValidationProps,
 } from '../types/validateProps';
 import { dictionary } from './constants/dictionary';
 
@@ -26,6 +27,13 @@ export const validatePropsForCreateCollection = (props: validateCreateCollection
   validateCollectionName(props);
   validateClient(props);
 };
+
+export const validatePropsForIncreaseNFTSupply = (props: increaseNFTSupplyValidationProps) => {
+  validateSupplyKey(props);
+  validateBatchSize(props);
+  validateNFTId(props);
+  validateAmount(props);
+}
 
 const validateAccountAndPrivateKey = (props: validateCreateCollectionProps) => {
   if (
@@ -77,6 +85,12 @@ const validateBatchSize = (props: PropsType) => {
 const validateTokenId = (props: PropsType) => {
   if (Object.prototype.hasOwnProperty.call(props, 'tokenId')) {
     if (!props.tokenId) throw new Error(dictionary.hederaActions.tokenIdRequired);
+  }
+};
+
+const validateNFTId = (props: increaseNFTSupplyValidationProps) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'nftId')) {
+    if (!props.nftId) throw new Error(dictionary.hederaActions.nftIdRequired);
   }
 };
 

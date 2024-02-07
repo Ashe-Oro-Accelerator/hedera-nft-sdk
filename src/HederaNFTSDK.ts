@@ -1,4 +1,4 @@
-import { Client, PrivateKey } from '@hashgraph/sdk';
+import { Client, LedgerId, NftId, PrivateKey } from '@hashgraph/sdk';
 import { CreateCollectionKeysType } from './types/createCollection';
 import { createCollectionFunction } from './functions/createCollection';
 import { logIn } from './functions/logIn';
@@ -6,16 +6,20 @@ import { createJsonMetadataFromCSV } from './functions/createJsonMetadataFromCSV
 import { mintSharedMetadataFunction } from './functions/mintSharedMetadataFunction';
 import { mintUniqueMetadataFunction } from './functions/mintUniqueMetadataFunction';
 import { JsonMetadataFromCSVInterface } from './types/jsonMetadataFromCSV';
+import { increaseNFTSupply } from './functions/increaseNFTSupply';
+import { NetworkName } from '@hashgraph/sdk/lib/client/Client';
 
 export class HederaNFTSDK {
   accountId: string;
   privateKey: string;
   client: Client;
+  network: NetworkName;
 
-  constructor(accountId: string, privateKey: string) {
+  constructor(accountId: string, privateKey: string, network: NetworkName) {
     this.accountId = accountId;
     this.privateKey = privateKey;
-    this.client = logIn({ myAccountId: accountId, myPrivateKey: privateKey });
+    this.client = logIn({ myAccountId: accountId, myPrivateKey: privateKey, network: network });
+    this.network = network;
   }
 
   createCollection({
@@ -104,6 +108,30 @@ export class HederaNFTSDK {
       supplyKey,
       pathToMetadataURIsFile,
       metadataArray: metadata,
+    });
+  }
+
+  increaseNFTSupply({
+    nftId,
+    amount,
+    batchSize = 5,
+    supplyKey,
+    mirrorNodeUrl,
+  }: {
+    nftId: NftId;
+    amount: number;
+    batchSize?: number;
+    supplyKey: PrivateKey;
+    mirrorNodeUrl?: string;
+  }) {
+    return increaseNFTSupply({
+      client: this.client,
+      network: this.network,
+      nftId: nftId,
+      amount: amount,
+      batchSize,
+      supplyKey,
+      mirrorNodeUrl,
     });
   }
 }
