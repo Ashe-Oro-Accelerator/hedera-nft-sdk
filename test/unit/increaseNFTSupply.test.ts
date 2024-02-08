@@ -1,7 +1,7 @@
+import { Client, PrivateKey, TokenId } from '@hashgraph/sdk';
 import axios from 'axios';
 import { increaseNFTSupply } from '../../src/functions/increaseNFTSupply';
 import { IncreaseNFTSupplyType } from '../../src/types/mintToken';
-import { Client, LedgerId, PrivateKey, TokenId } from '@hashgraph/sdk';
 import { validatePropsForIncreaseNFTSupply } from '../../src/utils/validateProps';
 
 
@@ -38,7 +38,7 @@ describe('increaseNFTSupply', () => {
 
   const generatedSupplyKey = PrivateKey.generate();
   const mockIncreaseNFTSupplyType: IncreaseNFTSupplyType = {
-    client: { ledgerId: LedgerId.TESTNET } as Client,
+    client: {} as Client,
     network: 'testnet',
     nftId: mockNftId,
     amount: 10,

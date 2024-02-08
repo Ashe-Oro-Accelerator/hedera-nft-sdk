@@ -1,6 +1,6 @@
 import { NftId, PrivateKey, TokenId, TokenNftInfoQuery } from '@hashgraph/sdk';
 import { nftSDK, operatorPrivateKey } from './e2eConsts';
-import { LONG_E2E_TIMEOUT } from '../__mocks__/consts';
+import { LONG_E2E_TIMEOUT, MIRROR_NODE_DELAY } from '../__mocks__/consts';
 
 afterAll(async () => {
   nftSDK.client.close();
@@ -28,7 +28,7 @@ describe('increaseNFTSupply function e2e', () => {
             .execute(nftSDK.client);
 
         //wait for the collection and nfts to be available on mirror node
-        await new Promise((r) => setTimeout(r, 5000));
+        await new Promise((r) => setTimeout(r, MIRROR_NODE_DELAY));
 
         const increaseSupplyResult = await nftSDK.increaseNFTSupply({
           nftId: nftInfo[0].nftId,

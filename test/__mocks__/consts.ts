@@ -20,3 +20,4 @@ export const JSON_METADATA_UNIT_TESTS_OUTPUT_NEW_METADATA_FOLDER_PATH =
   'test/unit/output/newMetadata';
 
 export const LONG_E2E_TIMEOUT = 25000;
+export const MIRROR_NODE_DELAY = 5000;
