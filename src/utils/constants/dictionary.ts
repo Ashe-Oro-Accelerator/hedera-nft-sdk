@@ -32,7 +32,6 @@ export const dictionary = {
   },
   hederaActions: {
     clientRequired: 'client is required. You need to log in first.',
-    clientLedgerRequired: 'Client does not have a ledgerId',
     myPrivateKeyRequired: 'myPrivateKey is required',
     collectionNameRequired: 'collectionName is required',
     collectionSymbolRequired: 'collectionSymbol is required',
