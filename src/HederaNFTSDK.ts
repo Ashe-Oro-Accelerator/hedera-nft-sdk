@@ -121,7 +121,7 @@ export class HederaNFTSDK {
     nftId: NftId;
     amount: number;
     batchSize?: number;
-    supplyKey: PrivateKey;
+    supplyKey?: PrivateKey;
     mirrorNodeUrl?: string;
   }) {
     return increaseNFTSupply({
@@ -130,7 +130,7 @@ export class HederaNFTSDK {
       nftId: nftId,
       amount: amount,
       batchSize,
-      supplyKey,
+      supplyKey: supplyKey || PrivateKey.fromString(this.privateKey),
       mirrorNodeUrl,
     });
   }

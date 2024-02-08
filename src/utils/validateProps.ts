@@ -1,12 +1,12 @@
 import {
-  PropsType,
+  sharedMintingValidationProps,
   validateCreateCollectionProps,
   uniqueMintingValidationProps,
   increaseNFTSupplyValidationProps,
 } from '../types/validateProps';
 import { dictionary } from './constants/dictionary';
 
-export const validateProps = (props: PropsType) => {
+export const validatePropsForSharedNFTMinting = (props: sharedMintingValidationProps) => {
   validateSupplyKey(props);
   validateBatchSize(props);
   validateTokenId(props);
@@ -68,13 +68,13 @@ const validateClient = (props: validateCreateCollectionProps) => {
   }
 };
 
-const validateSupplyKey = (props: PropsType) => {
+const validateSupplyKey = (props: sharedMintingValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'supplyKey')) {
     if (!props.supplyKey) throw new Error(dictionary.hederaActions.supplyKeyRequired);
   }
 };
 
-const validateBatchSize = (props: PropsType) => {
+const validateBatchSize = (props: sharedMintingValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'batchSize')) {
     if (!props.batchSize) throw new Error(dictionary.mintToken.batchSizeUndefined);
     if (props.batchSize > 10) throw new Error(dictionary.hederaActions.maxBatchSize);
@@ -82,7 +82,7 @@ const validateBatchSize = (props: PropsType) => {
   }
 };
 
-const validateTokenId = (props: PropsType) => {
+const validateTokenId = (props: sharedMintingValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'tokenId')) {
     if (!props.tokenId) throw new Error(dictionary.hederaActions.tokenIdRequired);
   }
@@ -94,13 +94,13 @@ const validateNFTId = (props: increaseNFTSupplyValidationProps) => {
   }
 };
 
-const validateAmount = (props: PropsType) => {
+const validateAmount = (props: sharedMintingValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'amount')) {
     if (!props.amount || props.amount < 1) throw new Error(dictionary.hederaActions.minAmount);
   }
 };
 
-const validateMetaData = (props: PropsType) => {
+const validateMetaData = (props: sharedMintingValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'metaData')) {
     if (!props.metaData) throw new Error(dictionary.hederaActions.metadataRequired);
   }

@@ -1,6 +1,6 @@
 import { Client, NftId, PrivateKey } from '@hashgraph/sdk';
 
-export type PropsType = {
+export type sharedMintingValidationProps = {
   batchSize?: number;
   tokenId?: string;
   amount?: number;
