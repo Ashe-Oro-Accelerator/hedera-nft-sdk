@@ -1,4 +1,4 @@
-import { Client, NftId, PrivateKey } from '@hashgraph/sdk';
+import { Client, CustomFee, NftId, PrivateKey } from '@hashgraph/sdk';
 import { NetworkName } from '@hashgraph/sdk/lib/client/Client';
 import { createCollectionFunction } from './functions/createCollection';
 import { createJsonMetadataFromCSV } from './functions/createJsonMetadataFromCSV';
@@ -29,6 +29,7 @@ export class HederaNFTSDK {
     treasuryAccount,
     keys,
     maxSupply,
+    customFees,
   }: {
     collectionName: string;
     collectionSymbol: string;
@@ -36,6 +37,7 @@ export class HederaNFTSDK {
     treasuryAccount?: string;
     keys?: CreateCollectionKeysType;
     maxSupply?: number;
+    customFees?: CustomFee[];
   }) {
     return createCollectionFunction({
       client: this.client,
@@ -46,6 +48,7 @@ export class HederaNFTSDK {
       treasuryAccount,
       treasuryAccountPrivateKey,
       maxSupply,
+      customFees,
     });
   }
 

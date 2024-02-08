@@ -25,7 +25,8 @@ export const createCollectionFunction = async ({
     collectionName,
     collectionSymbol,
     treasuryAccount,
-    treasuryAccountPrivateKey
+    treasuryAccountPrivateKey,
+    customFees,
   });
 
   const treasuryAccountId = treasuryAccount

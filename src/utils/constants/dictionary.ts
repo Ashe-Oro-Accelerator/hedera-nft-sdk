@@ -14,6 +14,12 @@ export const dictionary = {
     treasuryAccountPrivateKeySignRequired:
       'If you want to use treasuryAccount to sign, you need to pass the treasuryAccountPrivateKey also',
     collectionNotCreated: 'Something went wrong while creating the collection',
+    tooManyCustomFees: 'You can only have 10 custom fees',
+    collectorAccountIdRequired: 'collectorAccountId is required',
+    numeratorRequired: 'numerator is required',
+    denominatorRequired: 'denominator is required',
+    hbarAmountOrAmountAndDenominatingToken:
+      'Either hbarAmount should be set and both amount and denominatingTokenId should not be set, or amount and denominatingTokenId should be set and hbarAmount should not be set.',
   },
   csvToJson: {
     errorInCellWithHeader: (line: number, column: number) =>

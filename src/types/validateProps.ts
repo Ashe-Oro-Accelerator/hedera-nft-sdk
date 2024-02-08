@@ -1,4 +1,4 @@
-import { Client, NftId, PrivateKey } from '@hashgraph/sdk';
+import { Client, NftId, PrivateKey, CustomFee } from '@hashgraph/sdk';
 
 export type sharedMintingValidationProps = {
   batchSize?: number;
@@ -23,11 +23,24 @@ export type increaseNFTSupplyValidationProps = {
   supplyKey?: PrivateKey;
 };
 
-
 export type validateCreateCollectionProps = {
   client?: Client;
   collectionName?: string;
   collectionSymbol?: string;
   treasuryAccountPrivateKey?: string;
   treasuryAccount?: string;
+  customFees?: CustomFee[];
+};
+
+export type fixedFeeValidationProps = {
+  collectorAccountId?: string;
+  hbarAmount?: number;
+  amount?: number;
+  denominatingTokenId?: string;
+};
+
+export type royaltyFeeValidationProps = {
+  collectorAccountId?: string;
+  numerator: number;
+  denominator: number;
 };

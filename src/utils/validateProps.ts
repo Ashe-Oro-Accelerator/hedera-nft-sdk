@@ -3,6 +3,8 @@ import {
   validateCreateCollectionProps,
   uniqueMintingValidationProps,
   increaseNFTSupplyValidationProps,
+  fixedFeeValidationProps,
+  royaltyFeeValidationProps,
 } from '../types/validateProps';
 import { dictionary } from './constants/dictionary';
 
@@ -26,6 +28,53 @@ export const validatePropsForCreateCollection = (props: validateCreateCollection
   validateCollectionSymbol(props);
   validateCollectionName(props);
   validateClient(props);
+  validateCustomFees(props);
+};
+
+export const validatePropsForFixedFeeFunction = (props: fixedFeeValidationProps) => {
+  validateCollectorAccountId(props);
+  hbarAmountOrAmountAndDenominatingToken(props);
+};
+
+export const validatePropsForRoyaltyFeeFunction = (props: royaltyFeeValidationProps) => {
+  validateCollectorAccountId(props);
+  validateNumerator(props);
+  validateDenominator(props);
+};
+
+const hbarAmountOrAmountAndDenominatingToken = (props: fixedFeeValidationProps) => {
+  if (
+    (props.hbarAmount && (props.amount || props.denominatingTokenId)) ||
+    (!props.hbarAmount && (!props.amount || !props.denominatingTokenId))
+  ) {
+    throw new Error(dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken);
+  }
+};
+
+const validateNumerator = (props: royaltyFeeValidationProps) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'numerator')) {
+    if (!props.numerator) throw new Error(dictionary.createCollection.numeratorRequired);
+  }
+};
+
+const validateDenominator = (props: royaltyFeeValidationProps) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'denominator')) {
+    if (!props.denominator) throw new Error(dictionary.createCollection.denominatorRequired);
+  }
+};
+
+const validateCollectorAccountId = (props: fixedFeeValidationProps) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'collectorAccountId')) {
+    if (!props.collectorAccountId)
+      throw new Error(dictionary.createCollection.collectorAccountIdRequired);
+  }
+};
+
+const validateCustomFees = (props: validateCreateCollectionProps) => {
+  if (Object.prototype.hasOwnProperty.call(props, 'collectionSymbol')) {
+    if (props.customFees && props.customFees.length > 10)
+      throw new Error(dictionary.createCollection.tooManyCustomFees);
+  }
 };
 
 export const validatePropsForIncreaseNFTSupply = (props: increaseNFTSupplyValidationProps) => {
@@ -33,7 +82,7 @@ export const validatePropsForIncreaseNFTSupply = (props: increaseNFTSupplyValida
   validateBatchSize(props);
   validateNFTId(props);
   validateAmount(props);
-}
+};
 
 const validateAccountAndPrivateKey = (props: validateCreateCollectionProps) => {
   if (
