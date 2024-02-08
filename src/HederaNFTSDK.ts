@@ -127,8 +127,8 @@ export class HederaNFTSDK {
     return increaseNFTSupply({
       client: this.client,
       network: this.network,
-      nftId: nftId,
-      amount: amount,
+      nftId,
+      amount,
       batchSize,
       supplyKey: supplyKey || PrivateKey.fromString(this.privateKey),
       mirrorNodeUrl,
