@@ -1,6 +1,6 @@
-import { Client, PrivateKey } from '@hashgraph/sdk';
+import { Client, NftId, PrivateKey } from '@hashgraph/sdk';
 
-export type PropsType = {
+export type sharedMintingValidationProps = {
   batchSize?: number;
   tokenId?: string;
   amount?: number;
@@ -15,6 +15,14 @@ export type uniqueMintingValidationProps = {
   pathToMetadataURIsFile?: string;
   metadataArray?: string[];
 };
+
+export type increaseNFTSupplyValidationProps = {
+  nftId?: NftId;
+  batchSize?: number;
+  amount?: number;
+  supplyKey?: PrivateKey;
+};
+
 
 export type validateCreateCollectionProps = {
   client?: Client;
