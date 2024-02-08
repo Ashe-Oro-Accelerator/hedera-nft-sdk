@@ -49,6 +49,7 @@ export const dictionary = {
     maxBatchSize: 'Max Buffer exceeded. Use batchSize smaller of equal to 10',
     minBatchSize: 'Min Buffer exceeded. Use batchSize greater than 0',
     tokenIdRequired: 'tokenId is required',
+    nftIdRequired: 'nftId is required',
     minAmount: 'Amount needs to be greater than 0',
     metadataRequired: 'metadata is required',
     supplyKeyRequired: 'supplyKey is required',

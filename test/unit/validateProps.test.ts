@@ -1,8 +1,9 @@
-import { PrivateKey } from '@hashgraph/sdk';
+import { NftId, PrivateKey } from '@hashgraph/sdk';
 import {
-  validateProps,
+  validatePropsForSharedNFTMinting,
   validatePropsForCreateCollection,
   validatePropsForFixedFeeFunction,
+  validatePropsForIncreaseNFTSupply,
   validatePropsForUniqueNFTMinting,
 } from '../../src/utils/validateProps';
 import { dictionary } from '../../src/utils/constants/dictionary';
@@ -11,25 +12,25 @@ import { myAccountId, myPrivateKey } from '../__mocks__/consts';
 
 describe('validateProps_Value_Errors', () => {
   it('should throw an error if batchSize is greater than 10', () => {
-    expect(() => validateProps({ batchSize: 11 })).toThrow(dictionary.hederaActions.maxBatchSize);
+    expect(() => validatePropsForSharedNFTMinting({ batchSize: 11 })).toThrow(dictionary.hederaActions.maxBatchSize);
   });
 
   it('should throw an error if batchSize is less than 1', () => {
-    expect(() => validateProps({ batchSize: -1 })).toThrow(dictionary.hederaActions.minBatchSize);
+    expect(() => validatePropsForSharedNFTMinting({ batchSize: -1 })).toThrow(dictionary.hederaActions.minBatchSize);
   });
 
   it('should throw an error if tokenId is not provided', () => {
-    expect(() => validateProps({ tokenId: '' })).toThrow(dictionary.hederaActions.tokenIdRequired);
+    expect(() => validatePropsForSharedNFTMinting({ tokenId: '' })).toThrow(dictionary.hederaActions.tokenIdRequired);
   });
 
   it('should throw an error if metaData is not provided', () => {
-    expect(() => validateProps({ metaData: '' })).toThrow(
+    expect(() => validatePropsForSharedNFTMinting({ metaData: '' })).toThrow(
       dictionary.hederaActions.metadataRequired
     );
   });
 
   it('should throw an error if supplyKey is not provided', () => {
-    expect(() => validateProps({ supplyKey: undefined })).toThrow(
+    expect(() => validatePropsForSharedNFTMinting({ supplyKey: undefined })).toThrow(
       dictionary.hederaActions.supplyKeyRequired
     );
   });
@@ -37,20 +38,20 @@ describe('validateProps_Value_Errors', () => {
 
 describe('validateProps_MultipleProps_Errors', () => {
   it('should throw an error if batchSize is undefined and tokenId is valid', () => {
-    expect(() => validateProps({ batchSize: undefined, tokenId: 'token123' })).toThrow(
+    expect(() => validatePropsForSharedNFTMinting({ batchSize: undefined, tokenId: 'token123' })).toThrow(
       dictionary.mintToken.batchSizeUndefined
     );
   });
 
   it('should throw an error if amount is undefined and metaData is valid', () => {
-    expect(() => validateProps({ amount: undefined, metaData: 'metadata123' })).toThrow(
+    expect(() => validatePropsForSharedNFTMinting({ amount: undefined, metaData: 'metadata123' })).toThrow(
       dictionary.hederaActions.minAmount
     );
   });
 
   it('should throw an error if supplyKey is undefined and pathToMetadataURIsFile is valid', () => {
     expect(() =>
-      validateProps({
+    validatePropsForSharedNFTMinting({
         supplyKey: undefined,
         batchSize: 9,
       })
@@ -60,24 +61,24 @@ describe('validateProps_MultipleProps_Errors', () => {
 
 describe('validateProps_Success', () => {
   it('should not throw an error if batchSize is a number between 1 and 10', () => {
-    expect(() => validateProps({ batchSize: 5 })).not.toThrow();
+    expect(() => validatePropsForSharedNFTMinting({ batchSize: 5 })).not.toThrow();
   });
 
   it('should not throw an error if tokenId is a string', () => {
-    expect(() => validateProps({ tokenId: 'token123' })).not.toThrow();
+    expect(() => validatePropsForSharedNFTMinting({ tokenId: 'token123' })).not.toThrow();
   });
 
   it('should not throw an error if amount is a number greater than 0', () => {
-    expect(() => validateProps({ amount: 5 })).not.toThrow();
+    expect(() => validatePropsForSharedNFTMinting({ amount: 5 })).not.toThrow();
   });
 
   it('should not throw an error if metaData is a string', () => {
-    expect(() => validateProps({ metaData: 'metadata123' })).not.toThrow();
+    expect(() => validatePropsForSharedNFTMinting({ metaData: 'metadata123' })).not.toThrow();
   });
 
   it('should not throw an error if supplyKey is a PrivateKey', () => {
     const privateKey = PrivateKey.generate();
-    expect(() => validateProps({ supplyKey: privateKey })).not.toThrow();
+    expect(() => validatePropsForSharedNFTMinting({ supplyKey: privateKey })).not.toThrow();
   });
 });
 
@@ -176,6 +177,53 @@ describe('validatePropsForCreateCollection', () => {
       })
     ).toThrow(new Error(dictionary.createCollection.clientRequired));
   });
+});
+
+describe('validatePropsForIncreaseNFTSupply', () => {
+  it('should throw an error if nftId is not provided', () => {
+    expect(() =>
+      validatePropsForIncreaseNFTSupply({
+        amount: 10,
+        batchSize: 5,
+        supplyKey: PrivateKey.generate(),
+        nftId: undefined,
+      })
+    ).toThrow(new Error(dictionary.hederaActions.nftIdRequired));
+  });
+
+  it('should throw an error if amount is not provided', () => {
+    expect(() =>
+      validatePropsForIncreaseNFTSupply({
+        nftId: NftId.fromString('0.0.453/1'),
+        batchSize: 5,
+        supplyKey: PrivateKey.generate(),
+        amount: undefined,
+      })
+    ).toThrow(new Error(dictionary.hederaActions.minAmount));
+  });
+
+  it('should throw an error if supplyKey is not provided', () => {
+    expect(() =>
+      validatePropsForIncreaseNFTSupply({
+        nftId: NftId.fromString('0.0.453/1'),
+        amount: 10,
+        batchSize: 5,
+        supplyKey: undefined,
+      })
+    ).toThrow(new Error(dictionary.hederaActions.supplyKeyRequired));
+  });
+
+  it('should throw an error if batchSize is not provided', () => {
+    expect(() =>
+      validatePropsForIncreaseNFTSupply({
+        nftId: NftId.fromString('0.0.453/1'),
+        amount: 10,
+        supplyKey: PrivateKey.generate(),
+        batchSize: undefined,
+      })
+    ).toThrow(new Error(dictionary.mintToken.batchSizeUndefined));
+  });
+
 });
 
 describe('validatePropsForFixedFeeFunction', () => {

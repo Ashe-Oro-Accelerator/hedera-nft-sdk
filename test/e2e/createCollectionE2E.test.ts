@@ -1,13 +1,7 @@
 import { PrivateKey } from '@hashgraph/sdk';
-import { nftSDK, secondAccountId, secondPrivateKey } from './e2eConsts';
-import { beforeEach } from 'node:test';
-import { HederaNFTSDK } from '../../src';
-import { LONG_E2E_TIMEOUT, myAccountId, myPrivateKey } from '../__mocks__/consts';
 import { getTokenInfo } from '../../src/utils/hedera/getTokenInfo';
-
-beforeEach(async () => {
-  new HederaNFTSDK(myAccountId, myPrivateKey);
-});
+import { LONG_E2E_TIMEOUT } from '../__mocks__/consts';
+import { nftSDK, secondAccountId, secondPrivateKey } from './e2eConsts';
 
 afterAll(async () => {
   nftSDK.client.close();
