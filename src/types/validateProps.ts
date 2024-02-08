@@ -25,11 +25,15 @@ export type validateCreateCollectionProps = {
   customFees?: CustomFee[];
 };
 
-export type validateFixedFeeFunction = {
+export type fixedFeeValidationProps = {
   collectorAccountId?: string;
+  hbarAmount?: number;
+  amount?: number;
+  denominatingTokenId?: string;
 };
 
-export type validateRoyaltyFeeFunction = validateFixedFeeFunction & {
+export type royaltyFeeValidationProps = {
+  collectorAccountId?: string;
   numerator: number;
   denominator: number;
 };

@@ -9,7 +9,7 @@ export const createFixedFeeFunction = ({
   denominatingTokenId,
   allCollectorsAreExempt,
 }: FixedFeeType): CustomFixedFee => {
-  validatePropsForFixedFeeFunction({ collectorAccountId });
+  validatePropsForFixedFeeFunction({ collectorAccountId, hbarAmount, amount, denominatingTokenId });
   const fixedFee = new CustomFixedFee().setFeeCollectorAccountId(collectorAccountId);
 
   if (hbarAmount) {

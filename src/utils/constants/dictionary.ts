@@ -18,6 +18,8 @@ export const dictionary = {
     collectorAccountIdRequired: 'collectorAccountId is required',
     numeratorRequired: 'numerator is required',
     denominatorRequired: 'denominator is required',
+    hbarAmountAmountAndDenominatingToken:
+      'Either hbarAmount should be set and both amount and denominatingTokenId should not be set, or amount and denominatingTokenId should be set and hbarAmount should not be set.',
   },
   csvToJson: {
     errorInCellWithHeader: (line: number, column: number) =>

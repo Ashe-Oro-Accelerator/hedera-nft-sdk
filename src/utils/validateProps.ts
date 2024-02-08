@@ -2,8 +2,8 @@ import {
   PropsType,
   validateCreateCollectionProps,
   uniqueMintingValidationProps,
-  validateFixedFeeFunction,
-  validateRoyaltyFeeFunction,
+  fixedFeeValidationProps,
+  royaltyFeeValidationProps,
 } from '../types/validateProps';
 import { dictionary } from './constants/dictionary';
 
@@ -30,29 +30,39 @@ export const validatePropsForCreateCollection = (props: validateCreateCollection
   validateCustomFees(props);
 };
 
-export const validatePropsForFixedFeeFunction = (props: validateFixedFeeFunction) => {
+export const validatePropsForFixedFeeFunction = (props: fixedFeeValidationProps) => {
   validateCollectorAccountId(props);
+  validateHbarAmountAmountAndDenominatingToken(props);
 };
 
-export const validatePropsForRoyaltyFeeFunction = (props: validateRoyaltyFeeFunction) => {
+export const validatePropsForRoyaltyFeeFunction = (props: royaltyFeeValidationProps) => {
   validateCollectorAccountId(props);
   validateNumerator(props);
   validateDenominator(props);
 };
 
-const validateNumerator = (props: validateRoyaltyFeeFunction) => {
+const validateHbarAmountAmountAndDenominatingToken = (props: fixedFeeValidationProps) => {
+  if (
+    (props.hbarAmount && (props.amount || props.denominatingTokenId)) ||
+    (!props.hbarAmount && (!props.amount || !props.denominatingTokenId))
+  ) {
+    throw new Error(dictionary.createCollection.hbarAmountAmountAndDenominatingToken);
+  }
+};
+
+const validateNumerator = (props: royaltyFeeValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'numerator')) {
     if (!props.numerator) throw new Error(dictionary.createCollection.numeratorRequired);
   }
 };
 
-const validateDenominator = (props: validateRoyaltyFeeFunction) => {
+const validateDenominator = (props: royaltyFeeValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'denominator')) {
     if (!props.denominator) throw new Error(dictionary.createCollection.denominatorRequired);
   }
 };
 
-const validateCollectorAccountId = (props: validateFixedFeeFunction) => {
+const validateCollectorAccountId = (props: fixedFeeValidationProps) => {
   if (Object.prototype.hasOwnProperty.call(props, 'collectorAccountId')) {
     if (!props.collectorAccountId)
       throw new Error(dictionary.createCollection.collectorAccountIdRequired);

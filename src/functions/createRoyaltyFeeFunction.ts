@@ -11,16 +11,7 @@ export const createRoyaltyFeeFunction = ({
   allCollectorsAreExempt,
 }: RoyaltyFeeType) => {
   validatePropsForRoyaltyFeeFunction({ collectorAccountId, numerator, denominator });
-  let fixedFee: CustomFixedFee | undefined;
-  if (fallbackFee) {
-    fixedFee = createFixedFeeFunction({
-      collectorAccountId: fallbackFee.collectorAccountId,
-      hbarAmount: fallbackFee.hbarAmount,
-      amount: fallbackFee.amount,
-      denominatingTokenId: fallbackFee.denominatingTokenId,
-      allCollectorsAreExempt: fallbackFee.allCollectorsAreExempt,
-    });
-  }
+
   const royaltyFee = new CustomRoyaltyFee()
     .setFeeCollectorAccountId(collectorAccountId)
     .setNumerator(numerator)
@@ -30,8 +21,16 @@ export const createRoyaltyFeeFunction = ({
     royaltyFee.setAllCollectorsAreExempt(allCollectorsAreExempt);
   }
 
-  if (fixedFee) {
-    royaltyFee.setFallbackFee(fixedFee);
+  if (fallbackFee) {
+    royaltyFee.setFallbackFee(
+      createFixedFeeFunction({
+        collectorAccountId: fallbackFee.collectorAccountId,
+        hbarAmount: fallbackFee.hbarAmount,
+        amount: fallbackFee.amount,
+        denominatingTokenId: fallbackFee.denominatingTokenId,
+        allCollectorsAreExempt: fallbackFee.allCollectorsAreExempt,
+      })
+    );
   }
 
   return royaltyFee;

@@ -1,12 +1,7 @@
 import { feeFactoryInstance, nftSDK } from './e2eConsts';
-import { beforeEach } from 'node:test';
-import { HederaNFTSDK } from '../../src/HederaNFTSDK';
-import { myAccountId, myPrivateKey, mySecondAccountId } from '../__mocks__/consts';
+import { myAccountId, mySecondAccountId } from '../__mocks__/consts';
 import { dictionary } from '../../src/utils/constants/dictionary';
-
-beforeEach(async () => {
-  new HederaNFTSDK(myAccountId, myPrivateKey);
-});
+import { CustomFixedFee, CustomRoyaltyFee, TokenInfoQuery } from '@hashgraph/sdk';
 
 afterAll(async () => {
   nftSDK.client.close();
@@ -27,6 +22,19 @@ describe('feeFactory', () => {
       customFees: [fixedFee],
     });
 
+    const query = new TokenInfoQuery().setTokenId(tokenId);
+    const tokenInfo = await query.execute(nftSDK.client);
+    const customFees = tokenInfo.customFees;
+    let customFeeAmount = undefined;
+    let customFeeAccId = undefined;
+
+    if (customFees.length > 0 && customFees[0] instanceof CustomFixedFee) {
+      customFeeAmount = customFees[0]._amount.toInt();
+      customFeeAccId = customFees[0]._feeCollectorAccountId!.toString();
+    }
+
+    expect(customFeeAccId).toEqual(myAccountId);
+    expect(customFeeAmount).toEqual(fixedFee.amount.toInt());
     expect(tokenId).toBeDefined();
   });
 
@@ -50,6 +58,19 @@ describe('feeFactory', () => {
       customFees: [royaltyFee],
     });
 
+    const query = new TokenInfoQuery().setTokenId(tokenId);
+    const tokenInfo = await query.execute(nftSDK.client);
+    const customFees = tokenInfo.customFees;
+    let customFeeDenominator = undefined;
+    let customFeeNumenator = undefined;
+
+    if (customFees.length > 0 && customFees[0] instanceof CustomRoyaltyFee) {
+      customFeeDenominator = customFees[0]._denominator.toInt();
+      customFeeNumenator = customFees[0]._numerator.toString();
+    }
+
+    expect(Number(customFeeNumenator)).toEqual(royaltyFee.numerator.toInt());
+    expect(customFeeDenominator).toEqual(royaltyFee.denominator.toInt());
     expect(tokenId).toBeDefined();
   });
 
