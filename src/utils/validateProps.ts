@@ -47,7 +47,7 @@ const hbarAmountOrAmountAndDenominatingToken = (props: fixedFeeValidationProps) 
     (props.hbarAmount && (props.amount || props.denominatingTokenId)) ||
     (!props.hbarAmount && (!props.amount || !props.denominatingTokenId))
   ) {
-    throw new Error(dictionary.createCollection.hbarAmountAmountAndDenominatingToken);
+    throw new Error(dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken);
   }
 };
 
@@ -82,7 +82,7 @@ export const validatePropsForIncreaseNFTSupply = (props: increaseNFTSupplyValida
   validateBatchSize(props);
   validateNFTId(props);
   validateAmount(props);
-}
+};
 
 const validateAccountAndPrivateKey = (props: validateCreateCollectionProps) => {
   if (

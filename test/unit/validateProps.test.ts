@@ -12,15 +12,21 @@ import { myAccountId, myPrivateKey } from '../__mocks__/consts';
 
 describe('validateProps_Value_Errors', () => {
   it('should throw an error if batchSize is greater than 10', () => {
-    expect(() => validatePropsForSharedNFTMinting({ batchSize: 11 })).toThrow(dictionary.hederaActions.maxBatchSize);
+    expect(() => validatePropsForSharedNFTMinting({ batchSize: 11 })).toThrow(
+      dictionary.hederaActions.maxBatchSize
+    );
   });
 
   it('should throw an error if batchSize is less than 1', () => {
-    expect(() => validatePropsForSharedNFTMinting({ batchSize: -1 })).toThrow(dictionary.hederaActions.minBatchSize);
+    expect(() => validatePropsForSharedNFTMinting({ batchSize: -1 })).toThrow(
+      dictionary.hederaActions.minBatchSize
+    );
   });
 
   it('should throw an error if tokenId is not provided', () => {
-    expect(() => validatePropsForSharedNFTMinting({ tokenId: '' })).toThrow(dictionary.hederaActions.tokenIdRequired);
+    expect(() => validatePropsForSharedNFTMinting({ tokenId: '' })).toThrow(
+      dictionary.hederaActions.tokenIdRequired
+    );
   });
 
   it('should throw an error if metaData is not provided', () => {
@@ -38,20 +44,20 @@ describe('validateProps_Value_Errors', () => {
 
 describe('validateProps_MultipleProps_Errors', () => {
   it('should throw an error if batchSize is undefined and tokenId is valid', () => {
-    expect(() => validatePropsForSharedNFTMinting({ batchSize: undefined, tokenId: 'token123' })).toThrow(
-      dictionary.mintToken.batchSizeUndefined
-    );
+    expect(() =>
+      validatePropsForSharedNFTMinting({ batchSize: undefined, tokenId: 'token123' })
+    ).toThrow(dictionary.mintToken.batchSizeUndefined);
   });
 
   it('should throw an error if amount is undefined and metaData is valid', () => {
-    expect(() => validatePropsForSharedNFTMinting({ amount: undefined, metaData: 'metadata123' })).toThrow(
-      dictionary.hederaActions.minAmount
-    );
+    expect(() =>
+      validatePropsForSharedNFTMinting({ amount: undefined, metaData: 'metadata123' })
+    ).toThrow(dictionary.hederaActions.minAmount);
   });
 
   it('should throw an error if supplyKey is undefined and pathToMetadataURIsFile is valid', () => {
     expect(() =>
-    validatePropsForSharedNFTMinting({
+      validatePropsForSharedNFTMinting({
         supplyKey: undefined,
         batchSize: 9,
       })
@@ -223,25 +229,24 @@ describe('validatePropsForIncreaseNFTSupply', () => {
       })
     ).toThrow(new Error(dictionary.mintToken.batchSizeUndefined));
   });
-
 });
 
 describe('validatePropsForFixedFeeFunction', () => {
   it('should throw an error if hbarAmount, amount, and denominatingTokenId are not set', () => {
     expect(() => validatePropsForFixedFeeFunction({})).toThrow(
-      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+      dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken
     );
   });
 
   it('should throw an error if only denominatingTokenId is set', () => {
     expect(() => validatePropsForFixedFeeFunction({ denominatingTokenId: '0.0.1' })).toThrow(
-      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+      dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken
     );
   });
 
   it('should throw an error if only amount is set', () => {
     expect(() => validatePropsForFixedFeeFunction({ amount: 1 })).toThrow(
-      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+      dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken
     );
   });
 
@@ -258,12 +263,12 @@ describe('validatePropsForFixedFeeFunction', () => {
   it('should throw an error if hbarAmount and denominatingTokenId are set', () => {
     expect(() =>
       validatePropsForFixedFeeFunction({ hbarAmount: 1, denominatingTokenId: '0.0.1' })
-    ).toThrow(dictionary.createCollection.hbarAmountAmountAndDenominatingToken);
+    ).toThrow(dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken);
   });
 
   it('should throw an error if hbarAmount and amount are set', () => {
     expect(() => validatePropsForFixedFeeFunction({ hbarAmount: 1, amount: 1 })).toThrow(
-      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+      dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken
     );
   });
 
@@ -274,6 +279,6 @@ describe('validatePropsForFixedFeeFunction', () => {
         amount: 1,
         denominatingTokenId: '0.0.1',
       })
-    ).toThrow(dictionary.createCollection.hbarAmountAmountAndDenominatingToken);
+    ).toThrow(dictionary.createCollection.hbarAmountOrAmountAndDenominatingToken);
   });
 });
