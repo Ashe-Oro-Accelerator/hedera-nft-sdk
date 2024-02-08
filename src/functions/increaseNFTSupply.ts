@@ -16,7 +16,6 @@ export const increaseNFTSupply = async ({
   validatePropsForIncreaseNFTSupply({ nftId, amount, supplyKey, batchSize });
   return getMetaDataFromMirrorNode(network, nftId, mirrorNodeUrl)
     .then((metaData) => mintSharedMetadataFunction({ client, tokenId: nftId.tokenId.toString(), amount, batchSize, metaData, supplyKey }));
-
 };
 
 async function getMetaDataFromMirrorNode(network: string, nftId: NftId, mirrorNodeUrl?: string): Promise<string> {
@@ -26,8 +25,8 @@ async function getMetaDataFromMirrorNode(network: string, nftId: NftId, mirrorNo
       //atob is used to decode the base64 encoded metadata
       return atob(response.data.metadata);
     })
-};
+}
 
 function getMirrorNodeUrlForNetwork(network: string): string {
   return `https://${network === 'mainnet' ? 'mainnet-public' : network}.mirrornode.hedera.com/api/v1`;
-};
+}
