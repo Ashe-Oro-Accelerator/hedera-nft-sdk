@@ -2,6 +2,7 @@ import { PrivateKey } from '@hashgraph/sdk';
 import {
   validateProps,
   validatePropsForCreateCollection,
+  validatePropsForFixedFeeFunction,
   validatePropsForUniqueNFTMinting,
 } from '../../src/utils/validateProps';
 import { dictionary } from '../../src/utils/constants/dictionary';
@@ -174,5 +175,57 @@ describe('validatePropsForCreateCollection', () => {
         client: undefined,
       })
     ).toThrow(new Error(dictionary.createCollection.clientRequired));
+  });
+});
+
+describe('validatePropsForFixedFeeFunction', () => {
+  it('should throw an error if hbarAmount, amount, and denominatingTokenId are not set', () => {
+    expect(() => validatePropsForFixedFeeFunction({})).toThrow(
+      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+    );
+  });
+
+  it('should throw an error if only denominatingTokenId is set', () => {
+    expect(() => validatePropsForFixedFeeFunction({ denominatingTokenId: '0.0.1' })).toThrow(
+      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+    );
+  });
+
+  it('should throw an error if only amount is set', () => {
+    expect(() => validatePropsForFixedFeeFunction({ amount: 1 })).toThrow(
+      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+    );
+  });
+
+  it('should not throw an error if amount and denominatingTokenId are set', () => {
+    expect(() =>
+      validatePropsForFixedFeeFunction({ amount: 1, denominatingTokenId: '0.0.1' })
+    ).not.toThrow();
+  });
+
+  it('should not throw an error if only hbarAmount is set', () => {
+    expect(() => validatePropsForFixedFeeFunction({ hbarAmount: 1 })).not.toThrow();
+  });
+
+  it('should throw an error if hbarAmount and denominatingTokenId are set', () => {
+    expect(() =>
+      validatePropsForFixedFeeFunction({ hbarAmount: 1, denominatingTokenId: '0.0.1' })
+    ).toThrow(dictionary.createCollection.hbarAmountAmountAndDenominatingToken);
+  });
+
+  it('should throw an error if hbarAmount and amount are set', () => {
+    expect(() => validatePropsForFixedFeeFunction({ hbarAmount: 1, amount: 1 })).toThrow(
+      dictionary.createCollection.hbarAmountAmountAndDenominatingToken
+    );
+  });
+
+  it('should throw an error if hbarAmount, amount, and denominatingTokenId are set', () => {
+    expect(() =>
+      validatePropsForFixedFeeFunction({
+        hbarAmount: 1,
+        amount: 1,
+        denominatingTokenId: '0.0.1',
+      })
+    ).toThrow(dictionary.createCollection.hbarAmountAmountAndDenominatingToken);
   });
 });

@@ -8,15 +8,12 @@ describe('createFixedFeeFunction', () => {
     const fixedFeeType: FixedFeeType = {
       collectorAccountId: myAccountId,
       hbarAmount: 100,
-      amount: 100,
-      denominatingTokenId: myAccountId,
       allCollectorsAreExempt: true,
     };
 
     const result = createFixedFeeFunction(fixedFeeType);
 
     expect(result).toBeDefined();
-    expect(result._amount.toInt()).toEqual(fixedFeeType.amount);
     expect(result._allCollectorsAreExempt).toEqual(fixedFeeType.allCollectorsAreExempt);
   });
 
@@ -25,7 +22,6 @@ describe('createFixedFeeFunction', () => {
       createFixedFeeFunction({
         collectorAccountId: '',
         hbarAmount: 100,
-        amount: 100,
       })
     ).toThrow(dictionary.createCollection.collectorAccountIdRequired);
   });

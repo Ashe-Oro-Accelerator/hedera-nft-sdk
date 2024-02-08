@@ -24,7 +24,6 @@ describe('createRoyaltyFeeFunction', () => {
       denominator: 2,
       fallbackFee: {
         collectorAccountId: myAccountId,
-        hbarAmount: 100,
         amount: 100,
         denominatingTokenId: myAccountId,
         allCollectorsAreExempt: true,

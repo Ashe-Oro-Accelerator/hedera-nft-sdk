@@ -32,7 +32,7 @@ export const validatePropsForCreateCollection = (props: validateCreateCollection
 
 export const validatePropsForFixedFeeFunction = (props: fixedFeeValidationProps) => {
   validateCollectorAccountId(props);
-  validateHbarAmountAmountAndDenominatingToken(props);
+  hbarAmountOrAmountAndDenominatingToken(props);
 };
 
 export const validatePropsForRoyaltyFeeFunction = (props: royaltyFeeValidationProps) => {
@@ -41,7 +41,7 @@ export const validatePropsForRoyaltyFeeFunction = (props: royaltyFeeValidationPr
   validateDenominator(props);
 };
 
-const validateHbarAmountAmountAndDenominatingToken = (props: fixedFeeValidationProps) => {
+const hbarAmountOrAmountAndDenominatingToken = (props: fixedFeeValidationProps) => {
   if (
     (props.hbarAmount && (props.amount || props.denominatingTokenId)) ||
     (!props.hbarAmount && (!props.amount || !props.denominatingTokenId))

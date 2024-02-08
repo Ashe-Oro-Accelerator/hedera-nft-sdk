@@ -13,7 +13,6 @@ describe('feeFactory', () => {
       allCollectorsAreExempt: false,
       collectorAccountId: myAccountId,
       hbarAmount: 100,
-      amount: 100,
     });
 
     const tokenId = await nftSDK.createCollection({
@@ -25,16 +24,13 @@ describe('feeFactory', () => {
     const query = new TokenInfoQuery().setTokenId(tokenId);
     const tokenInfo = await query.execute(nftSDK.client);
     const customFees = tokenInfo.customFees;
-    let customFeeAmount = undefined;
     let customFeeAccId = undefined;
 
     if (customFees.length > 0 && customFees[0] instanceof CustomFixedFee) {
-      customFeeAmount = customFees[0]._amount.toInt();
       customFeeAccId = customFees[0]._feeCollectorAccountId!.toString();
     }
 
     expect(customFeeAccId).toEqual(myAccountId);
-    expect(customFeeAmount).toEqual(fixedFee.amount.toInt());
     expect(tokenId).toBeDefined();
   });
 
@@ -48,7 +44,6 @@ describe('feeFactory', () => {
         allCollectorsAreExempt: false,
         collectorAccountId: mySecondAccountId,
         hbarAmount: 100,
-        amount: 100,
       },
     });
 
@@ -78,7 +73,6 @@ describe('feeFactory', () => {
     const fixedFee = feeFactoryInstance.fixedFee({
       allCollectorsAreExempt: false,
       collectorAccountId: myAccountId,
-      hbarAmount: 100,
       amount: 100,
       denominatingTokenId: myAccountId,
     });
