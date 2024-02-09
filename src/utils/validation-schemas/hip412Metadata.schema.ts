@@ -48,7 +48,7 @@ export const imageForHip412MetadataSchema = z
       ctx.addIssue({
         fatal: true,
         code: z.ZodIssueCode.custom,
-        message: dictionary.csvToJson.imageForNftNotFound,
+        message: dictionary.validation.imageForNftNotFound,
       });
       return false;
     }
@@ -57,7 +57,7 @@ export const imageForHip412MetadataSchema = z
       ctx.addIssue({
         fatal: true,
         code: z.ZodIssueCode.custom,
-        message: dictionary.csvToJson.mediaFileNotSupported,
+        message: dictionary.validation.mediaFileNotSupported,
       });
       return false;
     }

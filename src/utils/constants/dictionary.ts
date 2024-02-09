@@ -4,7 +4,6 @@ export const dictionary = {
   errors: {
     unhandledError: 'Unknown error.',
   },
-
   createCollection: {
     clientRequired: 'client is required. You need to log in first.',
     myPrivateKeyRequired: 'myPrivateKey is required',
@@ -15,17 +14,16 @@ export const dictionary = {
       'If you want to use treasuryAccount to sign, you need to pass the treasuryAccountPrivateKey also',
     collectionNotCreated: 'Something went wrong while creating the collection',
   },
-  csvToJson: {
+  validation: {
     errorInCellWithHeader: (line: number, column: number) =>
       `Error in line number ${line}, column number ${column}. Check if your CSV file is well prepared.`,
-    tooManyValuesForValidationSchema: 'Too many values provided for the validation schema.',
+    invalidKeysDetected: (keys: string[]) => `Redundant key(s) detected: ['${keys.join("', '")}']`,
     csvFileIsEmpty: (path: string) => `No metadata found in CSV file "${getFullSystemPath(path)}".`,
-    errorInRow: (line: number | string, error: string) =>
-      `Error at: line number ${typeof line === 'number' ? line + 1 : line} in ${getFullSystemPath(
-        'exampleCSV.csv'
-      )}\n${error}`,
-    missingAttributesInRow: (csvFilePath: string, row: number) =>
-      ` - "${getFullSystemPath(csvFilePath)}" in row ${row}`,
+    errorInRow: (fileName: string, line: number | string, error: string) =>
+      `Error at: line number ${line} in ${getFullSystemPath(fileName)} ${error}`,
+    missingAttributesInRowWithFilePath: (filePath: string, row: number) =>
+      `In file: "${getFullSystemPath(filePath)}" in row ${row}`,
+    missingAttributes: 'There are missing attributes in the metadata object.',
     imageForNftNotFound:
       'Image for NFT not found. The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
     mediaFileNotSupported: 'Media file is not supported.',

@@ -52,7 +52,7 @@ export class JsonMetadataFromCSVConverter {
     headerProperties: string;
   }): CSVRowAsObject[] {
     if (csvParsedRows.length <= CSVFileReader.AMOUNT_OF_HEADERS - OMITTED_HEADER_COUNT) {
-      throw new Error(dictionary.csvToJson.csvFileIsEmpty(csvFilePath));
+      throw new Error(dictionary.validation.csvFileIsEmpty(csvFilePath));
     }
 
     const secondHeader = csvParsedRows[0];
