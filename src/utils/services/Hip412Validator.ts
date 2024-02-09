@@ -27,11 +27,11 @@ interface ValidationErrorsInterface {
 
 interface DirectoryValidationResult {
   isValid: boolean;
-  errors: FileError[];
+  errors: MetadataError[];
 }
 
-interface FileError {
-  fileName: string;
+interface MetadataError {
+  fileName?: string;
   general: string[];
   missingAttributes: string[];
 }
@@ -57,29 +57,33 @@ export class Hip412Validator {
   }
 
   static validateArrayOfObjects = (
-    metadataObjectsFromCSVRows: CSVRowAsObject[],
+    metadataObjects: CSVRowAsObject[],
     filePath: string
-  ): { metadataObjectsValidationErrors: string[]; missingAttributesErrors: string[] } => {
-    const metadataObjectsValidationErrors: string[] = [];
-    const missingAttributesErrors: string[] = [];
+  ): FileValidationResult => {
+    let allObjectsValid = true;
+    const errors: ValidationErrorsInterface = { general: [], missingAttributes: [] };
 
-    for (const [index, metadataObject] of metadataObjectsFromCSVRows.entries()) {
+    for (const [index, metadataObject] of metadataObjects.entries()) {
       try {
         validateObjectWithSchema(Hip412MetadataCSVSchema, metadataObject, noPropertiesErrorOptions);
       } catch (e) {
-        metadataObjectsValidationErrors.push(
+        errors.general.push(
           dictionary.validation.errorInRow(filePath, index + 1, errorToMessage(e))
         );
       }
 
       if (!metadataObject.attributes) {
-        missingAttributesErrors.push(
+        errors.missingAttributes.push(
           dictionary.validation.missingAttributesInRowWithFilePath(filePath, index + 1)
         );
       }
+
+      if (errors.general.length > 0 || errors.missingAttributes.length > 0) {
+        allObjectsValid = false;
+      }
     }
 
-    return { metadataObjectsValidationErrors, missingAttributesErrors };
+    return { isValid: allObjectsValid, errors };
   };
 
   static validateLocalFile(filePath: string): FileValidationResult {
@@ -90,7 +94,7 @@ export class Hip412Validator {
 
   static validateLocalDirectory(directoryPath: string): DirectoryValidationResult {
     let allFilesValid = true;
-    const errors: FileError[] = [];
+    const errors: MetadataError[] = [];
 
     const jsonFiles = fs
       .readdirSync(directoryPath)

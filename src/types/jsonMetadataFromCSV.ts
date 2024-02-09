@@ -1,7 +1,8 @@
 export interface JsonMetadataFromCSVInterface {
+  isValid: boolean;
   errors: {
-    metadataObjectsValidationErrors: string[];
-    missingAttributesErrors: string[];
+    general: string[];
+    missingAttributes: string[];
   };
   savedJsonFilesLocation: string;
 }

@@ -23,8 +23,10 @@ export const createJsonMetadataFromCSV = async ({
     headerProperties: CSVFileReader.PROPERTIES,
   });
 
-  const { metadataObjectsValidationErrors, missingAttributesErrors } =
-    Hip412Validator.validateArrayOfObjects(metadataObjectsFromCSVRows, csvFilePath);
+  const { isValid, errors } = Hip412Validator.validateArrayOfObjects(
+    metadataObjectsFromCSVRows,
+    csvFilePath
+  );
 
   JsonMetadataFromCSVConverter.saveCSVRowsAsJsonFiles(
     metadataObjectsFromCSVRows,
@@ -32,9 +34,10 @@ export const createJsonMetadataFromCSV = async ({
   );
 
   return {
+    isValid,
     errors: {
-      metadataObjectsValidationErrors,
-      missingAttributesErrors,
+      general: errors.general,
+      missingAttributes: errors.missingAttributes,
     },
     savedJsonFilesLocation,
   };
