@@ -38,6 +38,25 @@ export const propertiesErrorOptions: ErrorMessageOptions = {
   transform: ({ errorMessage }) => `${errorMessage}\n`,
 };
 
+export const validationMetadataErrorOptions: ErrorMessageOptions = {
+  prefix: '',
+  path: {
+    type: 'breadcrumbs',
+    enabled: true,
+    label: 'The required',
+    transform: ({ label, value }) => `${label} "${value}" field is missing.`,
+  },
+  code: {
+    enabled: false,
+  },
+  delimiter: {
+    component: ' ',
+    error: '',
+  },
+  message: { enabled: false },
+  transform: ({ errorMessage }) => `${errorMessage} `,
+};
+
 export const validateObjectWithSchema = <T extends { [key: string]: string | unknown }>(
   Schema: z.ZodSchema<T>,
   object: z.infer<z.ZodSchema<T | unknown>>,
@@ -56,7 +75,9 @@ export const validateObjectWithSchema = <T extends { [key: string]: string | unk
   );
 
   if (overPropertiesFromObjectWhichAreNotInSchema.length > 0) {
-    throw new Error(dictionary.csvToJson.tooManyValuesForValidationSchema);
+    throw new Error(
+      dictionary.validation.invalidKeysDetected(overPropertiesFromObjectWhichAreNotInSchema)
+    );
   }
 
   return object as z.infer<z.ZodSchema<T>>;
