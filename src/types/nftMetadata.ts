@@ -35,8 +35,8 @@ export interface Localization {
 
 export interface NFTMetadata {
   name: string;
-  image?: string;
-  description: string;
+  image: string;
+  description?: string;
   creator?: string;
   creatorDID?: string;
   type?: string;
