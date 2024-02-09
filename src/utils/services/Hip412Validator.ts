@@ -10,7 +10,6 @@ import {
   validationMetadataErrorOptions,
 } from '../helpers/validateObjectWithSchema';
 import { errorToMessage } from '../helpers/errorToMessage';
-import type { NFTMetadata } from '../../types/nftMetadata';
 import { CSVRowAsObject } from '../../types/csv';
 import { dictionary } from '../constants/dictionary';
 
@@ -37,7 +36,7 @@ interface MetadataError {
 }
 
 export class Hip412Validator {
-  static validateSingleObject(object: NFTMetadata): FileValidationResult {
+  static validateSingleMetadataObject(object: CSVRowAsObject): FileValidationResult {
     const errors: ValidationErrorsInterface = { general: [], missingAttributes: [] };
 
     try {
@@ -46,12 +45,12 @@ export class Hip412Validator {
       errors.general.push(errorToMessage(error));
     }
 
-    if (!object.attributes || object.attributes.length === 0) {
+    if (!object.attributes) {
       errors.missingAttributes.push(dictionary.validation.missingAttributes);
     }
 
     return {
-      isValid: errors.general.length === 0 && errors.general.length === 0,
+      isValid: errors.general.length === 0,
       errors,
     };
   }
@@ -60,7 +59,6 @@ export class Hip412Validator {
     metadataObjects: CSVRowAsObject[],
     filePath: string
   ): FileValidationResult => {
-    let allObjectsValid = true;
     const errors: ValidationErrorsInterface = { general: [], missingAttributes: [] };
 
     for (const [index, metadataObject] of metadataObjects.entries()) {
@@ -77,19 +75,14 @@ export class Hip412Validator {
           dictionary.validation.missingAttributesInRowWithFilePath(filePath, index + 1)
         );
       }
-
-      if (errors.general.length > 0 || errors.missingAttributes.length > 0) {
-        allObjectsValid = false;
-      }
     }
-
-    return { isValid: allObjectsValid, errors };
+    return { isValid: errors.general.length > 0, errors };
   };
 
   static validateLocalFile(filePath: string): FileValidationResult {
     const fileContent = fs.readFileSync(filePath, 'utf8');
-    const object: NFTMetadata = JSON.parse(fileContent);
-    return this.validateSingleObject(object);
+    const object: CSVRowAsObject = JSON.parse(fileContent);
+    return this.validateSingleMetadataObject(object);
   }
 
   static validateLocalDirectory(directoryPath: string): DirectoryValidationResult {
