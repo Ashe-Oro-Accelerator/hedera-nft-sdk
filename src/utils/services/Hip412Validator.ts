@@ -10,7 +10,7 @@ import {
   validationMetadataErrorOptions,
 } from '../helpers/validateObjectWithSchema';
 import { errorToMessage } from '../helpers/errorToMessage';
-import { CSVRowAsObject } from '../../types/csv';
+import { MetadataObject } from '../../types/csv';
 import { dictionary } from '../constants/dictionary';
 
 interface FileValidationResult {
@@ -36,7 +36,7 @@ interface MetadataError {
 }
 
 export class Hip412Validator {
-  static validateSingleMetadataObject(object: CSVRowAsObject): FileValidationResult {
+  static validateSingleMetadataObject(object: MetadataObject): FileValidationResult {
     const errors: ValidationErrorsInterface = { general: [], missingAttributes: [] };
 
     try {
@@ -56,7 +56,7 @@ export class Hip412Validator {
   }
 
   static validateArrayOfObjects = (
-    metadataObjects: CSVRowAsObject[],
+    metadataObjects: MetadataObject[],
     filePath: string
   ): FileValidationResult => {
     const errors: ValidationErrorsInterface = { general: [], missingAttributes: [] };
@@ -87,7 +87,7 @@ export class Hip412Validator {
 
   static validateLocalFile(filePath: string): FileValidationResult {
     const fileContent = fs.readFileSync(filePath, 'utf8');
-    const object: CSVRowAsObject = JSON.parse(fileContent);
+    const object: MetadataObject = JSON.parse(fileContent);
     return this.validateSingleMetadataObject(object);
   }
 
