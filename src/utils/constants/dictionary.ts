@@ -27,6 +27,7 @@ export const dictionary = {
     imageForNftNotFound:
       'Image for NFT not found. The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
     mediaFileNotSupported: 'Media file is not supported.',
+    unsupportedImageMimeType: 'Unsupported image MIME type.',
   },
   hederaActions: {
     clientRequired: 'client is required. You need to log in first.',

@@ -8,7 +8,7 @@ export const CSV_EXAMPLE_INVALID_HEADERS = 'test/__mocks__/csv/csvExampleInvalid
 export const CSV_EXAMPLE_NO_IMAGES = 'test/__mocks__/csv/csvExampleNoImages.csv';
 export const CSV_EXAMPLE_ONLY_REQUIRED_FIELDS =
   'test/__mocks__/csv/csvExampleOnlyRequiredFields.csv';
-export const CSV_EXAMPLE_WITH_IMAGES = 'test/__mocks__/csv/csvExampleWithImages.csv';
+export const CSV_EXAMPLE_WITH_ALL_FIELDS = 'test/__mocks__/csv/csvExampleWithAllFields.csv';
 export const CSV_EXAMPLE_WITH_MISSING_REQUIRED_FIELDS =
   'test/__mocks__/csv/csvExampleWithMissingRequiredFields.csv';
 export const CSV_EXAMPLE_ONLY_REQUIRED_FIELDS_AND_HEADERS =

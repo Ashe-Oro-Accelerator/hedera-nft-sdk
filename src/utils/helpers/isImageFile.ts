@@ -1,8 +1,8 @@
 import some from 'lodash/some';
-
-const KNOWN_IMAGE_EXTENSIONS = ['svg', 'img', 'png', 'jpg', 'jpeg', 'webp'];
-
-const KNOWN_IMAGE_MIME_TYPES = ['image/'];
+import {
+  KNOWN_IMAGE_EXTENSIONS,
+  KNOWN_IMAGE_MIME_TYPES,
+} from '../constants/mimeTypesAndExtensions';
 
 export const isImageFile = (
   fileName: string | undefined,
