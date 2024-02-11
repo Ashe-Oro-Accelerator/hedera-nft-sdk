@@ -28,10 +28,12 @@ export const createJsonMetadataFromCSV = async ({
     csvFilePath
   );
 
-  JsonMetadataFromCSVConverter.saveCSVRowsAsJsonFiles(
-    metadataObjectsFromCSVRows,
-    savedJsonFilesLocation
-  );
+  if (isValid) {
+    JsonMetadataFromCSVConverter.saveCSVRowsAsJsonFiles(
+      metadataObjectsFromCSVRows,
+      savedJsonFilesLocation
+    );
+  }
 
   return {
     isValid,

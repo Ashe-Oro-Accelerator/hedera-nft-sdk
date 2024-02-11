@@ -66,7 +66,13 @@ export class Hip412Validator {
         validateObjectWithSchema(Hip412MetadataCSVSchema, metadataObject, noPropertiesErrorOptions);
       } catch (e) {
         errors.general.push(
-          dictionary.validation.errorInRow(filePath, index + 1, errorToMessage(e))
+          dictionary.validation.errorInRow(
+            filePath,
+            index + 1,
+            errorToMessage(
+              errorToMessage(e) === 'Required' ? dictionary.validation.requiredFieldMissing : e
+            )
+          )
         );
       }
 
@@ -76,7 +82,7 @@ export class Hip412Validator {
         );
       }
     }
-    return { isValid: errors.general.length > 0, errors };
+    return { isValid: errors.general.length === 0, errors };
   };
 
   static validateLocalFile(filePath: string): FileValidationResult {

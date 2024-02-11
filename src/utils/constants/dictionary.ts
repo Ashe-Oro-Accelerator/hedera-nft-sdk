@@ -20,7 +20,7 @@ export const dictionary = {
     invalidKeysDetected: (keys: string[]) => `Redundant key(s) detected: ['${keys.join("', '")}']`,
     csvFileIsEmpty: (path: string) => `No metadata found in CSV file "${getFullSystemPath(path)}".`,
     errorInRow: (fileName: string, line: number | string, error: string) =>
-      `Error at: line number ${line} in ${getFullSystemPath(fileName)} ${error}`,
+      `Error at: line number ${line} in ${getFullSystemPath(fileName)} - ${error}`,
     missingAttributesInRowWithFilePath: (filePath: string, row: number) =>
       `In file: "${getFullSystemPath(filePath)}" in row ${row}`,
     missingAttributes: 'There are missing attributes in the metadata object.',
@@ -28,6 +28,7 @@ export const dictionary = {
       'Image for NFT not found. The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
     mediaFileNotSupported: 'Media file is not supported.',
     unsupportedImageMimeType: 'Unsupported image MIME type.',
+    requiredFieldMissing: 'Required field is missing',
   },
   hederaActions: {
     clientRequired: 'client is required. You need to log in first.',
