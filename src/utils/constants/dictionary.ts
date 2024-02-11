@@ -29,6 +29,8 @@ export const dictionary = {
     mediaFileNotSupported: 'Media file is not supported.',
     unsupportedImageMimeType: 'Unsupported image MIME type.',
     requiredFieldMissing: 'Required field is missing',
+    requiredTypeFieldIsMissing: 'The required "type" field is missing. ',
+    requiredAttributeFieldMissing: 'The required "attributes" field is missing. ',
   },
   hederaActions: {
     clientRequired: 'client is required. You need to log in first.',
