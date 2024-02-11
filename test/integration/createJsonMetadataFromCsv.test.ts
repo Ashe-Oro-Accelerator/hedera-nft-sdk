@@ -5,7 +5,7 @@ import { Hip412MetadataCommonSchema } from '../../src/utils/validation-schemas/h
 import { createJsonMetadataFromCSV } from '../../src/functions/createJsonMetadataFromCSV';
 import {
   JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
-  CSV_EXAMPLE_WITH_IMAGES,
+  CSV_EXAMPLE_WITH_ALL_FIELDS,
   CSV_EXAMPLE_ONLY_REQUIRED_FIELDS,
   CSV_EXAMPLE_WITH_MISSING_REQUIRED_FIELDS,
   CSV_EXAMPLE_ONLY_REQUIRED_FIELDS_AND_HEADERS,
@@ -25,25 +25,24 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
     fs.rmSync(JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH, { recursive: true, force: true });
   });
 
-  test('createJsonMetadataFromCSV should complete without errors', async () => {
+  it('createJsonMetadataFromCSV should complete without errors', async () => {
     const result = await createJsonMetadataFromCSV({
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
-      csvFilePath: CSV_EXAMPLE_WITH_IMAGES,
+      csvFilePath: CSV_EXAMPLE_WITH_ALL_FIELDS,
     });
-
     expect(result.errors.general).toHaveLength(0);
   });
 
-  test(
+  it(
     'createJsonMetadataFromCSV should create correct number of JSON files based on the CSV file',
     async () => {
       await createJsonMetadataFromCSV({
         savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
-        csvFilePath: CSV_EXAMPLE_WITH_IMAGES,
+        csvFilePath: CSV_EXAMPLE_WITH_ALL_FIELDS,
       });
 
       const files = fs.readdirSync(JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH);
-      const csvContent = fs.readFileSync(CSV_EXAMPLE_WITH_IMAGES, 'utf-8');
+      const csvContent = fs.readFileSync(CSV_EXAMPLE_WITH_ALL_FIELDS, 'utf-8');
       const csvRows = csvContent.trim().split('\n').length;
       const expectedJsonFilesCount = csvRows - HEADERS_COUNT;
 
@@ -52,10 +51,10 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
     LONG_E2E_TIMEOUT
   );
 
-  test('Each file should match Hip412MetadataSchema', async () => {
+  it('Each file should match Hip412MetadataSchema', async () => {
     await createJsonMetadataFromCSV({
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
-      csvFilePath: CSV_EXAMPLE_WITH_IMAGES,
+      csvFilePath: CSV_EXAMPLE_WITH_ALL_FIELDS,
     });
 
     const files = fs.readdirSync(JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH);
@@ -69,12 +68,12 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
     });
   });
 
-  test('createJsonMetadataFromCSV should create a limited number of JSON files when nftsLimit is set', async () => {
+  it('createJsonMetadataFromCSV should create a limited number of JSON files when nftsLimit is set', async () => {
     const nftsLimit = 2;
 
     await createJsonMetadataFromCSV({
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
-      csvFilePath: CSV_EXAMPLE_WITH_IMAGES,
+      csvFilePath: CSV_EXAMPLE_WITH_ALL_FIELDS,
       nftsLimit,
     });
 
@@ -82,7 +81,7 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
     expect(generatedFiles.length).toBe(nftsLimit);
   });
 
-  test('createJsonMetadataFromCSV should complete without errors using CSV with only required fields filled', async () => {
+  it('createJsonMetadataFromCSV should complete without errors using CSV with only required fields filled', async () => {
     const result = await createJsonMetadataFromCSV({
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
       csvFilePath: CSV_EXAMPLE_ONLY_REQUIRED_FIELDS,
@@ -91,7 +90,7 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
     expect(result.errors.general).toHaveLength(0);
   });
 
-  test('createJsonMetadataFromCSV should complete without errors using CSV with only required fields and headers filled', async () => {
+  it('createJsonMetadataFromCSV should complete without errors using CSV with only required fields and headers filled', async () => {
     const result = await createJsonMetadataFromCSV({
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
       csvFilePath: CSV_EXAMPLE_ONLY_REQUIRED_FIELDS_AND_HEADERS,
@@ -100,12 +99,11 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
     expect(result.errors.general).toHaveLength(0);
   });
 
-  test('createJsonMetadataFromCSV should return errors for missing required fields in CSV', async () => {
+  it('createJsonMetadataFromCSV should return errors for missing required fields in CSV', async () => {
     const result = await createJsonMetadataFromCSV({
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
       csvFilePath: CSV_EXAMPLE_WITH_MISSING_REQUIRED_FIELDS,
     });
-
-    expect(result.errors.general).toHaveLength(6);
+    expect(result.errors.general).toHaveLength(8);
   });
 });

@@ -3,9 +3,10 @@ import { Hip412Validator } from '../../src/utils/services/Hip412Validator';
 const METADATA_OBJECT_WITH_ONLY_REQUIRED_FIELDS = {
   name: 'Example NFT 1',
   image: 'https://nft.com/mycollection/1.jpg',
+  type: 'image/jpeg',
 };
 
-const METADATA_OBJECT_WITH_IMAGE_FIELD_MISSING = {
+const METADATA_OBJECT_WITH_REQUIRED_FIELDS_MISSING = {
   name: 'Example NFT 1',
 };
 
@@ -21,7 +22,7 @@ describe('Hip412Validator.validateSingleObject', () => {
 
   it('should return an error in errors.general for an object missing the image field', () => {
     const validationResult = Hip412Validator.validateSingleMetadataObject(
-      METADATA_OBJECT_WITH_IMAGE_FIELD_MISSING
+      METADATA_OBJECT_WITH_REQUIRED_FIELDS_MISSING
     );
 
     expect(validationResult.isValid).toBe(false);
