@@ -86,9 +86,19 @@ export class Hip412Validator {
   };
 
   static validateLocalFile(filePath: string): FileValidationResult {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    const object: MetadataObject = JSON.parse(fileContent);
-    return this.validateSingleMetadataObject(object);
+    try {
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      const object: MetadataObject = JSON.parse(fileContent);
+      return this.validateSingleMetadataObject(object);
+    } catch (error) {
+      return {
+        isValid: false,
+        errors: {
+          general: [errorToMessage(error)],
+          missingAttributes: [],
+        },
+      };
+    }
   }
 
   static validateLocalDirectory(directoryPath: string): DirectoryValidationResult {

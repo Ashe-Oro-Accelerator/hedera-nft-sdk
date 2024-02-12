@@ -31,6 +31,8 @@ export const dictionary = {
     requiredFieldMissing: 'Required field is missing',
     requiredTypeFieldIsMissing: 'The required "type" field is missing. ',
     requiredAttributeFieldMissing: 'The required "attributes" field is missing. ',
+    filePermissionDenied: 'Permission denied',
+    fileEmptyOrFormattingError: 'Unexpected end of JSON input',
   },
   hederaActions: {
     clientRequired: 'client is required. You need to log in first.',
