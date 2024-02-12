@@ -24,7 +24,6 @@ describe('Hip412Validator.validateLocalDirectory integration tests', () => {
     const validationResult = Hip412Validator.validateLocalDirectory(
       FILES_WITH_MIXED_EXTENSION_PATH
     );
-
     expect(validationResult.isValid).toBe(true);
     expect(validationResult.errors.length).toBe(0);
   });

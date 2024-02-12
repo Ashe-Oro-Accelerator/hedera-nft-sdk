@@ -104,11 +104,15 @@ export class Hip412Validator {
   static validateLocalDirectory(directoryPath: string): DirectoryValidationResult {
     const errors: MetadataError[] = [];
 
-    const jsonFiles = fs.readdirSync(directoryPath).sort((a, b) => {
-      const numA = parseInt(a.match(/\d+/)?.[0] ?? '0', 10);
-      const numB = parseInt(b.match(/\d+/)?.[0] ?? '0', 10);
-      return numA - numB;
-    });
+    const jsonFiles = fs
+      .readdirSync(directoryPath)
+      // .gitkeep file is needed inside empty-json-directory to keep it in the repository that's why we filter it out
+      .filter((file) => file !== '.gitkeep')
+      .sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] ?? '0', 10);
+        const numB = parseInt(b.match(/\d+/)?.[0] ?? '0', 10);
+        return numA - numB;
+      });
 
     if (jsonFiles.length === 0) {
       return {
