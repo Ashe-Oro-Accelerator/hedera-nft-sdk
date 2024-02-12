@@ -102,7 +102,6 @@ export class Hip412Validator {
   }
 
   static validateLocalDirectory(directoryPath: string): DirectoryValidationResult {
-    let allFilesValid = true;
     const errors: MetadataError[] = [];
 
     const jsonFiles = fs
@@ -113,6 +112,20 @@ export class Hip412Validator {
         const numB = parseInt(b.match(/\d+/)?.[0] ?? '0', 10);
         return numA - numB;
       });
+
+    if (jsonFiles.length === 0) {
+      return {
+        isValid: false,
+        errors: [
+          {
+            general: [dictionary.validation.directoryIsEmpty],
+            missingAttributes: [],
+          },
+        ],
+      };
+    }
+
+    let allFilesValid = true;
 
     for (const file of jsonFiles) {
       const filePath = path.join(directoryPath, file);

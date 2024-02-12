@@ -3,7 +3,6 @@ import { Hip412Validator } from '../../src/utils/services/Hip412Validator';
 import { dictionary } from '../../src/utils/constants/dictionary';
 
 jest.mock('fs');
-
 const mockReadFileSync = fs.readFileSync as jest.Mock;
 
 describe('Hip412Validator.validateLocalFile', () => {
