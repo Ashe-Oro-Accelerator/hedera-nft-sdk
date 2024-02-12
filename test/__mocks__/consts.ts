@@ -1,4 +1,5 @@
 export const myAccountId = '0.0.12345';
+export const mySecondAccountId = '0.0.123';
 export const myPrivateKey =
   '123e020100300506032b657004220420f8e9f8de8f7e06f7e9f8de8f7e06f7e9f8de8f7e06f7e9f8de8f7e06f7e9f8de';
 
@@ -27,3 +28,4 @@ export const EMPTY_JSON_EXAMPLE_PATH = 'test/__mocks__/json/empty-example.json';
 export const CORRECT_EXAMPLE_PATH = 'test/__mocks__/json/correct-example.json';
 
 export const LONG_E2E_TIMEOUT = 25000;
+export const MIRROR_NODE_DELAY = 5000;

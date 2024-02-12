@@ -17,7 +17,8 @@
     "size": "size-limit",
     "start": "dts watch",
     "test": "dts test --testPathIgnorePatterns=\"<rootDir>/test/e2e/\"",
-    "test:e2e": "dts test test/e2e --verbose"
+    "test:e2e": "dts test test/e2e --verbose",
+    "test:single": "dts test --testPathPattern"
   },
   "prettier": {
     "printWidth": 100,
