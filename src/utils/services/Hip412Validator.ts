@@ -104,14 +104,11 @@ export class Hip412Validator {
   static validateLocalDirectory(directoryPath: string): DirectoryValidationResult {
     const errors: MetadataError[] = [];
 
-    const jsonFiles = fs
-      .readdirSync(directoryPath)
-      .filter((file) => path.extname(file) === '.json')
-      .sort((a, b) => {
-        const numA = parseInt(a.match(/\d+/)?.[0] ?? '0', 10);
-        const numB = parseInt(b.match(/\d+/)?.[0] ?? '0', 10);
-        return numA - numB;
-      });
+    const jsonFiles = fs.readdirSync(directoryPath).sort((a, b) => {
+      const numA = parseInt(a.match(/\d+/)?.[0] ?? '0', 10);
+      const numB = parseInt(b.match(/\d+/)?.[0] ?? '0', 10);
+      return numA - numB;
+    });
 
     if (jsonFiles.length === 0) {
       return {

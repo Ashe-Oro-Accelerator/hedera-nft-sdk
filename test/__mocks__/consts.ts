@@ -19,4 +19,8 @@ export const JSON_METADATA_UNIT_TESTS_OUTPUT_METADATA_FOLDER_PATH = 'test/unit/o
 export const JSON_METADATA_UNIT_TESTS_OUTPUT_NEW_METADATA_FOLDER_PATH =
   'test/unit/output/newMetadata';
 
+export const EMPTY_JSON_DIRECTORY_PATH = 'test/__mocks__/json/empty-json-directory';
+export const NON_EMPTY_JSON_DIRECTORY_PATH = 'test/__mocks__/json/non-empty-json-directory';
+export const FILES_WITH_MIXED_EXTENSION_PATH = 'test/__mocks__/json/files-with-mixed-extensions';
+
 export const LONG_E2E_TIMEOUT = 25000;
