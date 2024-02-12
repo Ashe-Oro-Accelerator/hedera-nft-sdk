@@ -23,4 +23,7 @@ export const EMPTY_JSON_DIRECTORY_PATH = 'test/__mocks__/json/empty-json-directo
 export const NON_EMPTY_JSON_DIRECTORY_PATH = 'test/__mocks__/json/non-empty-json-directory';
 export const FILES_WITH_MIXED_EXTENSION_PATH = 'test/__mocks__/json/files-with-mixed-extensions';
 
+export const EMPTY_JSON_EXAMPLE_PATH = 'test/__mocks__/json/empty-example.json';
+export const CORRECT_EXAMPLE_PATH = 'test/__mocks__/json/correct-example.json';
+
 export const LONG_E2E_TIMEOUT = 25000;
