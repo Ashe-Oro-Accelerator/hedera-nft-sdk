@@ -184,18 +184,17 @@ export class Hip412Validator {
     mirrorNodeUrl?: string
   ) {
     const nfts = await getNFTsFromToken(network, tokenId, mirrorNodeUrl);
-    const decodedMetadata = nftMetadataDecoder(nfts, ipfsGateway);
+    const decodedMetadataArray = nftMetadataDecoder(nfts, ipfsGateway);
 
     const metadataObjects = await Promise.all(
-      decodedMetadata.map(async ({ metadata, serialNumber }) => {
+      decodedMetadataArray.map(async ({ metadata, serialNumber }) => {
         return await getMetadataObjectsForValidation(metadata, serialNumber);
       })
     );
-
-    console.log('metadataObjects length:', metadataObjects.length);
+    // console.log('metadataObjects:', metadataObjects);
 
     const validationResponse = Hip412Validator.validateOnChainArrayOfObjects(metadataObjects);
-    // console.log('validationResponse:', JSON.stringify(validationResponse, null, 2));
+    console.log('validationResponse:', JSON.stringify(validationResponse, null, 2));
     return validationResponse;
   }
 }

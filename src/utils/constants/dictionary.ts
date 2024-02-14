@@ -5,7 +5,8 @@ export const dictionary = {
     unhandledError: 'Unknown error.',
     ipfsGatewayRequired: 'IPFS gateway is required when metadata contains IPFS links.',
     ipfsFailedToFetch: 'Failed to fetch metadata using IPFS gateway',
-    tooManyRequests: 'Too many requests - (error 429)',
+    tooManyRequests: (statusText: string, status: number) =>
+      `${statusText}. Status code: ${status}`,
     unknownErrorWhileFetching: (serialNumber: number, errorMessage: string) =>
       `Error fetching metadata for serialNumber ${serialNumber}:, ${errorMessage}`,
   },

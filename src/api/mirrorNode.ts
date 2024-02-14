@@ -1,8 +1,9 @@
 import { NftId } from '@hashgraph/sdk';
 import axios from 'axios';
-import { NFTDetails } from '../types/nfts';
+import { NFTDetails, NFTS } from '../types/nfts';
 import { MetadataObject } from '../types/csv';
 import { dictionary } from '../utils/constants/dictionary';
+import { errorToMessage } from '../utils/helpers/errorToMessage';
 
 const getMirrorNodeUrlForNetwork = (network: string): string => {
   return `https://${network === 'mainnet' ? 'mainnet-public' : network}.mirrornode.hedera.com/api/v1`;
@@ -27,10 +28,21 @@ export async function getNFTsFromToken(
   tokenId: string,
   mirrorNodeUrl?: string
 ): Promise<NFTDetails[]> {
-  const url = mirrorNodeUrl || getMirrorNodeUrlForNetwork(network);
+  const baseUrl = mirrorNodeUrl || getMirrorNodeUrlForNetwork(network);
+  let nextLink: string = `${baseUrl}/tokens/${tokenId}/nfts`;
+  let allNFTs: NFTDetails[] = [];
 
-  const response = await axios.get(`${url}/tokens/${tokenId.toString()}/nfts`);
-  return response.data.nfts;
+  do {
+    try {
+      const response = await axios.get<NFTS>(nextLink);
+      allNFTs = allNFTs.concat(response.data.nfts);
+      nextLink = response.data.links.next ? new URL(response.data.links.next, baseUrl).href : '';
+    } catch (error) {
+      throw new Error(errorToMessage(error));
+    }
+  } while (nextLink);
+
+  return allNFTs;
 }
 
 export async function getMetadataObjectsForValidation(
@@ -47,9 +59,12 @@ export async function getMetadataObjectsForValidation(
     let errorMessage = dictionary.errors.ipfsFailedToFetch as string;
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 429) {
-        errorMessage = dictionary.errors.tooManyRequests as string;
+        errorMessage = dictionary.errors.tooManyRequests(
+          error.response.statusText,
+          error.response.status
+        );
       } else {
-        console.error(dictionary.errors.unknownErrorWhileFetching(serialNumber, errorMessage));
+        console.log(dictionary.errors.unknownErrorWhileFetching(serialNumber, errorMessage));
       }
     }
 
