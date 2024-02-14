@@ -39,7 +39,7 @@ export interface NFTMetadata {
   description?: string;
   creator?: string;
   creatorDID?: string;
-  type?: string;
+  type: string;
   files?: FileMetadata[];
   format?: 'HIP412@2.0.0';
   properties?: Property;
