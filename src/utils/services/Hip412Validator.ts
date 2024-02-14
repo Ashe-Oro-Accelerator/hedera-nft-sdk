@@ -12,6 +12,8 @@ import {
 import { errorToMessage } from '../helpers/errorToMessage';
 import { MetadataObject } from '../../types/csv';
 import { dictionary } from '../constants/dictionary';
+import { getMetadataObjectsForValidation, getNFTsFromToken } from '../../api/mirrorNode';
+import { nftMetadataDecoder } from '../helpers/nftMetadataDecoder';
 
 interface FileValidationResult {
   isValid: boolean;
@@ -143,5 +145,57 @@ export class Hip412Validator {
     }
 
     return { isValid: allFilesValid, errors };
+  }
+
+  static validateOnChainArrayOfObjects = (
+    metadataObjects: Array<{
+      metadata?: MetadataObject;
+      serialNumber: number;
+      error?: string;
+    }>
+  ): { isValid: boolean; errors: Array<{ serialNumber: number; message: string[] }> } => {
+    const errors: Array<{ serialNumber: number; message: string[] }> = [];
+
+    metadataObjects.forEach((obj) => {
+      if (obj.error) {
+        errors.push({
+          serialNumber: obj.serialNumber,
+          message: [obj.error],
+        });
+      } else if (obj.metadata) {
+        try {
+          validateObjectWithSchema(Hip412MetadataCSVSchema, obj.metadata, noPropertiesErrorOptions);
+        } catch (e) {
+          errors.push({
+            serialNumber: obj.serialNumber,
+            message: [errorToMessage(e)],
+          });
+        }
+      }
+    });
+
+    return { isValid: errors.length === 0, errors };
+  };
+
+  static async validateMetadataFromOnChainCollection(
+    network: string,
+    tokenId: string,
+    ipfsGateway?: string,
+    mirrorNodeUrl?: string
+  ) {
+    const nfts = await getNFTsFromToken(network, tokenId, mirrorNodeUrl);
+    const decodedMetadata = nftMetadataDecoder(nfts, ipfsGateway);
+
+    const metadataObjects = await Promise.all(
+      decodedMetadata.map(async ({ metadata, serialNumber }) => {
+        return await getMetadataObjectsForValidation(metadata, serialNumber);
+      })
+    );
+
+    console.log('metadataObjects length:', metadataObjects.length);
+
+    const validationResponse = Hip412Validator.validateOnChainArrayOfObjects(metadataObjects);
+    // console.log('validationResponse:', JSON.stringify(validationResponse, null, 2));
+    return validationResponse;
   }
 }

@@ -3,6 +3,11 @@ import { getFullSystemPath } from '../helpers/getFullSystemPath';
 export const dictionary = {
   errors: {
     unhandledError: 'Unknown error.',
+    ipfsGatewayRequired: 'IPFS gateway is required when metadata contains IPFS links.',
+    ipfsFailedToFetch: 'Failed to fetch metadata using IPFS gateway',
+    tooManyRequests: 'Too many requests - (error 429)',
+    unknownErrorWhileFetching: (serialNumber: number, errorMessage: string) =>
+      `Error fetching metadata for serialNumber ${serialNumber}:, ${errorMessage}`,
   },
   createCollection: {
     clientRequired: 'client is required. You need to log in first.',

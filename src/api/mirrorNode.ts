@@ -33,7 +33,7 @@ export async function getNFTsFromToken(
   return response.data.nfts;
 }
 
-export async function getMetadataObjects(
+export async function getMetadataObjectsForValidation(
   url: string,
   serialNumber: number
 ): Promise<{ metadata?: MetadataObject; serialNumber: number; error?: string }> {
