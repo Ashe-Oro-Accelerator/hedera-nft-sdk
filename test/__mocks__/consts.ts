@@ -31,3 +31,10 @@ export const LONG_E2E_TIMEOUT = 25000;
 export const MIRROR_NODE_DELAY = 5000;
 
 export const NFT_FROM_TOKEN_EXAMPLE_BASE_URL = 'http://example.com';
+export const NETWORK_ERROR = 'Network error';
+
+export const EXAMPLE_IPFS_GATEWAY = 'https://myipfsgateway.example.com/ipfs/';
+
+export const IPFS_PREFIXED_HASH = 'ipfs://QmSomeHash';
+export const HASH_WITHOUT_IPFS_PREFIX = 'QmAnotherHash';
+export const HTTPS_URL = 'https://example.com/metadata.json';

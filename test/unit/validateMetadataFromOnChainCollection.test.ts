@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getNFTsFromToken } from '../../src/api/mirrorNode';
-import { NFT_FROM_TOKEN_EXAMPLE_BASE_URL } from '../__mocks__/consts';
+import { NFT_FROM_TOKEN_EXAMPLE_BASE_URL, NETWORK_ERROR } from '../__mocks__/consts';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -38,9 +38,9 @@ describe('getNFTsFromToken', () => {
   });
 
   it('properly handles HTTP errors', async () => {
-    mockedAxios.get.mockRejectedValue(new Error('Network error'));
+    mockedAxios.get.mockRejectedValue(new Error(NETWORK_ERROR));
     await expect(getNFTsFromToken('testnet', '1', NFT_FROM_TOKEN_EXAMPLE_BASE_URL)).rejects.toThrow(
-      'Network error'
+      NETWORK_ERROR
     );
   });
 });
