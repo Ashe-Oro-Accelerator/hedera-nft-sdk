@@ -7,8 +7,8 @@ export const dictionary = {
     ipfsFailedToFetch: 'Failed to fetch metadata using IPFS gateway',
     tooManyRequests: (statusText: string, status: number) =>
       `${statusText}. Status code: ${status}`,
-    unknownErrorWhileFetching: (serialNumber: number, errorMessage: string) =>
-      `Error fetching metadata for serialNumber ${serialNumber}:, ${errorMessage}`,
+    unknownErrorWhileFetching: (serialNumber: number) =>
+      `Error fetching metadata for serialNumber ${serialNumber}`,
   },
   createCollection: {
     clientRequired: 'client is required. You need to log in first.',

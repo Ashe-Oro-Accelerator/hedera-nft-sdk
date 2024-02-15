@@ -167,7 +167,11 @@ export class Hip412Validator {
         });
       } else if (obj.metadata) {
         try {
-          validateObjectWithSchema(Hip412MetadataCSVSchema, obj.metadata, noPropertiesErrorOptions);
+          validateObjectWithSchema(
+            Hip412MetadataCSVSchema,
+            obj.metadata,
+            validationMetadataErrorOptions
+          );
         } catch (e) {
           errors.push({
             serialNumber: obj.serialNumber,

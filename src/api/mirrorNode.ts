@@ -64,7 +64,7 @@ export async function getMetadataObjectsForValidation(
           error.response.status
         );
       } else {
-        console.log(dictionary.errors.unknownErrorWhileFetching(serialNumber, errorMessage));
+        console.log(dictionary.errors.unknownErrorWhileFetching(serialNumber));
       }
     }
 
