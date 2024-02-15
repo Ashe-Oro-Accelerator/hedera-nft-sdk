@@ -1,4 +1,5 @@
 import { Client, NftId, PrivateKey } from '@hashgraph/sdk';
+import { NetworkName } from '@hashgraph/sdk/lib/client/Client';
 
 export type MintUniqueTokenType = {
   client: Client;
@@ -20,7 +21,7 @@ export type MintTokenType = {
 
 export type IncreaseNFTSupplyType = {
   client: Client;
-  network: string;
+  network: NetworkName;
   nftId: NftId;
   amount: number;
   batchSize: number;

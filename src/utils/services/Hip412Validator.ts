@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { NetworkName } from '@hashgraph/sdk/lib/client/Client';
 import {
   Hip412MetadataCSVSchema,
   Hip412MetadataSchema,
@@ -35,6 +36,12 @@ interface MetadataError {
   fileName?: string;
   general: string[];
   missingAttributes: string[];
+}
+
+interface MetadataOnChainObjects {
+  metadata?: MetadataObject;
+  serialNumber: number;
+  error?: string;
 }
 
 export class Hip412Validator {
@@ -148,11 +155,7 @@ export class Hip412Validator {
   }
 
   static validateOnChainArrayOfObjects = (
-    metadataObjects: Array<{
-      metadata?: MetadataObject;
-      serialNumber: number;
-      error?: string;
-    }>
+    metadataObjects: MetadataOnChainObjects[]
   ): { isValid: boolean; errors: Array<{ serialNumber: number; message: string[] }> } => {
     const errors: Array<{ serialNumber: number; message: string[] }> = [];
 
@@ -178,7 +181,7 @@ export class Hip412Validator {
   };
 
   static async validateMetadataFromOnChainCollection(
-    network: string,
+    network: NetworkName,
     tokenId: string,
     ipfsGateway?: string,
     mirrorNodeUrl?: string
@@ -191,10 +194,8 @@ export class Hip412Validator {
         return await getMetadataObjectsForValidation(metadata, serialNumber);
       })
     );
-    // console.log('metadataObjects:', metadataObjects);
 
     const validationResponse = Hip412Validator.validateOnChainArrayOfObjects(metadataObjects);
-    console.log('validationResponse:', JSON.stringify(validationResponse, null, 2));
     return validationResponse;
   }
 }

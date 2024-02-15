@@ -3,7 +3,7 @@ import axios from 'axios';
 import { increaseNFTSupply } from '../../src/functions/increaseNFTSupply';
 import { IncreaseNFTSupplyType } from '../../src/types/mintToken';
 import { validatePropsForIncreaseNFTSupply } from '../../src/utils/validateProps';
-
+import { NetworkName } from '@hashgraph/sdk/lib/client/Client';
 
 jest.mock('axios');
 jest.mock('../../src/functions/mintSharedMetadataFunction', () => ({
@@ -20,7 +20,7 @@ const mockResponse = {
 };
 beforeAll(() => {
   mockedAxios.get.mockResolvedValue({
-    data: mockResponse
+    data: mockResponse,
   });
 });
 
@@ -50,7 +50,7 @@ describe('increaseNFTSupply', () => {
   it('should validate props before increasing NFT supply', async () => {
     await increaseNFTSupply(mockIncreaseNFTSupplyType);
 
-    expect((validatePropsForIncreaseNFTSupply as jest.Mock)).toHaveBeenCalledWith({
+    expect(validatePropsForIncreaseNFTSupply as jest.Mock).toHaveBeenCalledWith({
       nftId: mockNftId,
       amount: 10,
       supplyKey: generatedSupplyKey,
@@ -63,13 +63,19 @@ describe('increaseNFTSupply', () => {
 
     expect(mockedAxios.get).toHaveBeenCalledWith('mirrorNodeUrl/tokens/0.0.453/nfts/1');
     expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-    expect((require('../../src/functions/mintSharedMetadataFunction').mintSharedMetadataFunction as jest.Mock)).toHaveBeenCalledTimes(1);
+    expect(
+      require('../../src/functions/mintSharedMetadataFunction')
+        .mintSharedMetadataFunction as jest.Mock
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should call mintSharedMetadataFunction with the correct parameters', async () => {
     await increaseNFTSupply(mockIncreaseNFTSupplyType);
 
-    expect((require('../../src/functions/mintSharedMetadataFunction').mintSharedMetadataFunction as jest.Mock)).toHaveBeenCalledWith({
+    expect(
+      require('../../src/functions/mintSharedMetadataFunction')
+        .mintSharedMetadataFunction as jest.Mock
+    ).toHaveBeenCalledWith({
       client: mockIncreaseNFTSupplyType.client,
       tokenId: mockIncreaseNFTSupplyType.nftId.tokenId.toString(),
       amount: mockIncreaseNFTSupplyType.amount,
@@ -88,24 +94,28 @@ describe('increaseNFTSupply', () => {
   it('should get correct mirror node url for mainnet', async () => {
     const mockIncreaseNFTSupplyTypeMainnet = {
       ...mockIncreaseNFTSupplyType,
-      network: 'mainnet',
+      network: 'mainnet' as NetworkName,
       mirrorNodeUrl: undefined,
     };
 
     await increaseNFTSupply(mockIncreaseNFTSupplyTypeMainnet);
 
-    expect(mockedAxios.get).toHaveBeenCalledWith('https://mainnet-public.mirrornode.hedera.com/api/v1/tokens/0.0.453/nfts/1');
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      'https://mainnet-public.mirrornode.hedera.com/api/v1/tokens/0.0.453/nfts/1'
+    );
   });
 
   it('should get correct mirror node url for testnet', async () => {
     const mockIncreaseNFTSupplyTypeTestnet = {
       ...mockIncreaseNFTSupplyType,
-      network: 'testnet',
+      network: 'testnet' as NetworkName,
       mirrorNodeUrl: undefined,
     };
 
     await increaseNFTSupply(mockIncreaseNFTSupplyTypeTestnet);
 
-    expect(mockedAxios.get).toHaveBeenCalledWith('https://testnet.mirrornode.hedera.com/api/v1/tokens/0.0.453/nfts/1');
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      'https://testnet.mirrornode.hedera.com/api/v1/tokens/0.0.453/nfts/1'
+    );
   });
 });

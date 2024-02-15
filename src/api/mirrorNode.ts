@@ -4,13 +4,14 @@ import { NFTDetails, NFTS } from '../types/nfts';
 import { MetadataObject } from '../types/csv';
 import { dictionary } from '../utils/constants/dictionary';
 import { errorToMessage } from '../utils/helpers/errorToMessage';
+import { NetworkName } from '@hashgraph/sdk/lib/client/Client';
 
-const getMirrorNodeUrlForNetwork = (network: string): string => {
+const getMirrorNodeUrlForNetwork = (network: NetworkName): string => {
   return `https://${network === 'mainnet' ? 'mainnet-public' : network}.mirrornode.hedera.com/api/v1`;
 };
 
 export async function getMetaDataFromMirrorNode(
-  network: string,
+  network: NetworkName,
   nftId: NftId,
   mirrorNodeUrl?: string
 ): Promise<string> {
@@ -24,7 +25,7 @@ export async function getMetaDataFromMirrorNode(
 }
 
 export async function getNFTsFromToken(
-  network: string,
+  network: NetworkName,
   tokenId: string,
   mirrorNodeUrl?: string
 ): Promise<NFTDetails[]> {
@@ -41,7 +42,6 @@ export async function getNFTsFromToken(
       throw new Error(errorToMessage(error));
     }
   } while (nextLink);
-
   return allNFTs;
 }
 
