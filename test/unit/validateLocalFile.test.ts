@@ -16,7 +16,7 @@ describe('Hip412Validator.validateLocalFile', () => {
     });
     const validationResult = Hip412Validator.validateLocalFile('mockPath.json');
     expect(validationResult.isValid).toBe(false);
-    expect(validationResult.errors.general).toContain(dictionary.validation.filePermissionDenied);
+    expect(validationResult.errors).toContain(dictionary.validation.filePermissionDenied);
   });
 
   it('should handle JSON files with formatting errors', () => {
@@ -25,18 +25,14 @@ describe('Hip412Validator.validateLocalFile', () => {
     });
     const validationResult = Hip412Validator.validateLocalFile('mockPath.json');
     expect(validationResult.isValid).toBe(false);
-    expect(validationResult.errors.general).toEqual([
-      dictionary.validation.fileEmptyOrFormattingError,
-    ]);
+    expect(validationResult.errors).toEqual([dictionary.validation.fileEmptyOrFormattingError]);
   });
 
   it('should handle empty or non-existent JSON files', () => {
     mockReadFileSync.mockReturnValue('');
     const validationResult = Hip412Validator.validateLocalFile('path/to/empty.json');
     expect(validationResult.isValid).toBe(false);
-    expect(validationResult.errors.general).toEqual([
-      dictionary.validation.fileEmptyOrFormattingError,
-    ]);
+    expect(validationResult.errors).toEqual([dictionary.validation.fileEmptyOrFormattingError]);
   });
 
   it('should validate correctly structured JSON file', () => {
@@ -48,6 +44,6 @@ describe('Hip412Validator.validateLocalFile', () => {
     mockReadFileSync.mockReturnValue(validJson);
     const validationResult = Hip412Validator.validateLocalFile('path/to/valid.json');
     expect(validationResult.isValid).toBe(true);
-    expect(validationResult.errors.general).toHaveLength(0);
+    expect(validationResult.errors).toHaveLength(0);
   });
 });

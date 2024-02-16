@@ -31,18 +31,15 @@ export const dictionary = {
       `Error in line number ${line}, column number ${column}. Check if your CSV file is well prepared.`,
     invalidKeysDetected: (keys: string[]) => `Redundant key(s) detected: ['${keys.join("', '")}']`,
     csvFileIsEmpty: (path: string) => `No metadata found in CSV file "${getFullSystemPath(path)}".`,
-    errorInRow: (fileName: string, line: number | string, error: string) =>
-      `Error at: line number ${line} in ${getFullSystemPath(fileName)} - ${error}`,
-    missingAttributesInRowWithFilePath: (filePath: string, row: number) =>
-      `In file: "${getFullSystemPath(filePath)}" in row ${row}`,
-    missingAttributes: 'There are missing attributes in the metadata object.',
+    arrayOfObjectsValidationError: (fileName: string, error: string) =>
+      `Error at: ${getFullSystemPath(fileName)} - ${error}`,
     imageForNftNotFound:
       'Image for NFT not found. The name of the image file should match its corresponding metadata file name (ex: 1.jpg with 1.json) or specify directly the "image" property.',
     mediaFileNotSupported: 'Media file is not supported.',
     unsupportedImageMimeType: 'Unsupported image MIME type.',
     requiredFieldMissing: 'Required field is missing',
-    requiredTypeFieldIsMissing: 'The required "type" field is missing. ',
-    requiredAttributeFieldMissing: 'The required "attributes" field is missing. ',
+    requiredTypeFieldIsMissing: 'The required "type" field is missing.',
+    requiredAttributeFieldMissing: 'The required "attributes" field is missing.',
     filePermissionDenied: 'Permission denied',
     fileEmptyOrFormattingError: 'Unexpected end of JSON input',
     directoryIsEmpty: 'Directory is empty',

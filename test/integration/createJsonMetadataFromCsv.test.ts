@@ -30,7 +30,7 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
       csvFilePath: CSV_EXAMPLE_WITH_ALL_FIELDS,
     });
-    expect(result.errors.general).toHaveLength(0);
+    expect(result.errors).toHaveLength(0);
   });
 
   it(
@@ -87,7 +87,7 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
       csvFilePath: CSV_EXAMPLE_ONLY_REQUIRED_FIELDS,
     });
 
-    expect(result.errors.general).toHaveLength(0);
+    expect(result.errors).toHaveLength(0);
   });
 
   it('createJsonMetadataFromCSV should complete without errors using CSV with only required fields and headers filled', async () => {
@@ -96,7 +96,7 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
       csvFilePath: CSV_EXAMPLE_ONLY_REQUIRED_FIELDS_AND_HEADERS,
     });
 
-    expect(result.errors.general).toHaveLength(0);
+    expect(result.errors).toHaveLength(0);
   });
 
   it('createJsonMetadataFromCSV should return errors for missing required fields in CSV', async () => {
@@ -104,6 +104,6 @@ describe('createJsonMetadataFromCSV Integration Test', () => {
       savedJsonFilesLocation: JSON_METADATA_INTEGRATION_TESTS_OUTPUT_FOLDER_PATH,
       csvFilePath: CSV_EXAMPLE_WITH_MISSING_REQUIRED_FIELDS,
     });
-    expect(result.errors.general).toHaveLength(8);
+    expect(result.errors).toHaveLength(8);
   });
 });

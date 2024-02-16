@@ -37,10 +37,7 @@ export const createJsonMetadataFromCSV = async ({
 
   return {
     isValid,
-    errors: {
-      general: errors.general,
-      missingAttributes: errors.missingAttributes,
-    },
+    errors,
     savedJsonFilesLocation,
   };
 };

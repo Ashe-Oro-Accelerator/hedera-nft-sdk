@@ -4,6 +4,7 @@ import keys from 'lodash/keys';
 import { type z } from 'zod';
 import type { ErrorMessageOptions } from 'zod-error';
 import { generateErrorMessage } from 'zod-error';
+import { ValidationError } from '../validationError';
 
 export const noPropertiesErrorOptions: ErrorMessageOptions = {
   prefix: '',
@@ -54,7 +55,7 @@ export const validationMetadataErrorOptions: ErrorMessageOptions = {
     error: '',
   },
   message: { enabled: false },
-  transform: ({ errorMessage }) => `${errorMessage} `,
+  transform: ({ errorMessage }) => errorMessage,
 };
 
 export const validateObjectWithSchema = <T extends { [key: string]: string | unknown }>(
@@ -64,8 +65,11 @@ export const validateObjectWithSchema = <T extends { [key: string]: string | unk
 ): T => {
   const validation = Schema.safeParse(object);
   if (!validation.success) {
-    const errorMessage = generateErrorMessage(validation.error.issues, errorMessageOptions);
-    throw new Error(errorMessage);
+    const errorMessages = validation.error.issues.map((issue) =>
+      generateErrorMessage([issue], errorMessageOptions)
+    );
+
+    throw new ValidationError(errorMessages);
   }
 
   const parsedObjectWithSchema = Schema.parse(object);

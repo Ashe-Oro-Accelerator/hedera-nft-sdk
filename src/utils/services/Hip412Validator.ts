@@ -7,7 +7,6 @@ import {
 } from '../validation-schemas/hip412Metadata.schema';
 import {
   validateObjectWithSchema,
-  noPropertiesErrorOptions,
   validationMetadataErrorOptions,
 } from '../helpers/validateObjectWithSchema';
 import { errorToMessage } from '../helpers/errorToMessage';
@@ -15,16 +14,12 @@ import { MetadataObject } from '../../types/csv';
 import { dictionary } from '../constants/dictionary';
 import { getMetadataObjectsForValidation, getNFTsFromToken } from '../../api/mirrorNode';
 import { nftMetadataDecoder } from '../helpers/nftMetadataDecoder';
+import { ValidationError } from '../validationError';
 
 interface FileValidationResult {
   isValid: boolean;
   fileName?: string;
-  errors: ValidationErrorsInterface;
-}
-
-interface ValidationErrorsInterface {
-  general: string[];
-  missingAttributes: string[];
+  errors: string[];
 }
 
 interface DirectoryValidationResult {
@@ -35,7 +30,6 @@ interface DirectoryValidationResult {
 interface MetadataError {
   fileName?: string;
   general: string[];
-  missingAttributes: string[];
 }
 
 interface MetadataOnChainObjects {
@@ -46,52 +40,49 @@ interface MetadataOnChainObjects {
 
 export class Hip412Validator {
   static validateSingleMetadataObject(object: MetadataObject): FileValidationResult {
-    const errors: ValidationErrorsInterface = { general: [], missingAttributes: [] };
+    const errors: string[] = [];
 
     try {
       validateObjectWithSchema(Hip412MetadataSchema, object, validationMetadataErrorOptions);
-    } catch (error) {
-      errors.general.push(errorToMessage(error));
-    }
-
-    if (!object.attributes) {
-      errors.missingAttributes.push(dictionary.validation.missingAttributes);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        errors.push(...err.errors);
+      } else {
+        console.error(dictionary.errors.unhandledError);
+      }
     }
 
     return {
-      isValid: errors.general.length === 0,
+      isValid: errors.length === 0,
       errors,
     };
   }
 
   static validateArrayOfObjects = (
     metadataObjects: MetadataObject[],
-    filePath: string
+    filePath?: string
   ): FileValidationResult => {
-    const errors: ValidationErrorsInterface = { general: [], missingAttributes: [] };
+    const errors: string[] = [];
 
     for (const [index, metadataObject] of metadataObjects.entries()) {
       try {
-        validateObjectWithSchema(Hip412MetadataCSVSchema, metadataObject, noPropertiesErrorOptions);
+        validateObjectWithSchema(
+          Hip412MetadataCSVSchema,
+          metadataObject,
+          validationMetadataErrorOptions
+        );
       } catch (e) {
-        errors.general.push(
-          dictionary.validation.errorInRow(
-            filePath,
-            index + 1,
+        errors.push(
+          dictionary.validation.arrayOfObjectsValidationError(
+            filePath || `object ${index + 1}`,
             errorToMessage(
               errorToMessage(e) === 'Required' ? dictionary.validation.requiredFieldMissing : e
             )
           )
         );
       }
-
-      if (!metadataObject.attributes) {
-        errors.missingAttributes.push(
-          dictionary.validation.missingAttributesInRowWithFilePath(filePath, index + 1)
-        );
-      }
     }
-    return { isValid: errors.general.length === 0, errors };
+    return { isValid: errors.length === 0, errors };
   };
 
   static validateLocalFile(filePath: string): FileValidationResult {
@@ -102,10 +93,7 @@ export class Hip412Validator {
     } catch (error) {
       return {
         isValid: false,
-        errors: {
-          general: [errorToMessage(error)],
-          missingAttributes: [],
-        },
+        errors: [errorToMessage(error)],
       };
     }
   }
@@ -128,7 +116,6 @@ export class Hip412Validator {
         errors: [
           {
             general: [dictionary.validation.directoryIsEmpty],
-            missingAttributes: [],
           },
         ],
       };
@@ -144,8 +131,7 @@ export class Hip412Validator {
         allFilesValid = false;
         errors.push({
           fileName: file,
-          general: validationResult.errors.general,
-          missingAttributes: validationResult.errors.missingAttributes,
+          general: validationResult.errors,
         });
       }
     }
