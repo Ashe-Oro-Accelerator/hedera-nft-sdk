@@ -12,7 +12,11 @@ import {
 import { errorToMessage } from '../helpers/errorToMessage';
 import { MetadataObject } from '../../types/csv';
 import { dictionary } from '../constants/dictionary';
-import { getMetadataObjectsForValidation, getNFTsFromToken } from '../../api/mirrorNode';
+import {
+  getMetadataObjectsForValidation,
+  getNFTsFromToken,
+  getSingleNFTMetadata,
+} from '../../api/mirrorNode';
 import { nftMetadataDecoder } from '../helpers/nftMetadataDecoder';
 import { ValidationError } from '../validationError';
 
@@ -48,7 +52,7 @@ export class Hip412Validator {
       if (err instanceof ValidationError) {
         errors.push(...err.errors);
       } else {
-        console.error(dictionary.errors.unhandledError);
+        errors.push(errorToMessage(err));
       }
     }
 
@@ -184,6 +188,36 @@ export class Hip412Validator {
     );
 
     const validationResponse = Hip412Validator.validateOnChainArrayOfObjects(metadataObjects);
+    return validationResponse;
+  }
+
+  static async validateSingleOnChainNFTMetadata(
+    network: NetworkName,
+    tokenId: string,
+    serialNumber: number,
+    ipfsGateway?: string
+  ) {
+    const nft = await getSingleNFTMetadata(network, tokenId, serialNumber);
+    const decodedNFTMetadataURL = nftMetadataDecoder(nft, ipfsGateway);
+
+    const metadataObject = await getMetadataObjectsForValidation(
+      decodedNFTMetadataURL[0].metadata,
+      decodedNFTMetadataURL[0].serialNumber
+    );
+
+    if (!metadataObject.metadata) {
+      return {
+        isValid: false,
+        errors: {
+          general: [metadataObject.error],
+          missingAttributes: [],
+        },
+      };
+    }
+    const validationResponse = Hip412Validator.validateSingleMetadataObject(
+      metadataObject.metadata
+    );
+
     return validationResponse;
   }
 }

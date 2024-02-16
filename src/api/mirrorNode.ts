@@ -44,6 +44,23 @@ export async function getNFTsFromToken(
   return allNFTs;
 }
 
+export async function getSingleNFTMetadata(
+  network: NetworkName,
+  tokenId: string,
+  serialNumber: number
+): Promise<NFTDetails> {
+  const baseUrl = getMirrorNodeUrlForNetwork(network);
+  const url = `${baseUrl}/tokens/${tokenId}/nfts/${serialNumber}`;
+
+  try {
+    const { data } = await axios.get<NFTDetails>(url);
+    return data;
+  } catch (error) {
+    throw new Error(`${dictionary.errors.unknownErrorWhileFetching(serialNumber)},
+    ${errorToMessage(error)}`);
+  }
+}
+
 export async function getMetadataObjectsForValidation(
   url: string,
   serialNumber: number
