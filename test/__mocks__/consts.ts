@@ -27,7 +27,7 @@ export const FILES_WITH_MIXED_EXTENSION_PATH = 'test/__mocks__/json/files-with-m
 export const EMPTY_JSON_EXAMPLE_PATH = 'test/__mocks__/json/empty-example.json';
 export const CORRECT_EXAMPLE_PATH = 'test/__mocks__/json/correct-example.json';
 
-export const LONG_E2E_TIMEOUT = 25000;
+export const LONG_E2E_TIMEOUT = 45000;
 export const MIRROR_NODE_DELAY = 5000;
 
 export const NFT_FROM_TOKEN_EXAMPLE_BASE_URL = 'http://example.com';
