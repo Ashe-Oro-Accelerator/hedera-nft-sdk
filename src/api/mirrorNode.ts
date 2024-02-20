@@ -15,13 +15,13 @@ export async function getMetaDataFromMirrorNode(
   nftId: NftId,
   mirrorNodeUrl?: string
 ): Promise<string> {
-  const url = mirrorNodeUrl || getMirrorNodeUrlForNetwork(network);
-  return axios
-    .get(`${url}/tokens/${nftId.tokenId.toString()}/nfts/${nftId.serial.toString()}`)
-    .then((response) => {
-      //atob is used to decode the base64 encoded metadata
-      return atob(response.data.metadata);
-    });
+  const baseURL = mirrorNodeUrl || getMirrorNodeUrlForNetwork(network);
+  const nftURL = `${baseURL}/tokens/${nftId.tokenId.toString()}/nfts/${nftId.serial.toString()}`;
+
+  return axios.get(nftURL).then((response) => {
+    //atob is used to decode the base64 encoded metadata
+    return atob(response.data.metadata);
+  });
 }
 
 export async function getNFTsFromToken(
@@ -29,7 +29,9 @@ export async function getNFTsFromToken(
   tokenId: string
 ): Promise<NFTDetails[]> {
   const baseUrl = getMirrorNodeUrlForNetwork(network);
-  let nextLink: string = `${baseUrl}/tokens/${tokenId}/nfts`;
+  const nftsURL = `${baseUrl}/tokens/${tokenId}/nfts`;
+
+  let nextLink: string = nftsURL;
   let allNFTs: NFTDetails[] = [];
 
   do {
@@ -50,10 +52,10 @@ export async function getSingleNFTMetadata(
   serialNumber: number
 ): Promise<NFTDetails> {
   const baseUrl = getMirrorNodeUrlForNetwork(network);
-  const url = `${baseUrl}/tokens/${tokenId}/nfts/${serialNumber}`;
+  const nftURL = `${baseUrl}/tokens/${tokenId}/nfts/${serialNumber}`;
 
   try {
-    const { data } = await axios.get<NFTDetails>(url);
+    const { data } = await axios.get<NFTDetails>(nftURL);
     return data;
   } catch (error) {
     throw new Error(`${dictionary.errors.unknownErrorWhileFetching(serialNumber)},
@@ -64,10 +66,16 @@ export async function getSingleNFTMetadata(
 export async function getMetadataObjectsForValidation(
   url: string,
   serialNumber: number
-): Promise<{ metadata?: MetadataObject; serialNumber: number; error?: string }> {
+): Promise<{
+  isSuccesfull: boolean;
+  metadata?: MetadataObject;
+  serialNumber: number;
+  error?: string;
+}> {
   try {
     const response = await axios.get(url);
     return {
+      isSuccesfull: true,
       metadata: response.data,
       serialNumber,
     };
@@ -85,6 +93,7 @@ export async function getMetadataObjectsForValidation(
     }
 
     return {
+      isSuccesfull: false,
       serialNumber,
       error: errorMessage,
     };

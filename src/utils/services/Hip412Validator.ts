@@ -12,12 +12,13 @@ import {
 import { errorToMessage } from '../helpers/errorToMessage';
 import { MetadataObject } from '../../types/csv';
 import { dictionary } from '../constants/dictionary';
+import { REQUIRED } from '../constants/nftsLimitError';
 import {
   getMetadataObjectsForValidation,
   getNFTsFromToken,
   getSingleNFTMetadata,
 } from '../../api/mirrorNode';
-import { nftMetadataDecoder } from '../helpers/nftMetadataDecoder';
+import { uriDecoder } from '../helpers/uriDecoder';
 import { ValidationError } from '../validationError';
 
 interface FileValidationResult {
@@ -80,7 +81,7 @@ export class Hip412Validator {
           dictionary.validation.arrayOfObjectsValidationError(
             filePath || `object ${index + 1}`,
             errorToMessage(
-              errorToMessage(e) === 'Required' ? dictionary.validation.requiredFieldMissing : e
+              errorToMessage(e) === REQUIRED ? dictionary.validation.requiredFieldMissing : e
             )
           )
         );
@@ -107,12 +108,12 @@ export class Hip412Validator {
 
     const filesForValidation = fs
       .readdirSync(directoryPath)
-      // .gitkeep file is needed inside empty-json-directory to keep it in the repository that's why we filter it out
-      .filter((file) => (file.endsWith('.json') || file.endsWith('.txt')) && file !== '.gitkeep')
+      .filter((file) => file.endsWith('.json') || file.endsWith('.txt'))
       .sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)?.[0] ?? '0', 10);
         const numB = parseInt(b.match(/\d+/)?.[0] ?? '0', 10);
         return numA - numB;
+        // Sorts the file names numerically ensuring that files are ordered naturally (e.g., '1', '2', '10' instead of '1', '10', '2').
       });
     if (filesForValidation.length === 0) {
       return {
@@ -179,7 +180,7 @@ export class Hip412Validator {
     ipfsGateway?: string
   ) {
     const nfts = await getNFTsFromToken(network, tokenId);
-    const decodedMetadataArray = nftMetadataDecoder(nfts, ipfsGateway);
+    const decodedMetadataArray = uriDecoder(nfts, ipfsGateway);
 
     const metadataObjects = await Promise.all(
       decodedMetadataArray.map(async ({ metadata, serialNumber }) => {
@@ -198,7 +199,7 @@ export class Hip412Validator {
     ipfsGateway?: string
   ) {
     const nft = await getSingleNFTMetadata(network, tokenId, serialNumber);
-    const decodedNFTMetadataURL = nftMetadataDecoder(nft, ipfsGateway);
+    const decodedNFTMetadataURL = uriDecoder(nft, ipfsGateway);
 
     const metadataObject = await getMetadataObjectsForValidation(
       decodedNFTMetadataURL[0].metadata,
