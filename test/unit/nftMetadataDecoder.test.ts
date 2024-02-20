@@ -1,4 +1,4 @@
-import { nftMetadataDecoder } from '../../src/utils/helpers/nftMetadataDecoder';
+import { uriDecoder } from '../../src/utils/helpers/uriDecoder';
 import { NFTDetails, DecodedMetadata } from '../../src/types/nfts';
 import {
   EXAMPLE_IPFS_GATEWAY,
@@ -18,7 +18,7 @@ const generateNFTDetails = (metadata: string, serialNumber: number) => ({
   spender: null,
 });
 
-describe('nftMetadataDecoder', () => {
+describe('uriDecoder', () => {
   it('decodes IPFS metadata containing "ipfs://" prefix using provided ipfsGateway', () => {
     const nfts: NFTDetails[] = [generateNFTDetails(IPFS_PREFIXED_HASH, 1)];
     const expected: DecodedMetadata[] = [
@@ -28,7 +28,7 @@ describe('nftMetadataDecoder', () => {
       },
     ];
 
-    const result = nftMetadataDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
+    const result = uriDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
     expect(result).toEqual(expected);
   });
 
@@ -41,7 +41,7 @@ describe('nftMetadataDecoder', () => {
       },
     ];
 
-    const result = nftMetadataDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
+    const result = uriDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
     expect(result).toEqual(expected);
   });
 
@@ -55,14 +55,14 @@ describe('nftMetadataDecoder', () => {
       },
     ];
 
-    const result = nftMetadataDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
+    const result = uriDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
     expect(result).toEqual(expected);
   });
 
   it('throws an error if ipfs metadata is provided without an ipfsGateway', () => {
     const nfts: NFTDetails[] = [generateNFTDetails(IPFS_PREFIXED_HASH, 4)];
 
-    expect(() => nftMetadataDecoder(nfts)).toThrow('IPFS gateway is required');
+    expect(() => uriDecoder(nfts)).toThrow('IPFS gateway is required');
   });
 
   it('decodes various types of metadata correctly', () => {
@@ -81,7 +81,7 @@ describe('nftMetadataDecoder', () => {
       { metadata: HTTPS_URL, serialNumber: 3 },
     ];
 
-    const result = nftMetadataDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
+    const result = uriDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
     expect(result).toEqual(expected);
   });
 
@@ -92,7 +92,7 @@ describe('nftMetadataDecoder', () => {
       generateNFTDetails(HTTPS_URL, 3),
     ];
 
-    const result = nftMetadataDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
+    const result = uriDecoder(nfts, EXAMPLE_IPFS_GATEWAY);
     expect(result.length).toBe(3);
   });
 });

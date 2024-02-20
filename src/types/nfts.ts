@@ -1,14 +1,12 @@
-import type { NFTMetadata } from './nftMetadata';
-
 export interface NFTDetails {
   account_id: string;
   created_timestamp: string;
+  delegating_spender?: null | string;
   deleted: boolean;
   metadata: string;
   modified_timestamp: string;
   serial_number: number;
   token_id: string;
-  meta?: NFTMetadata;
   spender: null | string;
 }
 

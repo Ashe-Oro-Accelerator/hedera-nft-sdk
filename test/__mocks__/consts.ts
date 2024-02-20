@@ -38,3 +38,5 @@ export const EXAMPLE_IPFS_GATEWAY = 'https://myipfsgateway.example.com/ipfs/';
 export const IPFS_PREFIXED_HASH = 'ipfs://QmSomeHash';
 export const HASH_WITHOUT_IPFS_PREFIX = 'QmAnotherHash';
 export const HTTPS_URL = 'https://example.com/metadata.json';
+
+export const NETWORK = 'testnet';
