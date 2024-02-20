@@ -22,4 +22,7 @@ export const LINK_TO_JSON_OBJECT_WITH_MISSING_FIELDS =
   'https://violet-written-whale-308.mypinata.cloud/ipfs/QmWC8VUgSkPM62mBznXqwqSvsCMSad1bxDzzqcwwYWueuf';
 
 export const AMOUNT_OF_NFTS_TO_MINT = 35;
+export const AMOUNT_OF_NFTS_TO_MINT_SINGLE = 3;
 export const BATCH_SIZE = 5;
+export const BATCH_SIZE_SINGLE = 1;
+export const METADATA_TO_VALIDATE_OBJECT_SERIAL = 1;
