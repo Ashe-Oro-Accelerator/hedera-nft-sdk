@@ -177,9 +177,10 @@ export class Hip412Validator {
   static async validateMetadataFromOnChainCollection(
     network: NetworkName,
     tokenId: string,
-    ipfsGateway?: string
+    ipfsGateway?: string,
+    limit: number = 100
   ) {
-    const nfts = await getNFTsFromToken(network, tokenId);
+    const nfts = await getNFTsFromToken(network, tokenId, limit);
     const decodedMetadataArray = uriDecoder(nfts, ipfsGateway);
 
     const metadataObjects = await Promise.all(

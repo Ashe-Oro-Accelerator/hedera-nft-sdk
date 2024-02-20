@@ -26,10 +26,11 @@ export async function getMetaDataFromMirrorNode(
 
 export async function getNFTsFromToken(
   network: NetworkName,
-  tokenId: string
+  tokenId: string,
+  limit: number = 100
 ): Promise<NFTDetails[]> {
   const baseUrl = getMirrorNodeUrlForNetwork(network);
-  const nftsURL = `${baseUrl}/tokens/${tokenId}/nfts`;
+  const nftsURL = `${baseUrl}/tokens/${tokenId}/nfts?limit=${limit}`;
 
   let nextLink: string = nftsURL;
   let allNFTs: NFTDetails[] = [];
